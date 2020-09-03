@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,7 +32,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      _counter = _counter + "/";
+      final plainText = 'This Text is Not Encrypted!!!';
+
+      DateTime now = DateTime.now();
+      String keydata = DateFormat('yyyyMMdd').format(now);
+      keydata = keydata + keydata + keydata + keydata;
+
+      final key = encrypt.Key.fromUtf8(keydata);
+      final iv = encrypt.IV.fromLength(16);
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      final encrypted = encrypter.encrypt(plainText, iv: iv);
+      final decrypted = encrypter.decrypt(encrypted, iv: iv);
+
+      print(key.base64);
+      print(encrypted.base64);
+      print(decrypted);
     });
   }
 
