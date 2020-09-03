@@ -1,81 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:intl/intl.dart';
 
-void main() => runApp(MyApp());
+import 'package:jahwa_mobile_working_center/program_list.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+void main() => runApp(MainApp());
+
+class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Jahwa Mobile Working Center',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var _counter = "";
-
-  void _incrementCounter() {
-    setState(() {
-      final plainText = 'This Text is Not Encrypted!!!';
-
-      DateTime now = DateTime.now();
-      String keydata = DateFormat('yyyyMMdd').format(now);
-      keydata = keydata + keydata + keydata + keydata;
-
-      final key = encrypt.Key.fromUtf8(keydata);
-      final iv = encrypt.IV.fromLength(16);
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
-
-      final encrypted = encrypter.encrypt(plainText, iv: iv);
-      final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-      print(key.base64);
-      print(encrypted.base64);
-      print(decrypted);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      routes: routes,
     );
   }
 }

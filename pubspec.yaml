@@ -1,5 +1,5 @@
 name: jahwa_mobile_working_center
-description: Jahwa Mobile Working Center
+description: "Jahwa Mobile Working Center"
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,10 +30,13 @@ dependencies:
   cupertino_icons: ^0.1.2
   encrypt: ^4.0.2
   intl: ^0.16.1
+  flutter_launcher_name: ^0.0.1
+  font_awesome_flutter: ^8.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,3 +79,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+# App Name Setting
+flutter_launcher_name:
+  name: "JH Mobile"
+
+# App Icon Setting
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
