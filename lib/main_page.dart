@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:jahwa_mobile_working_center/util/common.dart';
-
-class MailList extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,23 +30,11 @@ class MailList extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width - 100,
+                    width: MediaQuery.of(context).size.width - 50, // Index를 제외한 경우는 100을 차감
                     padding: EdgeInsets.all(10.0) ,
                     child: Text(
-                      'Mail List Page',
+                      'Jahwa Mobile Work Center',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      icon: FaIcon(FontAwesomeIcons.times),
-                      color: Colors.white,
-                      hoverColor: Colors.amber,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
                     ),
                   ),
                 ],
@@ -64,12 +50,29 @@ class MailList extends StatelessWidget {
                 width: MediaQuery.of(context).size.width - 20,
                 height: MediaQuery.of(context).size.height - 94,
                 alignment: Alignment.center,
-                child: IconButton(
-                    icon: FaIcon(FontAwesomeIcons.mailBulk),
-                    iconSize: 100,
-                    hoverColor: Colors.amber,
-                    color: Colors.blueAccent,
-                    onPressed: () { Navigator.pushNamed(context, '/MainPage'); }
+                child : Column (
+                  children: <Widget> [
+                    IconButton(
+                        icon: FaIcon(FontAwesomeIcons.signInAlt),
+                        iconSize: 100,
+                        hoverColor: Colors.amber,
+                        color: Colors.blueAccent,
+                        onPressed: () { Navigator.pushNamed(context, '/Login'); }
+                    ),
+                    Container(
+                      height: 50,
+                    ),
+                    IconButton(
+                        icon: FaIcon(FontAwesomeIcons.mailBulk),
+                        iconSize: 100,
+                        hoverColor: Colors.amber,
+                        color: Colors.blueAccent,
+                        onPressed: () { Navigator.pushNamed(context, '/MailList'); }
+                    ),
+                    Container(
+                      height: 50,
+                    ),
+                  ],
                 ),
                 decoration: BoxDecoration( // Container Box Design
                   color: Colors.white,
@@ -96,4 +99,3 @@ class MailList extends StatelessWidget {
     );
   }
 }
-

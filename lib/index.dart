@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Index extends StatelessWidget {
+  bool condition = false; // if false goto Login Page
+
+  Future<void> checkLogin(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('empcode', '');
+
+    final empcode = prefs.getString('empcode') ?? '';
+
+    if(empcode == '') { condition = false; }
+    else { condition = true; }
+
+    if(!condition) { Navigator.pushNamed(context, '/Login'); }
+    else { Navigator.pushNamed(context, '/MainPage'); }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    checkLogin(context);
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -21,47 +39,57 @@ class Index extends StatelessWidget {
               color: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
               child: Row(
                 children: <Widget>[
-                  Container(
+                  Container( // Menu List
                     width: 50,
                     alignment: Alignment.center,
                     child : IconButton(
                         icon: FaIcon(FontAwesomeIcons.bars),
                         color: Colors.white,
-                        onPressed: () { print("Menu List !!!"); }
+                        onPressed: () { Navigator.pushNamed(context, '/Login'); }
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 50, // Index를 제외한 경우는 100을 차감
+                  Container( // Top Title
+                    width: MediaQuery.of(context).size.width - 50,
                     padding: EdgeInsets.all(10.0) ,
                     child: Text(
-                      'Index Page',
+                      'Jahwa Mobile Work Center',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
-                  /*Container(
-                    width: 50,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      icon: FaIcon(FontAwesomeIcons.times),
-                      color: Colors.white,
-                      hoverColor: Colors.amber,
-                      onPressed: () { print("Close This Page !!!"); }
-                    ),
-                  ),*/
                 ],
               ),
             ),
             Container( // Main Area
-              color: Colors.blueAccent,
+              color: Color.fromARGB(0xFF, 0xE6, 0xE6, 0xE6),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 74,
               alignment: Alignment.center,
-              child : IconButton(
-                  icon: FaIcon(FontAwesomeIcons.mailBulk),
-                  iconSize: 100,
-                  hoverColor: Colors.amber,
+              child: Container( // Content Area
+                //color: Colors.white,
+                width: MediaQuery.of(context).size.width - 20,
+                height: MediaQuery.of(context).size.height - 94,
+                alignment: Alignment.center,
+                child: Text(
+                  'Jahwa Mobile Work Center',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 25,),
+                ),
+                decoration: BoxDecoration( // Container Box Design
                   color: Colors.white,
-                  onPressed: () { Navigator.pushNamed(context, '/MailList'); }
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
