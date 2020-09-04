@@ -5,6 +5,9 @@ import 'package:jahwa_mobile_working_center/util/common.dart';
 
 class Login extends StatelessWidget {
   @override
+
+  TextEditingController controller = new TextEditingController();
+
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
@@ -49,6 +52,11 @@ class Login extends StatelessWidget {
                 child: Column(
                   children: <Widget> [
                     TextField(
+                      autofocus: true,
+                      controller: controller,
+                      onSubmitted: (String inputText) {
+                        controller.clear();
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Employee Number',
