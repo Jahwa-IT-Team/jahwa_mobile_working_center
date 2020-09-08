@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:jahwa_mobile_working_center/util/common.dart';
-
 class MailList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container( // Top Area
@@ -69,7 +67,7 @@ class MailList extends StatelessWidget {
                     iconSize: 100,
                     hoverColor: Colors.amber,
                     color: Colors.blueAccent,
-                    onPressed: () { Navigator.pushNamed(context, '/MainPage'); }
+                    onPressed: () { Navigator.pushNamedAndRemoveUntil(context, '/MainPage', (route) => false); }
                 ),
                 decoration: BoxDecoration( // Container Box Design
                   color: Colors.white,

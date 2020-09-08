@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:jahwa_mobile_working_center/util/common.dart';
+
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("open Main Page");
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container( // Top Area
@@ -26,14 +29,14 @@ class MainPage extends StatelessWidget {
                     child : IconButton(
                         icon: FaIcon(FontAwesomeIcons.bars),
                         color: Colors.white,
-                        onPressed: () { print("Menu List !!!"); }
+                        onPressed: () { print("Main Page - Menu List !!!"); }
                     ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 50, // Index를 제외한 경우는 100을 차감
                     padding: EdgeInsets.all(10.0) ,
                     child: Text(
-                      'Jahwa Mobile Work Center',
+                      'Jahwa Mobile Work Center - Main Page',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
@@ -57,7 +60,7 @@ class MainPage extends StatelessWidget {
                         iconSize: 100,
                         hoverColor: Colors.amber,
                         color: Colors.blueAccent,
-                        onPressed: () { Navigator.pushNamed(context, '/Login'); }
+                        onPressed: () { Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);}
                     ),
                     Container(
                       height: 50,
@@ -67,7 +70,20 @@ class MainPage extends StatelessWidget {
                         iconSize: 100,
                         hoverColor: Colors.amber,
                         color: Colors.blueAccent,
-                        onPressed: () { Navigator.pushNamed(context, '/MailList'); }
+                        onPressed: () { Navigator.pushNamedAndRemoveUntil(context, '/MailList', (route) => false); }
+                    ),
+                    Container(
+                      height: 50,
+                    ),
+                    IconButton(
+                        icon: FaIcon(FontAwesomeIcons.signOutAlt),
+                        iconSize: 100,
+                        hoverColor: Colors.amber,
+                        color: Colors.blueAccent,
+                        onPressed: () {
+                          delSharedPreferences();
+                          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                        }
                     ),
                     Container(
                       height: 50,

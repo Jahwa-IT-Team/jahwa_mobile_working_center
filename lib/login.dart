@@ -1,19 +1,85 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
 import 'package:jahwa_mobile_working_center/util/common.dart';
 
-class Login extends StatelessWidget {
+ProgressDialog pr;
+
+class Login extends StatefulWidget {
   @override
+  _LoginState createState() => _LoginState();
+}
 
-  TextEditingController controller = new TextEditingController();
+class _LoginState extends State<Login> {
 
+  double percentage = 0.0;
+
+  TextEditingController empcodeController = new TextEditingController(); // Employee Number Data Controller
+  TextEditingController passwordController = new TextEditingController(); // Password Data Controller
+
+  FocusNode empcodeFocusNode; // Employee Input Number Focus
+  FocusNode passwordFocusNode; // Password Input Focus
+  FocusNode loginFocusNode; // Login Button Focus
+
+  // Call When Form Init
+  @override
+  void initState() {
+    super.initState();
+    empcodeFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
+    loginFocusNode = FocusNode();
+  }
+
+  // Call When Form Exits
+  @override
+  void dispose() {
+    empcodeFocusNode.dispose();
+    passwordFocusNode.dispose();
+    loginFocusNode.dispose();
+    empcodeController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  // Main Widget
+  @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView (
+    print("open Login Page");
+
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      textDirection: TextDirection.ltr,
+      isDismissible: true,
+    );
+
+    pr.style(
+      message: 'Wait a Moment...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      progress: 0.0,
+      progressWidgetAlignment: Alignment.center,
+      maxProgress: 100.0,
+      progressTextStyle: TextStyle(color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+    );
+
+    var width = MediaQuery.of(context).size.width; // Screen Width
+    var height = MediaQuery.of(context).size.height; // Screen Height
+
+    return GestureDetector( // For Keyboard UnFocus
+      onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: SingleChildScrollView (
           child: Column(
             children: <Widget>[
               Container( // Top Area
@@ -31,7 +97,7 @@ class Login extends StatelessWidget {
                     icon: FaIcon(FontAwesomeIcons.language),
                     iconSize: 30,
                     color: Colors.black,
-                    onPressed: () { Navigator.pushNamed(context, '/MailList'); }
+                    onPressed: () { Navigator.pushNamedAndRemoveUntil(context, '/MailList', (route) => false); }
                 ),
               ),
               Container( // Main Mark
@@ -44,47 +110,68 @@ class Login extends StatelessWidget {
                     child: Image.asset("assets/image/jahwa.png"),
                   )
               ),
-              Container( // Input Area
+              Container( // Main Mark
                 color: Colors.white,
-                width: width * 0.65,
-                height: (height - 24) * 0.3,
+                width: width,
                 alignment: Alignment.center,
-                child: Column(
-                  children: <Widget> [
-                    TextField(
-                      autofocus: true,
-                      controller: controller,
-                      onSubmitted: (String inputText) {
-                        controller.clear();
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Employee Number',
-                        contentPadding: EdgeInsets.all(10),  // Added this
-                      ),
-                    ),
-                    SizedBox(height: 16,),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                        contentPadding: EdgeInsets.all(10),  // Added this
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        onPressed: () {
-                          showDialogOne(context, 'Reset Password');
+                child: Container( // Input Area
+                  color: Colors.white,
+                  width: width * 0.65,
+                  height: (height - 24) * 0.3,
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: <Widget> [
+                      TextField(
+                        autofocus: true,
+                        controller: empcodeController,
+                        focusNode: empcodeFocusNode,
+                        keyboardType: TextInputType.text,
+                        onSubmitted: (String inputText) {
+                          FocusScope.of(context).requestFocus(passwordFocusNode);
                         },
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Employee Number',
+                          contentPadding: EdgeInsets.all(10),  // Added this
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      SizedBox(height: 16,),
+                      TextField(
+                        obscureText: true,
+                        controller: passwordController,
+                        keyboardType: TextInputType.text,
+                        focusNode: passwordFocusNode,
+                        onSubmitted: (String inputText) {
+                          print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
+                          loginCheck(context, empcodeController, passwordController);
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                          contentPadding: EdgeInsets.all(10),  // Added this
+                        ),
+                        textInputAction: TextInputAction.done,
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          onPressed: () async {
+                            await pr.show();
+                            Timer(Duration(seconds: 5), () async {
+                              print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
+                              loginCheck(context, empcodeController, passwordController);
+                              await pr.hide();
+                            });
+                          },
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Container( // Login Button
@@ -96,10 +183,15 @@ class Login extends StatelessWidget {
                   minWidth: width * 0.65,
                   height: 50.0,
                   child: RaisedButton(
+                    focusNode: loginFocusNode,
                     child:Text('Login', style: TextStyle(fontSize: 24, color: Colors.white,)),
-                    onPressed: () {
-                      showDialogOne(context, 'Login');
-                      Navigator.pushNamed(context, '/MainPage');
+                    onPressed: () async {
+                      await pr.show();
+                      Timer(Duration(seconds: 5), () async {
+                        print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
+                        loginCheck(context, empcodeController, passwordController);
+                        await pr.hide();
+                      });
                     },
                   ),
                 ),
