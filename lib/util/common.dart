@@ -8,8 +8,18 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import 'package:jahwa_mobile_working_center/util/structures.dart';
+
+testcheck() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  var empcode = prefs.getString('EmpCode') ?? '';
+  print(empcode);
+  var duedate = prefs.getString('DueDate') ?? '';
+  print(duedate);
+}
 
 encrypt_text(BuildContext context) {
   print("exec encrypt_text");
@@ -130,77 +140,82 @@ showDialogThree(BuildContext context, String strData) {
 // Insert SharedPreferences
 Future<void> insSharedPreferences(var user) async {
   print("exec insSharedPreferences");
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('EntCode', user.EntCode);
-  await prefs.setString('EntName', user.EntName);
-  await prefs.setString('DeptCode', user.DeptCode);
-  await prefs.setString('DeptName', user.DeptName);
-  await prefs.setString('EmpCode', user.EmpCode);
-  await prefs.setString('Name', user.Name);
-  await prefs.setString('RollPstn', user.RollPstn);
-  await prefs.setString('Position', user.Position);
-  await prefs.setString('Role', user.Role);
-  await prefs.setString('Title', user.Title);
-  await prefs.setString('PayGrade', user.PayGrade);
-  await prefs.setString('Level', user.Level);
-  await prefs.setString('Email', user.Email);
-  await prefs.setString('Photo', user.Photo);
-  await prefs.setInt('Auth', user.Auth);
-  await prefs.setString('EntGroup', user.EntGroup);
-  await prefs.setString('OfficeTel', user.OfficeTel);
-  await prefs.setString('Mobile', user.Mobile);
-  await prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  try {
+    await prefs.setString('EntCode', user.EntCode);
+    await prefs.setString('EntName', user.EntName);
+    await prefs.setString('DeptCode', user.DeptCode);
+    await prefs.setString('DeptName', user.DeptName);
+    await prefs.setString('EmpCode', user.EmpCode);
+    await prefs.setString('Name', user.Name);
+    await prefs.setString('RollPstn', user.RollPstn);
+    await prefs.setString('Position', user.Position);
+    await prefs.setString('Role', user.Role);
+    await prefs.setString('Title', user.Title);
+    await prefs.setString('PayGrade', user.PayGrade);
+    await prefs.setString('Level', user.Level);
+    await prefs.setString('Email', user.Email);
+    await prefs.setString('Photo', user.Photo);
+    await prefs.setInt('Auth', user.Auth);
+    await prefs.setString('EntGroup', user.EntGroup);
+    await prefs.setString('OfficeTel', user.OfficeTel);
+    await prefs.setString('Mobile', user.Mobile);
+    await prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  }
+  catch (e) {
+    print(e.toString());
+  }
 }
 
 // Insert SharedPreferences
 Future<void> delSharedPreferences() async {
-  print("exec delSharedPreferences");
+  print("exec delSharedPreferences : " + DateTime.now().toString());
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.clear();
 }
 
 // Check Login Info -> Move to Login Or Main Page : Index Page Use
 Future<void> checkLogin(BuildContext context, String page) async {
-  print("exec checkLogin");
+  print("exec checkLogin : " + DateTime.now().toString());
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  var empcode = await prefs.getString('EmpCode') ?? '';
-  var duedate = await prefs.getString('DueDate') ?? '';
-
+  print("checkLogin 1 : " + DateTime.now().toString());
   // Valid Date Check Add - If Out of Time, Delete SharedPreferences Data
-  if(empcode != '' && duedate == '') {
-    duedate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    await prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  if((prefs.getString('EmpCode') ?? '') != '' && (prefs.getString('DueDate') ?? '') == '') {
+    print("checkLogin 1-1 : " + DateTime.now().toString());
+    prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
   }
 
-  print("checkLogin - EmpCode : " + empcode);
-  print("checkLogin - DueDate : " + duedate);
+  print("checkLogin 2 : " + DateTime.now().toString());
+  print("checkLogin 2-1 - EmpCode : " + (prefs.getString('EmpCode') ?? '') + "-"  + DateTime.now().toString());
+  print("checkLogin 2-2 - DueDate : " + (prefs.getString('DueDate') ?? '') + "-" + DateTime.now().toString());
 
   // If passed Due Date go to Login Page
-  if(duedate != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-    delSharedPreferences();
-    Navigator.pushNamed(context, '/Login');
+  if((prefs.getString('EmpCode') ?? '') != '' && (prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+    print('checkLogin 3 - Check Due Date : ' + DateTime.now().toString());
+    await delSharedPreferences();
+    print("checkLogin 3-1 : " + DateTime.now().toString());
+    //await Navigator.pushNamed(context, '/Login'); //await _navigateAndDisplaySelection(context);
   }
-
-  // If Employee Number does not Exists go to Login Page
-  if(empcode == '') { _navigateAndDisplaySelection(context); }
-  else { Navigator.pushNamedAndRemoveUntil(context, page, (route) => false); }
-}
-
-_navigateAndDisplaySelection(BuildContext context) async { // Open Window For Receive Data
-  print("Index Page Check Start : ");
-  final result = await Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
-  //showDialogOne(context, "$result");
-  print("Index Page Check End : " + result);
-
-  if(result == "Login Okay") Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
-  else Navigator.pushNamedAndRemoveUntil(context, '/MainPage', (route) => false);
+  else {
+    // If Employee Number does not Exists go to Login Page
+    if((prefs.getString('EmpCode') ?? '') == '') {
+      print('checkLogin 4 - EmpCode Is NULL : ' + DateTime.now().toString());
+      await delSharedPreferences();
+      print("checkLogin 4-1 : " + DateTime.now().toString());
+    }
+    else {
+      print('checkLogin 5 : ' + DateTime.now().toString());
+      print((prefs.getString('EmpCode') ?? ''));
+      Navigator.pushNamed(context, '/MainPage');
+    }
+  }
 }
 
 // Login Page Use
-Future<void> loginCheck(BuildContext context, TextEditingController empcodeController, TextEditingController passwordController) async {
-  print("exec loginCheck");
-  final prefs = await SharedPreferences.getInstance();
+Future<void> loginCheck(BuildContext context, TextEditingController empcodeController, TextEditingController passwordController, ProgressDialog pr) async {
+  print("exec loginCheck : " + DateTime.now().toString());
 
   if(empcodeController.text.isEmpty) { // Employee Number Check
     showDialogOne(context, "Employee Not Exists !!!");
@@ -210,19 +225,19 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
   }
   else {
     // Login Process
-    var data = await signIn(empcodeController.text, passwordController.text);
-    print(data);
-    if(data) {
+    if(await signIn(empcodeController.text, passwordController.text)) {
       //prefs.setString('Password', passwordController.text); // Employee Save
-
+      print('SignIn Complete : ' + DateTime.now().toString());
       empcodeController.clear(); // Employee Number Clear
       passwordController.clear(); // Password Clear
 
+      pr.hide();
+
       // If Login Okay to move Main Page
-      Navigator.pop(context, 'Login Okay');
-      //Navigator.pushNamed(context, '/MainPage');
+      Navigator.pushNamed(context, '/Index');
     }
     else {
+      pr.hide();
       // When Fail Login Alert
       showDialogOne(context, "The login information is incorrect.");
     }
@@ -231,7 +246,7 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
 
 // Password Validation Check
 bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21]) {
-  print("exec isPasswordCompliant");
+  print("exec isPasswordCompliant : " + DateTime.now().toString());
   if (password == null || password.isEmpty) { return false; }
 
   bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); // Upper Case Character Check
@@ -246,7 +261,7 @@ bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21
 
 // Login Process
 Future<bool> signIn(String email, String password) async {
-  print("exec signIn");
+  print("exec signIn : " + DateTime.now().toString());
   try {
     // Login API Url
     var url = 'https://jhapi.jahwa.co.kr/Login';
@@ -261,7 +276,7 @@ Future<bool> signIn(String email, String password) async {
     ).timeout(
         const Duration(seconds: 15)
     ).then<bool>((http.Response response) {
-      print("Result SignIn : ${response.body}, (${response.statusCode})");
+      print("Result SignIn : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
       if(response.statusCode != 200 || response.body == null || response.body == "{}" ){
         return false;
       }
@@ -269,7 +284,9 @@ Future<bool> signIn(String email, String password) async {
         Map<String, dynamic> table = jsonDecode(response.body);
         Map userMap = table['Table'][0];
         var user = User.fromJson(userMap);
+        print("Pre insSharedPreferences : " + DateTime.now().toString());
         insSharedPreferences(user);
+        print("After insSharedPreferences : " + DateTime.now().toString());
         return true;
       }else{
         return false;

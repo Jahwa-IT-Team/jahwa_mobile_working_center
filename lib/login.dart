@@ -1,11 +1,15 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 
-ProgressDialog pr;
+ProgressDialog pr; // Progress Use
 
 class Login extends StatefulWidget {
   @override
@@ -19,39 +23,23 @@ class _LoginState extends State<Login> {
   TextEditingController empcodeController = new TextEditingController(); // Employee Number Data Controller
   TextEditingController passwordController = new TextEditingController(); // Password Data Controller
 
-  FocusNode empcodeFocusNode; // Employee Input Number Focus
-  FocusNode passwordFocusNode; // Password Input Focus
-  FocusNode loginFocusNode; // Login Button Focus
+  FocusNode empcodeFocusNode = FocusNode(); // Employee Input Number Focus
+  FocusNode passwordFocusNode = FocusNode(); // Password Input Focus
+  FocusNode loginFocusNode = FocusNode(); // Login Button Focus
 
-  // Call When Form Init
-  @override
   void initState() {
     super.initState();
-    empcodeFocusNode = FocusNode();
-    passwordFocusNode = FocusNode();
-    loginFocusNode = FocusNode();
+    checkLogin(context, '/Index');
   }
 
-  // Call When Form Exits
-  @override
-  void dispose() {
-    empcodeFocusNode.dispose();
-    passwordFocusNode.dispose();
-    loginFocusNode.dispose();
-    empcodeController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  // Main Widget
   @override
   Widget build(BuildContext context) {
-    print("open Login Page");
+    print("open Login App : " + DateTime.now().toString());
 
     pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
-      textDirection: TextDirection.ltr,
+      //textDirection: TextDirection.LTR,
       isDismissible: true,
     );
 
@@ -73,7 +61,7 @@ class _LoginState extends State<Login> {
 
     return GestureDetector( // For Keyboard UnFocus
       onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
+        FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
         }
@@ -122,7 +110,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget> [
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         controller: empcodeController,
                         focusNode: empcodeFocusNode,
                         keyboardType: TextInputType.text,
@@ -142,9 +130,10 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         keyboardType: TextInputType.text,
                         focusNode: passwordFocusNode,
-                        onSubmitted: (String inputText) {
+                        onSubmitted: (String inputText) async {
+                          await pr.show();
                           print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
-                          loginCheck(context, empcodeController, passwordController);
+                          loginCheck(context, empcodeController, passwordController, pr);
                         },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -157,12 +146,12 @@ class _LoginState extends State<Login> {
                         alignment: Alignment.centerRight,
                         child: FlatButton(
                           onPressed: () async {
-                            await pr.show();
-                            Timer(Duration(seconds: 5), () async {
-                              print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
-                              loginCheck(context, empcodeController, passwordController);
-                              await pr.hide();
-                            });
+                            //await pr.show();
+                            //Timer(Duration(seconds: 5), () async {
+                            //print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
+                            //loginCheck(context, empcodeController, passwordController, pr);
+                            //await pr.hide();
+                            //});
                           },
                           child: Text(
                             "Forgot Password?",
@@ -187,11 +176,11 @@ class _LoginState extends State<Login> {
                     child:Text('Login', style: TextStyle(fontSize: 24, color: Colors.white,)),
                     onPressed: () async {
                       await pr.show();
-                      Timer(Duration(seconds: 5), () async {
-                        print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
-                        loginCheck(context, empcodeController, passwordController);
-                        await pr.hide();
-                      });
+                      //Timer(Duration(seconds: 5), () async {
+                      print("ID : ${empcodeController.text}, Password : ${passwordController.text}");
+                      loginCheck(context, empcodeController, passwordController, pr);
+                      //await pr.hide();
+                      //});
                     },
                   ),
                 ),

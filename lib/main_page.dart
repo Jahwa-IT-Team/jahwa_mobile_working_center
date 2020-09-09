@@ -3,10 +3,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  // Call When Form Init
+  @override
+  void initState() {
+    print("open Main Page : " + DateTime.now().toString());
+    //super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("open Main Page");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
