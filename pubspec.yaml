@@ -1,5 +1,5 @@
 name: jahwa_mobile_working_center
-description: "Jahwa Mobile Working Center"
+description: "Jahwa Mobile"
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -35,6 +35,7 @@ dependencies:
   shared_preferences: ^0.5.10
   http: ^0.12.2
   progress_dialog: ^1.2.4
+  reflectable: ^2.2.5
 
 dev_dependencies:
   flutter_test:

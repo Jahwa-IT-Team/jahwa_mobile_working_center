@@ -29,13 +29,12 @@ class _LoginState extends State<Login> {
 
   void initState() {
     super.initState();
+    print("open Login Page : " + DateTime.now().toString());
     checkLogin(context, '/Index');
   }
 
   @override
   Widget build(BuildContext context) {
-    print("open Login App : " + DateTime.now().toString());
-
     pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,

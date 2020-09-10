@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class TestB extends StatefulWidget {
+class Test extends StatefulWidget {
   @override
-  _TestBState createState() => _TestBState();
+  _TestState createState() => _TestState();
 }
 
-class _TestBState extends State<TestB> {
+class _TestState extends State<Test> {
 
   TextEditingController empcodeController = new TextEditingController(); // Employee Number Data Controller
   FocusNode empcodeFocusNode = new FocusNode(); // Employee Input Number Focus
