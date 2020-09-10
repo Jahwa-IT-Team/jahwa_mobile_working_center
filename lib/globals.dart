@@ -1,0 +1,2 @@
+var language = 'ko'; // Language
+var languagelist = '{ "langlist" : [ { "lang" : "korean", "langcode" : "ko" }, { "lang" : "Vietnamese", "langcode" : "vi" }, { "lang" : "Chinese", "langcode" : "zh" }, { "lang" : "English", "langcode" : "en" } ] }';
