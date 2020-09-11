@@ -56,6 +56,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
    - assets/image/jahwa.png
+   - assets/lang/ko.json
+   - assets/lang/vi.json
+   - assets/lang/zh.json
+   - assets/lang/en.json
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -75,6 +79,12 @@ flutter:
         - asset: fonts/malgun.ttf
         - asset: fonts/malgunbd.ttf
         - asset: fonts/malgunsl.ttf
+    - family: NanumBrush
+      fonts:
+        - asset: fonts/NanumBrush.ttf
+    - family: NanumPen
+      fonts:
+        - asset: fonts/NanumPen.ttf
   #        style: italic
   #   - family: Trajan Pro
   #     fonts:

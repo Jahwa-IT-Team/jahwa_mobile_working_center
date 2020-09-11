@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:jahwa_mobile_working_center/globals.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
 
 class Index extends StatefulWidget {
@@ -9,7 +10,6 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
-
   // Call When Form Init
   @override
   void initState() {
@@ -19,6 +19,11 @@ class _IndexState extends State<Index> {
 
   @override
   Widget build(BuildContext context) {
+
+    screenWidth = MediaQuery.of(context).size.width; // Screen Width
+    screenHeight = MediaQuery.of(context).size.height; // Screen Height
+    statusBarHeight = MediaQuery.of(context).padding.top;
+
     return GestureDetector( // For Keyboard UnFocus
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -31,14 +36,14 @@ class _IndexState extends State<Index> {
           child: Column(
             children: <Widget>[
               Container( // Top Area
-                height: 24,
-                width: MediaQuery.of(context).size.width,
+                height: statusBarHeight,
+                width: screenWidth,
                 color: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
               ),
               Container( // Menu Area - Menu List Button + Menu Name + Close Button -> Index has not Close Button
                 height: 50,
                 alignment: Alignment.centerLeft,
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 color: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
                 child: Row(
                   children: <Widget>[
@@ -52,11 +57,11 @@ class _IndexState extends State<Index> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width - 100, // Index : 50, Exclude Index : 100
+                      width: screenWidth - 100, // Index : 50, Exclude Index : 100
                       padding: EdgeInsets.all(10.0) ,
                       child: Text(
-                        'Jahwa Mobile - Index Page',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        'Jahwa Mobile - Index Page : ' + session['Name'] + ' ' + session['Position'],
+                        style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 23,),
                       ),
                     ),
                     Container(
@@ -77,13 +82,13 @@ class _IndexState extends State<Index> {
               ),
               Container( // Main Area
                 color: Color.fromARGB(0xFF, 0xE6, 0xE6, 0xE6),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 74,
+                width: screenWidth,
+                height: screenHeight - statusBarHeight - 50,
                 alignment: Alignment.center,
                 child: Container( // Content Area
                   //color: Colors.white,
-                  width: MediaQuery.of(context).size.width - 20,
-                  height: MediaQuery.of(context).size.height - 94,
+                  width: screenWidth - 20,
+                  height: screenHeight - statusBarHeight - 70,
                   alignment: Alignment.center,
                   child : Column (
                     children: <Widget> [
@@ -91,7 +96,7 @@ class _IndexState extends State<Index> {
                         height: 50,
                       ),
                       IconButton(
-                          icon: FaIcon(FontAwesomeIcons.bars),
+                          icon: FaIcon(FontAwesomeIcons.solidFileAlt),
                           iconSize: 50,
                           hoverColor: Colors.amber,
                           color: Colors.blueAccent,

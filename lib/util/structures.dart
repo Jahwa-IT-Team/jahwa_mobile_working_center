@@ -36,10 +36,3 @@ class User {
     'OfficeTel' : OfficeTel, 'Mobile' : Mobile,
   };
 }
-
-class Language {
-  final String Lang; final String LangCode;
-  Language(this.Lang, this.LangCode);
-  Language.fromJson(Map<String, dynamic> json) : Lang = json['Lang'], LangCode = json['LangCode'];
-  Map<String, dynamic> toJson() => {'Lang' : Lang, 'LangCode' : LangCode, };
-}

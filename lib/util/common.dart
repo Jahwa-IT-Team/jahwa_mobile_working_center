@@ -1,12 +1,57 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
+import 'dart:ui' as ui;
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:jahwa_mobile_working_center/globals.dart';
+
+Future<bool> preferenceSetting() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  try{
+    session['EntCode'] = prefs.getString('EntCode') ?? '';
+    session['EntName'] = prefs.getString('EntName') ?? '';
+    session['DeptCode'] = prefs.getString('DeptCode') ?? '';
+    session['DeptName'] = prefs.getString('DeptName') ?? '';
+    session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+    session['Name'] = prefs.getString('Name') ?? '';
+    session['RollPstn'] = prefs.getString('RollPstn') ?? '';
+    session['Position'] = prefs.getString('Position') ?? '';
+    session['Role'] = prefs.getString('Role') ?? '';
+    session['Title'] = prefs.getString('Title') ?? '';
+    session['PayGrade'] = prefs.getString('PayGrade') ?? '';
+    session['Level'] = prefs.getString('Level') ?? '';
+    session['Email'] = prefs.getString('Email') ?? '';
+    session['Photo'] = prefs.getString('Photo') ?? '';
+    session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
+    session['EntGroup'] = prefs.getString('EntGroup') ?? '';
+    session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
+    session['Mobile'] = prefs.getString('Mobile') ?? '';
+    session['DueDate'] = prefs.getString('DueDate') ?? '';
+
+    language = prefs.getString('Language') ?? ui.window.locale.languageCode;
+    languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}');
+
+    if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
+      if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
+      else languagedata = jsonDecode(prefs.getString('LanguageData'));
+    }
+
+    return true;
+
+  }catch (e){
+    print("preferenceSetting Error : " + e.toString());
+    return false;
+  }
+}
 
 // Encrypt Function
 encrypt_text(BuildContext context) {
@@ -146,4 +191,27 @@ Future<void> removeUserSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove('EmpCode');
   prefs.remove('DueDate');
+}
+
+// Change Language Function
+Future<void> changeLanguage(BuildContext context, String langcode, String page) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("Language", langcode);
+
+  if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
+    if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
+    else languagedata = jsonDecode(prefs.getString('LanguageData'));
+    await Navigator.popAndPushNamed(context, page);
+  }
+}
+
+String translateText(BuildContext context, String key) {
+  String text = key;
+  try{
+    text = languagedata[key];
+    if(text == null) text = key;
+  }catch (e){
+    print("translateText Error : " + e.toString());
+  }
+  return text;
 }

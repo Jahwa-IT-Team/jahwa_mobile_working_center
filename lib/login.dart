@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,7 +23,9 @@ ProgressDialog pr; // Progress Dialog Declaration
 Future<void> addUserSharedPreferences(var user) async {
   //print("exec addUserSharedPreferences");
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
   try {
+    prefs.clear();
     prefs.setString('EntCode', user.EntCode);
     prefs.setString('EntName', user.EntName);
     prefs.setString('DeptCode', user.DeptCode);
@@ -45,6 +46,55 @@ Future<void> addUserSharedPreferences(var user) async {
     prefs.setString('Mobile', user.Mobile);
     prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
     prefs.setString('Language', language);
+
+    session['EntCode'] =  user.EntCode;
+    session['EntName'] = user.EntName;
+    session['DeptCode'] = user.DeptCode;
+    session['DeptName'] = user.DeptName;
+    session['EmpCode'] = user.EmpCode;
+    session['Name'] = user.Name;
+    session['RollPstn'] = user.RollPstn;
+    session['Position'] = user.Position;
+    session['Role'] = user.Role;
+    session['Title'] = user.Title;
+    session['PayGrade'] = user.PayGrade;
+    session['Level'] = user.Level;
+    session['Email'] = user.Email;
+    session['Photo'] = user.Photo;
+    session['Auth'] = user.Auth.toString();
+    session['EntGroup'] = user.EntGroup;
+    session['OfficeTel'] = user.OfficeTel;
+    session['Mobile'] = user.Mobile;
+    session['DueDate'] = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  }
+  catch (e) {
+    print(e.toString());
+  }
+}
+
+// Clear Session Function
+clearSession() {
+  //print("exec clearSession");
+  try {
+    session['EntCode'] =  '';
+    session['EntName'] = '';
+    session['DeptCode'] = '';
+    session['DeptName'] = '';
+    session['EmpCode'] = '';
+    session['Name'] = '';
+    session['RollPstn'] = '';
+    session['Position'] = '';
+    session['Role'] = '';
+    session['Title'] = '';
+    session['PayGrade'] = '';
+    session['Level'] = '';
+    session['Email'] = '';
+    session['Photo'] = '';
+    session['Auth'] = '0';
+    session['EntGroup'] = '';
+    session['OfficeTel'] = '';
+    session['Mobile'] = '';
+    session['DueDate'] = '';
   }
   catch (e) {
     print(e.toString());
@@ -53,15 +103,12 @@ Future<void> addUserSharedPreferences(var user) async {
 
 // Check Login Info -> Move to Login Or Main Page : Index Page Use
 Future<void> checkLogin(BuildContext context, String page) async {
-  // Declare Shared Preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  // Setting Default Language : ko, en, vi, zh...
-  if((prefs.getString('Language') ?? '') == '') prefs.setString('Language', language);
-  else language = prefs.getString('Language') ?? '';
-
   // If passed Due Date go to Login Page
-  if((prefs.getString('EmpCode') ?? '') == '' || (prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) removeUserSharedPreferences();
+  if((prefs.getString('EmpCode') ?? '') == '' || (prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+    clearSession();
+    removeUserSharedPreferences();
+  }
   else Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
 }
 
@@ -71,15 +118,15 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
 
   if(empcodeController.text.isEmpty) { // Employee Number Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, "Employee Number Not Exists !!!");
+    showMessageBox(context, translateText(context, 'Employee Number Not Exists !!!'));
   }
   else if(passwordController.text.isEmpty) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, "Password Not Exists !!!");
+    showMessageBox(context, translateText(context, 'Password Not Exists !!!'));
   }
   else if(!isPasswordCompliant(passwordController.text)) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, "Password invalid !!!");
+    showMessageBox(context, translateText(context, 'Password invalid !!!'));
   }
   else {
     // Login Process
@@ -99,7 +146,7 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
     else {
       pr.hide(); // Progress Dialog Close
       // When Fail Login Alert
-      showMessageBox(context, "The login information is incorrect.");
+      showMessageBox(context, translateText(context, 'The login information is incorrect.'));
     }
   }
 }
@@ -153,7 +200,7 @@ Future<bool> signIn(String email, String password) async {
       }
     });
   } catch (e) {
-    print(e.toString());
+    print("signIn Error : " + e.toString());
     return false;
   }
 }
@@ -165,9 +212,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  // Progress - Not Used
-  double percentage = 0.0;
-
   // TextField
   TextEditingController empcodeController = new TextEditingController(); // Employee Number Data Controller
   TextEditingController passwordController = new TextEditingController(); // Password Data Controller
@@ -177,33 +221,22 @@ class _LoginState extends State<Login> {
   FocusNode loginFocusNode = FocusNode(); // Login Button Focus
 
   // Select Dialog - Language
-  String ex1 = "Item 5";
+  String selecteslanguage = "";
 
-  List <String> LanguageList = [
-    'Korean',
-    'Vietnamese',
-    'Chinese',
-    'English'
-  ] ;
+  List <String> LanguageList = [] ;
 
   void initState() {
     super.initState();
     print("open Login Page : " + DateTime.now().toString());
     checkLogin(context, '/Index');
-
-    Map<String, dynamic> table = jsonDecode(languagelist);
-    print(1);
-    print(table);
-    Map userMap = table['langlist'][0];
-    print(2);
-    print(userMap);
-    var langlist = Language.fromJson(userMap);
-    print(3);
-    print(langlist.Lang);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Language List Add
+    LanguageList.clear();
+    languagelist['LangList'].forEach((element) { LanguageList.add(element['Lang']); });
+    selecteslanguage = languagelist['LangList'].where((c) => c['LangCode'] == language ).toList()[0]["Lang"];
 
     pr = ProgressDialog( // Progress Dialog Setting
       context,
@@ -212,7 +245,7 @@ class _LoginState extends State<Login> {
     );
 
     pr.style( // Progress Dialog Style
-      message: 'Wait a Moment...',
+      message: translateText(context, 'Wait a Moment...'),
       borderRadius: 10.0,
       backgroundColor: Colors.white,
       elevation: 10.0,
@@ -220,15 +253,15 @@ class _LoginState extends State<Login> {
       progress: 0.0,
       progressWidgetAlignment: Alignment.center,
       maxProgress: 100.0,
-      progressTextStyle: TextStyle(color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-      messageTextStyle: TextStyle(color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+      progressTextStyle: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.w600),
     );
 
-    var width = MediaQuery.of(context).size.width; // Screen Width
-    var height = MediaQuery.of(context).size.height; // Screen Height
-    var statusBarHeight = MediaQuery.of(context).padding.top;
+    screenWidth = MediaQuery.of(context).size.width; // Screen Width
+    screenHeight = MediaQuery.of(context).size.height; // Screen Height
+    statusBarHeight = MediaQuery.of(context).padding.top;
 
-    var baseWidth = width * 0.65;
+    var baseWidth = screenWidth * 0.65;
     if(baseWidth > 280) baseWidth = 280;
 
     return GestureDetector( // For Keyboard UnFocus
@@ -241,34 +274,37 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         body: SingleChildScrollView (
           child: Container(
-            height: height,
-            width: width,
+            height: screenHeight,
+            width: screenWidth,
             color: Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF),
             child: Column(
               children: <Widget>[
                 SizedBox( height: statusBarHeight, ), // Status Bar
                 Container( // Language
-                  width: width,
-                  height: (height - statusBarHeight) * 0.1,
+                  width: screenWidth,
+                  height: (screenHeight - statusBarHeight) * 0.1,
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.only(right: 20.0) ,
                   child: IconButton(
                       icon: FaIcon(FontAwesomeIcons.language),
-                      iconSize: 30,
-                      color: Colors.black,
+                      iconSize: 40,
+                      color: Colors.blueAccent,
                       onPressed: () {
                         SelectDialog.showModal<String>(
                           context,
-                          label: "Select Language",
-                          titleStyle: TextStyle(color: Colors.brown),
+                          label: translateText(context, 'Select Language'),
+                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold,),
                           showSearchBox: false,
-                          selectedValue: ex1,
+                          selectedValue: selecteslanguage,
                           backgroundColor: Colors.white,
                           items: LanguageList,
-                          onChange: (String selected) {
+                          onChange: (String selected) async {
                             setState(() {
-                              ex1 = selected;
-                              print(ex1);
+                              // Return Language Code
+                              var data = languagelist['LangList'].where((c) => c['Lang'] == selected ).toList()[0];
+                              language = data["LangCode"];
+                              selecteslanguage = data["Lang"];
+                              changeLanguage(context, data["LangCode"], '/Login');
                             });
                           },
                         );
@@ -276,8 +312,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Container( // Main Mark
-                    width: width,
-                    height: (height - statusBarHeight) * 0.4,
+                    width: screenWidth,
+                    height: (screenHeight - statusBarHeight) * 0.35,
                     alignment: Alignment.center,
                     child: SizedBox(
                       width: baseWidth,
@@ -285,11 +321,11 @@ class _LoginState extends State<Login> {
                     )
                 ),
                 Container( // Main Mark
-                  width: width,
+                  width: screenWidth,
                   alignment: Alignment.center,
                   child: Container( // Input Area
                     width: baseWidth,
-                    height: (height - statusBarHeight) * 0.3,
+                    height: (screenHeight - statusBarHeight) * 0.35,
                     alignment: Alignment.center,
                     child: Column(
                       children: <Widget> [
@@ -298,6 +334,7 @@ class _LoginState extends State<Login> {
                           controller: empcodeController,
                           focusNode: empcodeFocusNode,
                           keyboardType: TextInputType.text,
+                          style: TextStyle(fontSize: 25),
                           onSubmitted: (String inputText) {
                             FocusScope.of(context).requestFocus(passwordFocusNode);
                           },
@@ -311,7 +348,7 @@ class _LoginState extends State<Login> {
                                 width: 1.0,
                               ),
                             ),
-                            labelText: 'Employee Number',
+                            labelText: translateText(context, 'Employee Number'),
                             contentPadding: EdgeInsets.all(10),  // Added this
                           ),
                           textInputAction: TextInputAction.next,
@@ -322,6 +359,7 @@ class _LoginState extends State<Login> {
                           controller: passwordController,
                           keyboardType: TextInputType.text,
                           focusNode: passwordFocusNode,
+                          style: TextStyle(fontSize: 25),
                           onSubmitted: (String inputText) async {
                             await pr.show(); // Progress Dialog Show - Need Declaration, Setting, Style
                             loginCheck(context, empcodeController, passwordController, pr);
@@ -336,7 +374,7 @@ class _LoginState extends State<Login> {
                                 width: 1.0,
                               ),
                             ),
-                            labelText: 'Password',
+                            labelText: translateText(context, 'Password'),
                             contentPadding: EdgeInsets.all(10),  // Added this
                           ),
                           textInputAction: TextInputAction.done,
@@ -345,11 +383,11 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: FlatButton(
                             onPressed: () {
-                              showMessageBox(context, 'Are You Stupid ???'); // To be developed later.
+                              showMessageBox(context, translateText(context, 'Are You Stupid ???')); // To be developed later.
                             },
                             child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, ),
+                              translateText(context, 'Forgot Password?'),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 25, ),
                             ),
                           ),
                         ),
@@ -358,16 +396,17 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Container( // Login Button
-                  width: width,
-                  height: (height - statusBarHeight) * 0.2,
+                  width: screenWidth,
+                  height: (screenHeight - statusBarHeight) * 0.2,
                   alignment: Alignment.topCenter,
                   child: ButtonTheme(
                     minWidth: baseWidth,
                     height: 50.0,
                     child: RaisedButton(
                       focusNode: loginFocusNode,
-                      child:Text('Login', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white,)),
+                      child:Text(translateText(context, 'Login'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35, color: Colors.white,)),
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                      splashColor: Colors.grey,
                       onPressed: () async {
                         await pr.show();
                         loginCheck(context, empcodeController, passwordController, pr);
