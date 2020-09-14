@@ -102,12 +102,13 @@ clearSession() {
 }
 
 // Check Login Info -> Move to Login Or Main Page : Index Page Use
-Future<void> checkLogin(BuildContext context, String page) async {
+Future<void> checkLogin(BuildContext context, String page, TextEditingController empcodeController) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // If passed Due Date go to Login Page
-  if((prefs.getString('EmpCode') ?? '') == '' || (prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+  if((prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
     clearSession();
     removeUserSharedPreferences();
+    empcodeController.text = (prefs.getString('EmpCode') ?? '');
   }
   else Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
 }
@@ -118,15 +119,15 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
 
   if(empcodeController.text.isEmpty) { // Employee Number Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, translateText(context, 'Employee Number Not Exists !!!'));
+    showMessageBox(context, 'Employee Number Not Exists !!!');
   }
   else if(passwordController.text.isEmpty) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, translateText(context, 'Password Not Exists !!!'));
+    showMessageBox(context, 'Password Not Exists !!!');
   }
   else if(!isPasswordCompliant(passwordController.text)) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, translateText(context, 'Password invalid !!!'));
+    showMessageBox(context, 'Password invalid !!!');
   }
   else {
     // Login Process
@@ -146,7 +147,7 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
     else {
       pr.hide(); // Progress Dialog Close
       // When Fail Login Alert
-      showMessageBox(context, translateText(context, 'The login information is incorrect.'));
+      showMessageBox(context, 'The login information is incorrect.');
     }
   }
 }
@@ -228,7 +229,8 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     print("open Login Page : " + DateTime.now().toString());
-    checkLogin(context, '/Index');
+    //print(session);
+    checkLogin(context, '/Index', empcodeController);
   }
 
   @override
@@ -293,7 +295,7 @@ class _LoginState extends State<Login> {
                         SelectDialog.showModal<String>(
                           context,
                           label: translateText(context, 'Select Language'),
-                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold,),
+                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 30,),
                           showSearchBox: false,
                           selectedValue: selecteslanguage,
                           backgroundColor: Colors.white,
@@ -383,7 +385,7 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: FlatButton(
                             onPressed: () {
-                              showMessageBox(context, translateText(context, 'Are You Stupid ???')); // To be developed later.
+                              showMessageBox(context, 'Are You Stupid ???'); // To be developed later.
                             },
                             child: Text(
                               translateText(context, 'Forgot Password?'),

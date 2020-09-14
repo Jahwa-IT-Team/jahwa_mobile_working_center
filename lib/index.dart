@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:jahwa_mobile_working_center/globals.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
+import 'package:jahwa_mobile_working_center/menu.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     print("open Index Page : " + DateTime.now().toString());
+    print(session);
   }
 
   @override
@@ -53,7 +56,10 @@ class _IndexState extends State<Index> {
                       child : IconButton(
                           icon: FaIcon(FontAwesomeIcons.bars),
                           color: Colors.white,
-                          onPressed: () { print("Index Page - Menu List !!!"); }
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (ctx) => Menu()));
+                            print("Index Page - Menu List !!!");
+                          }
                       ),
                     ),
                     Container(

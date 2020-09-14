@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jahwa_mobile_working_center/globals.dart';
 
+
 Future<bool> preferenceSetting() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -46,7 +47,6 @@ Future<bool> preferenceSetting() async {
     }
 
     return true;
-
   }catch (e){
     print("preferenceSetting Error : " + e.toString());
     return false;
@@ -81,25 +81,26 @@ encrypt_text(BuildContext context) {
 showMessageBox(BuildContext context, String message) {
   // set up the button
   Widget okButton = FlatButton(
-    child: Text("Okay"),
+    child: Text(
+      "Okay",
+      style: TextStyle(fontFamily: "NanumPen", color: Colors.blueAccent, fontSize: 25,),
+    ),
     onPressed: () { Navigator.of(context).pop(); },
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Alert"),
-    content: Text(message),
-    actions: [
-      okButton,
-    ],
+    content: Text(translateText(context, message)),
+    titleTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30,),
+    contentTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontSize: 25,),
+    actions: [ okButton, ],
   );
 
   // show the dialog
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+    builder: (BuildContext context) { return alert; },
   );
 }
 
@@ -107,11 +108,17 @@ showMessageBox(BuildContext context, String message) {
 showConfirmMessageBox(BuildContext context, String message, String div, String args) {
   // set up the buttons
   Widget cancelButton = FlatButton(
-    child: Text("Cancel"),
+    child: Text(
+      "Cancel",
+      style: TextStyle(fontFamily: "NanumPen", color: Colors.blueAccent, fontSize: 25,),
+    ),
     onPressed:  () {Navigator.of(context).pop();},
   );
   Widget continueButton = FlatButton(
-    child: Text("Continue"),
+    child: Text(
+      "Continue",
+      style: TextStyle(fontFamily: "NanumPen", color: Colors.blueAccent, fontSize: 25,),
+    ),
     onPressed:  () {
       Navigator.of(context).pop();
       if(div == "") { // By div call each Function, args has many argument data Join by '♭', Level 2 Join by '♪', Level 3 Join by '♬'
@@ -123,26 +130,23 @@ showConfirmMessageBox(BuildContext context, String message, String div, String a
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Confirm"),
-    content: Text(message),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
+    content: Text(translateText(context, message)),
+    titleTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30,),
+    contentTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontSize: 25,),
+    actions: [ cancelButton, continueButton, ],
   );
 
   // show the dialog
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+    builder: (BuildContext context) { return alert; },
   );
 }
 
 // Show Select Message Box Function
 showSelectMessageBox(BuildContext context, String message, String buttonname, String div, String args) {
   // set up the buttons
-  Widget remindButton = FlatButton(
+  Widget aButton = FlatButton(
     child: Text(buttonname.split('♭')[0]), // Button Name Join by '♭'
     onPressed:  () {
       Navigator.of(context).pop();
@@ -152,11 +156,17 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
     },
   );
   Widget cancelButton = FlatButton(
-    child: Text("Cancel"),
+    child: Text(
+      "Cancel",
+      style: TextStyle(fontFamily: "NanumPen", color: Colors.blueAccent, fontSize: 25,),
+    ),
     onPressed:  () {Navigator.of(context).pop();},
   );
-  Widget launchButton = FlatButton(
-    child: Text(buttonname.split('♭')[1]), // Button Name Join by '♭'
+  Widget bButton = FlatButton(
+    child: Text(
+      buttonname.split('♭')[1],
+      style: TextStyle(fontFamily: "NanumPen", color: Colors.blueAccent, fontSize: 25,),
+    ), // Button Name Join by '♭'
     onPressed:  () {
       Navigator.of(context).pop();
       if(div == "") { // By div call each Function, args has many argument data Join by '♭', Level 2 Join by '♪', Level 3 Join by '♬'
@@ -168,11 +178,13 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Notice"),
-    content: Text(message),
+    content: Text(translateText(context, message)),
+    titleTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30,),
+    contentTextStyle: TextStyle(fontFamily: "NanumPen", color: Colors.black, fontSize: 25,),
     actions: [
-      remindButton,
+      aButton,
       cancelButton,
-      launchButton,
+      bButton,
     ],
   );
 
@@ -189,7 +201,6 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
 Future<void> removeUserSharedPreferences() async {
   //print("exec removeUserSharedPreferences : " + DateTime.now().toString());
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.remove('EmpCode');
   prefs.remove('DueDate');
 }
 

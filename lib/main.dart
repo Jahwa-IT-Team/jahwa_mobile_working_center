@@ -17,13 +17,14 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
-    super.initState();
     preferenceSetting();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     print("open Main App : " + DateTime.now().toString());
+    //print(session);
     return MaterialApp(
       title: 'Jahwa Mobile',
       theme: ThemeData(

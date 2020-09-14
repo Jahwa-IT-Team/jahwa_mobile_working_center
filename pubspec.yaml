@@ -28,19 +28,20 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  encrypt: ^4.0.2
-  intl: ^0.16.1
-  flutter_launcher_name: ^0.0.1
-  font_awesome_flutter: ^8.8.1
-  shared_preferences: ^0.5.10
-  http: ^0.12.2
-  progress_dialog: ^1.2.4
-  select_dialog: ^1.2.0
+  encrypt: ^4.0.2 # Encrypt Package
+  intl: ^0.16.1 # By Locale Number, Date Format Package
+  flutter_launcher_name: ^0.0.1 # App Name Setting Package
+  font_awesome_flutter: ^8.8.1 # FontAwesome Icon Package
+  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
+  http: ^0.12.2 # Api Connection Package
+  progress_dialog: ^1.2.4 # Progress Dialog Package
+  select_dialog: ^1.2.0 # Select Dialog (Ex. Language Select) Package
+  dynamic_treeview: ^1.0.0+2 # Dynamic Treeview for Menu List
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_icons: ^0.7.5 # App Icon Setting Package -> Ref. flutter_icons
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
