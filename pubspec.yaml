@@ -37,6 +37,7 @@ dependencies:
   progress_dialog: ^1.2.4 # Progress Dialog Package
   select_dialog: ^1.2.0 # Select Dialog (Ex. Language Select) Package
   dynamic_treeview: ^1.0.0+2 # Dynamic Treeview for Menu List
+  sqlite3: ^0.1.5 # SQLite Database
 
 dev_dependencies:
   flutter_test:

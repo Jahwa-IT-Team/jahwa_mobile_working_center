@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:jahwa_mobile_working_center/globals.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
-import 'package:jahwa_mobile_working_center/menu.dart';
+import 'package:jahwa_mobile_working_center/util/globals.dart';
+import 'package:jahwa_mobile_working_center/util/menu.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -58,7 +58,6 @@ class _IndexState extends State<Index> {
                           color: Colors.white,
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (ctx) => Menu()));
-                            print("Index Page - Menu List !!!");
                           }
                       ),
                     ),
@@ -66,8 +65,8 @@ class _IndexState extends State<Index> {
                       width: screenWidth - 100, // Index : 50, Exclude Index : 100
                       padding: EdgeInsets.all(10.0) ,
                       child: Text(
-                        'Jahwa Mobile - Index Page : ' + session['Name'] + ' ' + session['Position'],
-                        style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 23,),
+                        'Jahwa Mobile - Index Page',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
                       ),
                     ),
                     Container(

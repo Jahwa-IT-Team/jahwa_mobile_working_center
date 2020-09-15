@@ -1,5 +1,3 @@
-import 'package:dynamic_treeview/dynamic_treeview.dart'; // Menu Data Model
-
 class User {
   final String EntCode; final String EntName;
   final String DeptCode; final String DeptName;
@@ -37,34 +35,4 @@ class User {
     'Auth' : Auth, 'EntGroup' : EntGroup,
     'OfficeTel' : OfficeTel, 'Mobile' : Mobile,
   };
-}
-
-//Menu Data Model
-class MenuDataModel implements BaseData {
-  final int id;
-  final int parentId;
-  String name;
-
-  ///Any extra data you want to get when tapped on children
-  Map<String, dynamic> extras;
-  MenuDataModel({this.id, this.parentId, this.name, this.extras});
-  @override
-  String getId() {
-    return this.id.toString();
-  }
-
-  @override
-  Map<String, dynamic> getExtraData() {
-    return this.extras;
-  }
-
-  @override
-  String getParentId() {
-    return this.parentId.toString();
-  }
-
-  @override
-  String getTitle() {
-    return this.name;
-  }
 }

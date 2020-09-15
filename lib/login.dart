@@ -12,9 +12,8 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:jahwa_mobile_working_center/globals.dart';
-
 import 'package:jahwa_mobile_working_center/util/common.dart';
+import 'package:jahwa_mobile_working_center/util/globals.dart';
 import 'package:jahwa_mobile_working_center/util/structures.dart';
 
 ProgressDialog pr; // Progress Dialog Declaration
@@ -255,8 +254,8 @@ class _LoginState extends State<Login> {
       progress: 0.0,
       progressWidgetAlignment: Alignment.center,
       maxProgress: 100.0,
-      progressTextStyle: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w400),
-      messageTextStyle: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.w600),
+      progressTextStyle: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w600),
     );
 
     screenWidth = MediaQuery.of(context).size.width; // Screen Width
@@ -295,7 +294,7 @@ class _LoginState extends State<Login> {
                         SelectDialog.showModal<String>(
                           context,
                           label: translateText(context, 'Select Language'),
-                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 30,),
+                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 18,),
                           showSearchBox: false,
                           selectedValue: selecteslanguage,
                           backgroundColor: Colors.white,
@@ -336,7 +335,6 @@ class _LoginState extends State<Login> {
                           controller: empcodeController,
                           focusNode: empcodeFocusNode,
                           keyboardType: TextInputType.text,
-                          style: TextStyle(fontSize: 25),
                           onSubmitted: (String inputText) {
                             FocusScope.of(context).requestFocus(passwordFocusNode);
                           },
@@ -361,7 +359,6 @@ class _LoginState extends State<Login> {
                           controller: passwordController,
                           keyboardType: TextInputType.text,
                           focusNode: passwordFocusNode,
-                          style: TextStyle(fontSize: 25),
                           onSubmitted: (String inputText) async {
                             await pr.show(); // Progress Dialog Show - Need Declaration, Setting, Style
                             loginCheck(context, empcodeController, passwordController, pr);
@@ -389,7 +386,7 @@ class _LoginState extends State<Login> {
                             },
                             child: Text(
                               translateText(context, 'Forgot Password?'),
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 25, ),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 14, ),
                             ),
                           ),
                         ),
@@ -406,7 +403,7 @@ class _LoginState extends State<Login> {
                     height: 50.0,
                     child: RaisedButton(
                       focusNode: loginFocusNode,
-                      child:Text(translateText(context, 'Login'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35, color: Colors.white,)),
+                      child:Text(translateText(context, 'Login'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white,)),
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
                       splashColor: Colors.grey,
                       onPressed: () async {
