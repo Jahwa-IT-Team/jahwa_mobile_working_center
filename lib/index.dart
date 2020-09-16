@@ -17,7 +17,6 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     print("open Index Page : " + DateTime.now().toString());
-    print(session);
   }
 
   @override
@@ -121,6 +120,15 @@ class _IndexState extends State<Index> {
                       ),
                       Container(
                         height: 50,
+                      ),
+                      IconButton(
+                          icon: FaIcon(FontAwesomeIcons.bolt),
+                          iconSize: 50,
+                          hoverColor: Colors.amber,
+                          color: Colors.blueAccent,
+                          onPressed: () {
+                            showMessageBox(context, 'This Button use for Execution Test!!!');
+                          },
                       ),
                     ],
                   ),

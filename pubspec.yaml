@@ -25,19 +25,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^0.1.2 # Cupertino Icons font
+  dynamic_treeview: ^1.0.0+2 # Dynamic Treeview for Menu List
   encrypt: ^4.0.2 # Encrypt Package
-  intl: ^0.16.1 # By Locale Number, Date Format Package
   flutter_launcher_name: ^0.0.1 # App Name Setting Package
   font_awesome_flutter: ^8.8.1 # FontAwesome Icon Package
-  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
   http: ^0.12.2 # Api Connection Package
+  intl: ^0.16.1 # By Locale Number, Date Format Package
   progress_dialog: ^1.2.4 # Progress Dialog Package
   select_dialog: ^1.2.0 # Select Dialog (Ex. Language Select) Package
-  dynamic_treeview: ^1.0.0+2 # Dynamic Treeview for Menu List
-  sqlite3: ^0.1.5 # SQLite Database
+  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
+  progress_state_button: ^1.0.1 # Progress In Check Process
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +60,8 @@ flutter:
    - assets/lang/vi.json
    - assets/lang/zh.json
    - assets/lang/en.json
-  #  - images/a_dot_ham.jpeg
+  # - assets/JHMobile.db
+  # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -76,15 +75,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Malgun
+    - family: Malgun # Use Windwos Malgun Font
       fonts:
         - asset: fonts/malgun.ttf
         - asset: fonts/malgunbd.ttf
         - asset: fonts/malgunsl.ttf
-    - family: NanumBrush
+    - family: NanumBrush # Use Naver Nanum Font
       fonts:
         - asset: fonts/NanumBrush.ttf
-    - family: NanumPen
+    - family: NanumPen # Use Naver Nanum Font
       fonts:
         - asset: fonts/NanumPen.ttf
   #        style: italic

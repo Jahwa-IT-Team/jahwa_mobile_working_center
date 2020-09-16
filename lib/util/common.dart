@@ -12,30 +12,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 
-
-
-// Encrypt Function
-encrypt_text(BuildContext context) {
-  print("exec encrypt_text");
-  DateTime now = DateTime.now();
-  String keydata = DateFormat('yyyyMMdd').format(now);
+// Encrypt Text Function
+String encryptText(String methood, var data) {
+  //print("exec encryptText");
+  String returnData = '';
+  String keydata = DateFormat('yyyyMMdd').format(DateTime.now());
   keydata = keydata + keydata + keydata + keydata;
 
-  final plainText = 'This is not Encrypt Text !!!';
   final key = encrypt.Key.fromUtf8(keydata);
   final iv = encrypt.IV.fromLength(16);
 
   final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
-  final encrypted = encrypter.encrypt(plainText, iv: iv);
-  final decrypted = encrypter.decrypt(encrypted, iv: iv);
+  if(methood == "Encrypt") returnData = encrypter.encrypt(data, iv: iv).base64;
+  else returnData = encrypter.decrypt64(data, iv: iv);
 
-  print(decrypted);
-  print(encrypted.base64);
-
-  //showMessageBox(context, decrypted);
-  //showConfirmMessageBox(context, encrypted.base64);
-  showSelectMessageBox(context, encrypted.base64, 'Button1♭Button2', '', '');
+  return returnData;
 }
 
 // Show Message Box Function
@@ -156,6 +148,35 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
       return alert;
     },
   );
+}
+
+// Clear Session Function
+clearSession() {
+  //print("exec clearSession");
+  try {
+    session['EntCode'] =  '';
+    session['EntName'] = '';
+    session['DeptCode'] = '';
+    session['DeptName'] = '';
+    session['EmpCode'] = '';
+    session['Name'] = '';
+    session['RollPstn'] = '';
+    session['Position'] = '';
+    session['Role'] = '';
+    session['Title'] = '';
+    session['PayGrade'] = '';
+    session['Level'] = '';
+    session['Email'] = '';
+    session['Photo'] = '';
+    session['Auth'] = '0';
+    session['EntGroup'] = '';
+    session['OfficeTel'] = '';
+    session['Mobile'] = '';
+    session['DueDate'] = '';
+  }
+  catch (e) {
+    print(e.toString());
+  }
 }
 
 // Remove User SharedPreferences

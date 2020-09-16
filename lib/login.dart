@@ -24,7 +24,6 @@ Future<void> addUserSharedPreferences(var user) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   try {
-    prefs.clear();
     prefs.setString('EntCode', user.EntCode);
     prefs.setString('EntName', user.EntName);
     prefs.setString('DeptCode', user.DeptCode);
@@ -71,45 +70,17 @@ Future<void> addUserSharedPreferences(var user) async {
   }
 }
 
-// Clear Session Function
-clearSession() {
-  //print("exec clearSession");
+// Add User SharedPreferences
+Future<void> addPasswordSharedPreferences(var password) async {
+  //print("exec addPasswordSharedPreferences");
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   try {
-    session['EntCode'] =  '';
-    session['EntName'] = '';
-    session['DeptCode'] = '';
-    session['DeptName'] = '';
-    session['EmpCode'] = '';
-    session['Name'] = '';
-    session['RollPstn'] = '';
-    session['Position'] = '';
-    session['Role'] = '';
-    session['Title'] = '';
-    session['PayGrade'] = '';
-    session['Level'] = '';
-    session['Email'] = '';
-    session['Photo'] = '';
-    session['Auth'] = '0';
-    session['EntGroup'] = '';
-    session['OfficeTel'] = '';
-    session['Mobile'] = '';
-    session['DueDate'] = '';
+    prefs.setString('Password', encryptText('Encrypt', password));
   }
   catch (e) {
     print(e.toString());
   }
-}
-
-// Check Login Info -> Move to Login Or Main Page : Index Page Use
-Future<void> checkLogin(BuildContext context, String page, TextEditingController empcodeController) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // If passed Due Date go to Login Page
-  if((prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
-    clearSession();
-    removeUserSharedPreferences();
-    empcodeController.text = (prefs.getString('EmpCode') ?? '');
-  }
-  else Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
 }
 
 // Login Page Use
@@ -193,6 +164,7 @@ Future<bool> signIn(String email, String password) async {
         var user = User.fromJson(userMap);
         //print("Pre addUserSharedPreferences : " + DateTime.now().toString());
         addUserSharedPreferences(user);
+        addPasswordSharedPreferences(password);
         //print("After addUserSharedPreferences : " + DateTime.now().toString());
         return true;
       }else{
@@ -228,8 +200,15 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     print("open Login Page : " + DateTime.now().toString());
+    setEmpCodeController(empcodeController);
     //print(session);
-    checkLogin(context, '/Index', empcodeController);
+  }
+
+  // Remove User SharedPreferences
+  Future<void> setEmpCodeController(TextEditingController empcodeController) async {
+    //print("exec removeUserSharedPreferences : " + DateTime.now().toString());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    empcodeController.text = (prefs.getString('EmpCode') ?? '');
   }
 
   @override
