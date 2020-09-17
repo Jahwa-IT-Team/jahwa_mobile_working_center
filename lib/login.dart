@@ -9,7 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
@@ -112,7 +111,7 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
       pr.hide(); // Progress Dialog Close
 
       // If Login Okay, Close Login Page And Move to Index Page
-      Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     }
     else {
       pr.hide(); // Progress Dialog Close
@@ -193,9 +192,7 @@ class _LoginState extends State<Login> {
   FocusNode loginFocusNode = FocusNode(); // Login Button Focus
 
   // Select Dialog - Language
-  String selecteslanguage = "";
-
-  List <String> LanguageList = [] ;
+  String languagename = "";
 
   void initState() {
     super.initState();
@@ -213,10 +210,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    // Language List Add
-    LanguageList.clear();
-    languagelist['LangList'].forEach((element) { LanguageList.add(element['Lang']); });
-    selecteslanguage = languagelist['LangList'].where((c) => c['LangCode'] == language ).toList()[0]["Lang"];
+
+    // Set Default Language Name
+    languagename = languagelist['Table'].where((c) => c['Code'] == language ).toList()[0]["Name"];
 
     pr = ProgressDialog( // Progress Dialog Setting
       context,
@@ -270,22 +266,14 @@ class _LoginState extends State<Login> {
                       iconSize: 40,
                       color: Colors.blueAccent,
                       onPressed: () {
-                        SelectDialog.showModal<String>(
-                          context,
-                          label: translateText(context, 'Select Language'),
-                          titleStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 18,),
-                          showSearchBox: false,
-                          selectedValue: selecteslanguage,
-                          backgroundColor: Colors.white,
-                          items: LanguageList,
-                          onChange: (String selected) async {
-                            setState(() {
-                              // Return Language Code
-                              var data = languagelist['LangList'].where((c) => c['Lang'] == selected ).toList()[0];
-                              language = data["LangCode"];
-                              selecteslanguage = data["Lang"];
-                              changeLanguage(context, data["LangCode"], '/Login');
-                            });
+                        return showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              title: const Text('Select Language ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
+                              children: makeDialogItems(context, 'Language', languagelist, language, languagename),
+                            );
                           },
                         );
                       }

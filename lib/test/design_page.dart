@@ -5,18 +5,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 import 'package:jahwa_mobile_working_center/util/menu.dart';
 
-class MailList extends StatefulWidget {
+class DesignPage extends StatefulWidget {
   @override
-  _MailListState createState() => _MailListState();
+  _DesignPageState createState() => _DesignPageState();
 }
 
-class _MailListState extends State<MailList> {
+class _DesignPageState extends State<DesignPage> {
 
   // Call When Form Init
   @override
   void initState() {
-    print("open Mail List Page : " + DateTime.now().toString());
-    super.initState();
+    print("open Design Page : " + DateTime.now().toString());
+    //super.initState();
   }
 
   @override
@@ -64,8 +64,8 @@ class _MailListState extends State<MailList> {
                       width: screenWidth - 100, // Index : 50, Exclude Index : 100
                       padding: EdgeInsets.all(10.0) ,
                       child: Text(
-                        'Jahwa Mobile - Mail List Page',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 23,),
+                        'Jahwa Mobile - Design Page',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
                       ),
                     ),
                     Container(
@@ -100,8 +100,8 @@ class _MailListState extends State<MailList> {
                         height: screenHeight - statusBarHeight - 70,
                         alignment: Alignment.center,
                         child: Text(
-                          'Mail List Page',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50,),
+                          'Design Page',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50, fontFamily: 'NanumBrush'),
                         ),
                       ),
                     ],

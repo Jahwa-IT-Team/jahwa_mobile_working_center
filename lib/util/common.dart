@@ -38,7 +38,7 @@ showMessageBox(BuildContext context, String message) {
       "Okay",
       style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent,),
     ),
-    onPressed: () { Navigator.of(context).pop(); },
+    onPressed: () {Navigator.of(context).pop();},
   );
 
   // set up the AlertDialog
@@ -187,14 +187,14 @@ Future<void> removeUserSharedPreferences() async {
 }
 
 // Change Language Function
-Future<void> changeLanguage(BuildContext context, String langcode, String page) async {
+Future<void> changeLanguage(BuildContext context, String code) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("Language", langcode);
+  prefs.setString("Language", code);
 
-  if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
-    if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
+  if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + code + ".json"))){
+    if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + code + ".json"));
     else languagedata = jsonDecode(prefs.getString('LanguageData'));
-    await Navigator.popAndPushNamed(context, page);
+    await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 }
 
@@ -207,4 +207,39 @@ String translateText(BuildContext context, String key) {
     print("translateText Error : " + e.toString());
   }
   return text;
+}
+
+List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var jsondata, String value, String text) {
+  List<SimpleDialogOption> itemsList = [];
+  var textStyle = const TextStyle(color: Colors.blueAccent);
+  jsondata['Table'].forEach((element) {
+    if(text == element['Name'])textStyle = const TextStyle(color: Colors.blueAccent);
+    else textStyle = const TextStyle(color: Colors.black);
+    Widget simpleDialogOption = SimpleDialogOption(
+      onPressed: () {
+        value = element['Code'];
+        text = element['Name'];
+        if(div == 'Language') changeLanguage(context, value);
+        else showMessageBox(context, value + ' / ' + text);
+      },
+      child: Text(element['Name'], style: textStyle,),
+    );
+    itemsList.add(simpleDialogOption);
+  });
+  return itemsList;
+}
+
+List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, var jsondata, String value, String text) {
+  List<DropdownMenuItem> itemsList = [];
+  var textStyle = const TextStyle(color: Colors.blueAccent);
+  jsondata['Table'].forEach((element) {
+    if(text == element['Name'])textStyle = const TextStyle(color: Colors.blueAccent);
+    else textStyle = const TextStyle(color: Colors.black);
+    Widget dropdownMenuItem = DropdownMenuItem(
+      child: Text(element['Name']),
+      value: element['Code'],
+    );
+    itemsList.add(dropdownMenuItem);
+  });
+  return itemsList;
 }

@@ -105,18 +105,18 @@ class _IndexState extends State<Index> {
                           hoverColor: Colors.amber,
                           color: Colors.blueAccent,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/MainPage');
+                            Navigator.pushNamed(context, '/DesignPage');
                           }
                       ),
                       Container(
                         height: 50,
                       ),
                       IconButton(
-                          icon: FaIcon(FontAwesomeIcons.mailBulk),
+                          icon: FaIcon(FontAwesomeIcons.solidFile),
                           iconSize: 50,
                           hoverColor: Colors.amber,
                           color: Colors.blueAccent,
-                          onPressed: () { Navigator.pushNamed(context, '/MailList'); }
+                          onPressed: () { Navigator.pushNamed(context, '/NoneDesignPage'); }
                       ),
                       Container(
                         height: 50,

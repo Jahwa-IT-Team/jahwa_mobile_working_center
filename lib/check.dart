@@ -24,7 +24,7 @@ class _CheckState extends State<Check> {
   void initState() {
     print("open Check Page : " + DateTime.now().toString());
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 1), () {
       preferenceSetting(); // Make Session And Language Data, Check Login
     });  // Need Delete
   }
@@ -123,25 +123,6 @@ class _CheckState extends State<Check> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try{
-      session['EntCode'] = prefs.getString('EntCode') ?? '';
-      session['EntName'] = prefs.getString('EntName') ?? '';
-      session['DeptCode'] = prefs.getString('DeptCode') ?? '';
-      session['DeptName'] = prefs.getString('DeptName') ?? '';
-      session['EmpCode'] = prefs.getString('EmpCode') ?? '';
-      session['Name'] = prefs.getString('Name') ?? '';
-      session['RollPstn'] = prefs.getString('RollPstn') ?? '';
-      session['Position'] = prefs.getString('Position') ?? '';
-      session['Role'] = prefs.getString('Role') ?? '';
-      session['Title'] = prefs.getString('Title') ?? '';
-      session['PayGrade'] = prefs.getString('PayGrade') ?? '';
-      session['Level'] = prefs.getString('Level') ?? '';
-      session['Email'] = prefs.getString('Email') ?? '';
-      session['Photo'] = prefs.getString('Photo') ?? '';
-      session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
-      session['EntGroup'] = prefs.getString('EntGroup') ?? '';
-      session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
-      session['Mobile'] = prefs.getString('Mobile') ?? '';
-      session['DueDate'] = prefs.getString('DueDate') ?? '';
 
       language = prefs.getString('Language') ?? ui.window.locale.languageCode;
       languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}');
@@ -151,31 +132,55 @@ class _CheckState extends State<Check> {
         else languagedata = jsonDecode(prefs.getString('LanguageData'));
       }
 
-      if(session['EmpCode'] != '') {
-        if(await getMenu()) {
-          // After Success Goto
-          if(await checkLogin())
-          {
+      if(await checkLogin())
+      {
+        btnState = ButtonState.success; // Direct Move to Login
+        setState(() {});
+        Timer(Duration(seconds: 1), () {
+          Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+        });
+      }
+      else {
+        session['EntCode'] = prefs.getString('EntCode') ?? '';
+        session['EntName'] = prefs.getString('EntName') ?? '';
+        session['DeptCode'] = prefs.getString('DeptCode') ?? '';
+        session['DeptName'] = prefs.getString('DeptName') ?? '';
+        session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+        session['Name'] = prefs.getString('Name') ?? '';
+        session['RollPstn'] = prefs.getString('RollPstn') ?? '';
+        session['Position'] = prefs.getString('Position') ?? '';
+        session['Role'] = prefs.getString('Role') ?? '';
+        session['Title'] = prefs.getString('Title') ?? '';
+        session['PayGrade'] = prefs.getString('PayGrade') ?? '';
+        session['Level'] = prefs.getString('Level') ?? '';
+        session['Email'] = prefs.getString('Email') ?? '';
+        session['Photo'] = prefs.getString('Photo') ?? '';
+        session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
+        session['EntGroup'] = prefs.getString('EntGroup') ?? '';
+        session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
+        session['Mobile'] = prefs.getString('Mobile') ?? '';
+        session['DueDate'] = prefs.getString('DueDate') ?? '';
+
+        if(session['EmpCode'] != '') {
+          if(await getMenu()) {
             btnState = ButtonState.success;
             setState(() {});
-            Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+            // After Success Goto Index
+            Timer(Duration(seconds: 1), () {
+              Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
+            });
           }
           else {
-            btnState = ButtonState.success;
+            btnState = ButtonState.fail;
             setState(() {});
-            Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
+            print("preferenceSetting Error : getMenu Fail!!!");
           }
         }
         else {
           btnState = ButtonState.fail;
           setState(() {});
-          print("preferenceSetting Error : getMenu Fail!!!");
+          print("preferenceSetting Error : EmpCode Not Exists!!!");
         }
-      }
-      else {
-        btnState = ButtonState.fail;
-        setState(() {});
-        print("preferenceSetting Error : EmpCode Not Exists!!!");
       }
     }
     catch (e){
@@ -206,11 +211,8 @@ class _CheckState extends State<Check> {
           menudata = jsonDecode(response.body);
           return true;
         }
-        else{
-          return false;
-        }
-      }
-      );
+        else{ return false; }
+      });
     }
     catch (e) {
       print("getMenu Error : " + e.toString());
@@ -228,8 +230,6 @@ Future<bool> checkLogin() async {
     removeUserSharedPreferences();
     return true;
   }
-  else {
-    return false;
-  }
+  else{return false;}
 }
 

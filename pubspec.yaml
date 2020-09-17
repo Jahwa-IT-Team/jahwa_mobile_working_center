@@ -33,7 +33,6 @@ dependencies:
   http: ^0.12.2 # Api Connection Package
   intl: ^0.16.1 # By Locale Number, Date Format Package
   progress_dialog: ^1.2.4 # Progress Dialog Package
-  select_dialog: ^1.2.0 # Select Dialog (Ex. Language Select) Package
   shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
   progress_state_button: ^1.0.1 # Progress In Check Process
 

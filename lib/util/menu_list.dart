@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -82,8 +83,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
 
   ParentWidget buildWidget(String parentId, String name) {
     var data = _getChildrenFromParent(parentId);
-    BaseData d =
-    widget.data.firstWhere((d) => d.getId() == parentId.toString());
+    BaseData d = widget.data.firstWhere((d) => d.getId() == parentId.toString());
     if (name == null) {
       name = d.getTitle();
     }
@@ -126,9 +126,10 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
             });
           },
           contentPadding: widget.config.childrenPaddingEdgeInsets,
+          visualDensity: widget.config.childrenVisualDensity,
           leading: IconButton(
             icon: Icon(changeIcon(k.getIcon()), color: Colors.blueAccent),
-            iconSize: 17,
+            iconSize: widget.config.iconSize,
             color: Colors.white,
             onPressed: () {},
           ),
@@ -304,13 +305,13 @@ class _ParentWidgetState extends State<ParentWidget>
           },
           leading: IconButton(
             icon: FaIcon(changeIcon(widget.baseData.getIcon()), color: Colors.white),
-            iconSize: 17,
+            iconSize: widget.config.iconSize,
             color: Colors.white,
             onPressed: () {},
           ),
-          title: Text(widget.baseData.getTitle(),
-              style: widget.config.parentTextStyle),
+          title: Text(widget.baseData.getTitle(), style: widget.config.parentTextStyle),
           contentPadding: widget.config.parentPaddingEdgeInsets,
+          visualDensity: widget.config.parentVisualDensity,
           trailing: IconButton(
             onPressed: () {
               setState(() {
@@ -340,11 +341,7 @@ class _ParentWidgetState extends State<ParentWidget>
 
 ///A singleton Child tap listener
 class ChildTapListener extends ValueNotifier<Map<String, dynamic>> {
-  /* static final ChildTapListener _instance = ChildTapListener.internal();
 
-  factory ChildTapListener() => _instance;
-
-  ChildTapListener.internal() : super(null); */
   Map<String, dynamic> mapValue;
 
   ChildTapListener(Map<String, dynamic> value) : super(value);
@@ -383,8 +380,11 @@ abstract class BaseData {
 class Config {
   final TextStyle parentTextStyle;
   final TextStyle childrenTextStyle;
-  final EdgeInsets childrenPaddingEdgeInsets;
   final EdgeInsets parentPaddingEdgeInsets;
+  final EdgeInsets childrenPaddingEdgeInsets;
+  final VisualDensity parentVisualDensity;
+  final VisualDensity childrenVisualDensity;
+  final double iconSize;
 
   ///Animated icon when tile collapse/expand
   final Widget arrowIcon;
@@ -394,13 +394,14 @@ class Config {
   final String rootId;
 
   const Config(
-      {this.parentTextStyle =
-      const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-        this.parentPaddingEdgeInsets = const EdgeInsets.all(6.0),
+      { this.parentTextStyle = const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+        this.parentPaddingEdgeInsets = const EdgeInsets.all(0.0),
+        this.parentVisualDensity = const VisualDensity(horizontal: 0, vertical: 0),
         this.childrenTextStyle = const TextStyle(color: Colors.black),
-        this.childrenPaddingEdgeInsets =
-        const EdgeInsets.only(left: 15.0, top: 0, bottom: 0),
+        this.childrenPaddingEdgeInsets = const EdgeInsets.only(left: 10.0, top: 0, bottom: 0),
+        this.childrenVisualDensity = const VisualDensity(horizontal: 0, vertical: 0),
         this.rootId = "Root",
+        this.iconSize = 15,
         this.arrowIcon = const Icon(Icons.keyboard_arrow_down)});
 }
 

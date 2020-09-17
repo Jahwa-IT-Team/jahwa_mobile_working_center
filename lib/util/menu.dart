@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jahwa_mobile_working_center/util/common.dart';
 
 import 'package:jahwa_mobile_working_center/util/globals.dart';
-import 'package:jahwa_mobile_working_center/util/menulist.dart';
+import 'package:jahwa_mobile_working_center/util/menu_list.dart';
+import 'package:jahwa_mobile_working_center/util/program_list.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -23,6 +25,11 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
+
+    screenWidth = MediaQuery.of(context).size.width; // Screen Width
+    screenHeight = MediaQuery.of(context).size.height; // Screen Height
+    statusBarHeight = MediaQuery.of(context).padding.top;
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView (
@@ -31,8 +38,7 @@ class _MenuState extends State<Menu> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                width:MediaQuery.of(context).size.width,
-                //height: 120,
+                width: screenWidth,
                 padding: EdgeInsets.fromLTRB(40, 20, 30, 20),
                 alignment: Alignment.bottomLeft,
                 color: Color.fromARGB(0xFF, 0x42, 0x4E, 0x5E),
@@ -51,18 +57,18 @@ class _MenuState extends State<Menu> {
                     ),
                     SizedBox(width: 20,),
                     Container(
-                      width: MediaQuery.of(context).size.width - 190,
+                      width: screenWidth - 190,
                       child: Text(
                         session['Name'] + '\n' + session['DeptName'] + ', ' + session['Position'],
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18,),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16,),
                       ),
                     ),
                     Container(
                       alignment: Alignment.centerRight,
-                      width: 30,
+                      width: 25,
                       child: IconButton(
                         icon: Icon(FontAwesomeIcons.times, color: Colors.white),
-                        iconSize: 30,
+                        iconSize: 25,
                         color: Colors.white,
                         onPressed: () {
                           Navigator.pop(context);
@@ -73,29 +79,33 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               Container (
-                padding: EdgeInsets.all(20),
-                width:MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 130,
+                padding: EdgeInsets.all(15),
+                width: screenWidth,
+                height: screenHeight - statusBarHeight - 110,
                 color: Color.fromARGB(0xFF, 0x4B, 0x56, 0x68),
                 child: DynamicTreeView(
+                  width: screenWidth - 40,
                   data: MenuList,
                   config: Config(
-                    parentTextStyle: TextStyle(color: Colors.white,),
-                    parentPaddingEdgeInsets: EdgeInsets.only(left: 30, top: 0, bottom: 0),
+                    parentTextStyle: TextStyle(color: Colors.white, fontSize: 13),
+                    parentPaddingEdgeInsets: EdgeInsets.only(left: 20.0, top: 0.0, right: 0.0, bottom: 0.0,),
+                    parentVisualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                    childrenTextStyle: TextStyle(color: Colors.blueAccent, fontSize: 13),
+                    childrenPaddingEdgeInsets: EdgeInsets.only(left: 20.0, top: 0.0, right: 0.0, bottom: 0.0,),
+                    childrenVisualDensity: VisualDensity(horizontal: -4, vertical: -4),
                     rootId: "Root",
-                    childrenTextStyle: TextStyle(color: Colors.blueAccent,),
-                    childrenPaddingEdgeInsets: EdgeInsets.only(left: 30, top: 0, bottom: 0),
-                    arrowIcon: FaIcon(FontAwesomeIcons.caretDown, color: Colors.white,),
+                    iconSize: 13.0,
+                    arrowIcon: FaIcon(FontAwesomeIcons.caretDown, color: Colors.white),
                     ),
                   onTap: (m) {
                     print("onTap(ScreenOne) -> $m");
-                    if(m['url'] != "") {
+                    if(m['url'] != '' && routes.containsKey(m['url'])) {
                       Navigator.pop(context);
                       Navigator.pushNamed(context, m['url']);
                     }
-                    else print('Folder');
+                    else if(m['url'] != '') showMessageBox(context, 'This Menu does not Exist.');
+                    else print(m['id'] + ' : Folder');
                   },
-                  width: MediaQuery.of(context).size.width - 50,
                 ),
               ),
             ],

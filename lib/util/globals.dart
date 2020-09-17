@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 // Language
 var language = ui.window.locale.languageCode; // Language
 var languagedata = {};
-var languagelist = { "LangList" : [ { "Lang" : "Korean", "LangCode" : "ko" }, { "Lang" : "Vietnamese", "LangCode" : "vi" }, { "Lang" : "Chinese", "LangCode" : "zh" }, { "Lang" : "English", "LangCode" : "en" } ] };
+var languagelist = { "Table" : [ { "Code" : "ko", "Name" : "Korean" }, { "Code" : "vi", "Name" : "Vietnamese" }, { "Code" : "zh", "Name" : "Chinese" }, { "Code" : "en", "Name" : "English" } ] };
 
 // Session
 var session = {
