@@ -191,14 +191,10 @@ class _LoginState extends State<Login> {
   FocusNode passwordFocusNode = FocusNode(); // Password Input Focus
   FocusNode loginFocusNode = FocusNode(); // Login Button Focus
 
-  // Select Dialog - Language
-  String languagename = "";
-
   void initState() {
     super.initState();
     print("open Login Page : " + DateTime.now().toString());
     setEmpCodeController(empcodeController);
-    //print(session);
   }
 
   // Remove User SharedPreferences
@@ -210,9 +206,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
-    // Set Default Language Name
-    languagename = languagelist['Table'].where((c) => c['Code'] == language ).toList()[0]["Name"];
 
     pr = ProgressDialog( // Progress Dialog Setting
       context,
@@ -272,7 +265,7 @@ class _LoginState extends State<Login> {
                           builder: (BuildContext context) {
                             return SimpleDialog(
                               title: const Text('Select Language ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
-                              children: makeDialogItems(context, 'Language', languagelist, language, languagename),
+                              children: makeDialogItems(context, 'Language', languagelist, language),
                             );
                           },
                         );

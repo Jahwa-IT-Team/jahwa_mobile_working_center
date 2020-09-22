@@ -7,12 +7,19 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
 
+  // Call When Form Init
+  @override
+  void initState() {
+    super.initState();
+    print("open Test Page : " + DateTime.now().toString());
+  }
+
+  // Text Field
   TextEditingController empcodeController = new TextEditingController(); // Employee Number Data Controller
   FocusNode empcodeFocusNode = new FocusNode(); // Employee Input Number Focus
 
   @override
   Widget build(BuildContext context) {
-    print("open Test A : " + DateTime.now().toString());
     return Scaffold(
       body: SingleChildScrollView (
         child: Container(

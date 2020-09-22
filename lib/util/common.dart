@@ -209,18 +209,17 @@ String translateText(BuildContext context, String key) {
   return text;
 }
 
-List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var jsondata, String value, String text) {
+List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var jsondata, String selectedvalue) {
   List<SimpleDialogOption> itemsList = [];
   var textStyle = const TextStyle(color: Colors.blueAccent);
   jsondata['Table'].forEach((element) {
-    if(text == element['Name'])textStyle = const TextStyle(color: Colors.blueAccent);
+    if(selectedvalue == element['Code'])textStyle = const TextStyle(color: Colors.blueAccent);
     else textStyle = const TextStyle(color: Colors.black);
     Widget simpleDialogOption = SimpleDialogOption(
       onPressed: () {
-        value = element['Code'];
-        text = element['Name'];
-        if(div == 'Language') changeLanguage(context, value);
-        else showMessageBox(context, value + ' / ' + text);
+        selectedvalue = element['Code'];
+        if(div == 'Language') changeLanguage(context, selectedvalue);
+        else showMessageBox(context, selectedvalue);
       },
       child: Text(element['Name'], style: textStyle,),
     );
@@ -229,17 +228,18 @@ List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var j
   return itemsList;
 }
 
-List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, var jsondata, String value, String text) {
+List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, var jsondata, String selectedvalue) {
   List<DropdownMenuItem> itemsList = [];
   var textStyle = const TextStyle(color: Colors.blueAccent);
   jsondata['Table'].forEach((element) {
-    if(text == element['Name'])textStyle = const TextStyle(color: Colors.blueAccent);
+    if(selectedvalue == element['Code'])textStyle = const TextStyle(color: Colors.blueAccent);
     else textStyle = const TextStyle(color: Colors.black);
     Widget dropdownMenuItem = DropdownMenuItem(
-      child: Text(element['Name']),
+      child: Text(element['Name'], style:textStyle,),
       value: element['Code'],
     );
     itemsList.add(dropdownMenuItem);
   });
   return itemsList;
 }
+

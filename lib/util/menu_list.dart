@@ -453,8 +453,12 @@ IconData changeIcon(String icon) {
     case 'server': ico = FontAwesomeIcons.server; break;
     case 'solidCalendarAlt': ico = FontAwesomeIcons.solidCalendarAlt; break;
     case 'solidEnvelope': ico = FontAwesomeIcons.solidEnvelope; break;
+    case 'solidFile': ico = FontAwesomeIcons.solidFile; break;
+    case 'solidFileAlt': ico = FontAwesomeIcons.solidFileAlt; break;
+    case 'table': ico = FontAwesomeIcons.table; break;
     case 'tv': ico = FontAwesomeIcons.tv; break;
     case 'users': ico = FontAwesomeIcons.users; break;
+    case 'vials': ico = FontAwesomeIcons.vials; break;
     default: ico = FontAwesomeIcons.folder; break;
   }
   return ico;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info/package_info.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
@@ -12,6 +13,7 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
+
   // Call When Form Init
   @override
   void initState() {
@@ -93,52 +95,137 @@ class _IndexState extends State<Index> {
                   //color: Colors.white,
                   width: screenWidth - 20,
                   height: screenHeight - statusBarHeight - 70,
-                  alignment: Alignment.center,
-                  child : Column (
-                    children: <Widget> [
-                      Container(
-                        height: 50,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.all(10.0) ,
+                  child: Table(
+                    //border: TableBorder.all(color: Colors.blueAccent, width: 1, style: BorderStyle.solid,),
+                    children: [
+                      TableRow(
+                        children: [
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                      icon: FaIcon(FontAwesomeIcons.solidFile),
+                                      iconSize: 50,
+                                      hoverColor: Colors.amber,
+                                      color: Colors.blueAccent,
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, '/DesignPage');
+                                      }
+                                  ),
+                                  Text('Design Page'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                      icon: FaIcon(FontAwesomeIcons.solidFileAlt),
+                                      iconSize: 50,
+                                      hoverColor: Colors.amber,
+                                      color: Colors.blueAccent,
+                                      onPressed: () { Navigator.pushNamed(context, '/FormWidget'); }
+                                  ),
+                                  Text('Form Widget'),
+                                ],
+                              ),
+                            ),
+                          ),TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
+                                    iconSize: 50,
+                                    hoverColor: Colors.amber,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { showMessageBox(context, 'Action Test Button !!!'); },
+                                  ),
+                                  Text('Action Test'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]
                       ),
-                      IconButton(
-                          icon: FaIcon(FontAwesomeIcons.solidFileAlt),
-                          iconSize: 50,
-                          hoverColor: Colors.amber,
-                          color: Colors.blueAccent,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/DesignPage');
-                          }
-                      ),
-                      Container(
-                        height: 50,
-                      ),
-                      IconButton(
-                          icon: FaIcon(FontAwesomeIcons.solidFile),
-                          iconSize: 50,
-                          hoverColor: Colors.amber,
-                          color: Colors.blueAccent,
-                          onPressed: () { Navigator.pushNamed(context, '/NoneDesignPage'); }
-                      ),
-                      Container(
-                        height: 50,
-                      ),
-                      IconButton(
-                          icon: FaIcon(FontAwesomeIcons.bolt),
-                          iconSize: 50,
-                          hoverColor: Colors.amber,
-                          color: Colors.blueAccent,
-                          onPressed: () {
-                            showMessageBox(context, 'This Button use for Execution Test!!!');
-                          },
+                      TableRow(
+                        children: [
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.mailBulk),
+                                    iconSize: 50,
+                                    hoverColor: Colors.amber,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { Navigator.pushNamed(context, '/EmailGW'); },
+                                  ),
+                                  Text('GW Mail'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.table),
+                                    iconSize: 50,
+                                    hoverColor: Colors.amber,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { Navigator.pushNamed(context, '/List'); },
+                                  ),
+                                  Text('List'),
+                                ],
+                              ),
+                            ),
+                          ),TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.codeBranch),
+                                    iconSize: 50,
+                                    hoverColor: Colors.amber,
+                                    color: Colors.blueAccent,
+                                    onPressed: () {
+                                      //showMessageBox(context, 'Action Test Button !!!');
+                                      PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+                                        String version = packageInfo.version;
+                                        showMessageBox(context, 'Program Version : ' + version);
+                                        print(version);
+                                      });
+                                    }
+                                  ),
+                                  Text('Version'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                   decoration: BoxDecoration( // Container Box Design
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)
                     ),
                     boxShadow: [
                       BoxShadow(

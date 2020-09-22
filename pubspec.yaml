@@ -11,7 +11,7 @@ description: "Jahwa Mobile"
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+1 # For Upgrade Number
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -35,6 +35,8 @@ dependencies:
   progress_dialog: ^1.2.4 # Progress Dialog Package
   shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
   progress_state_button: ^1.0.1 # Progress In Check Process
+  url_launcher: ^5.6.0 # Url, Email, Tel, SMS Use
+  package_info: ^0.4.3 # Get Package Info
 
 dev_dependencies:
   flutter_test:

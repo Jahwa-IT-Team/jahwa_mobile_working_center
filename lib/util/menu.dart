@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jahwa_mobile_working_center/util/common.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 import 'package:jahwa_mobile_working_center/util/menu_list.dart';
 import 'package:jahwa_mobile_working_center/util/program_list.dart';
@@ -97,13 +98,23 @@ class _MenuState extends State<Menu> {
                     iconSize: 13.0,
                     arrowIcon: FaIcon(FontAwesomeIcons.caretDown, color: Colors.white),
                     ),
-                  onTap: (m) {
+                  onTap: (m) async {
                     print("onTap(ScreenOne) -> $m");
-                    if(m['url'] != '' && routes.containsKey(m['url'])) {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, m['url']);
+                    if(m['url'] != '') {
+                      if (routes.containsKey(m['url'])) {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, m['url']);
+                      }
+                      else if(m['url'].contains('http')) {
+                        var url = m['url'];
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      }
+                      else showMessageBox(context, 'This Menu does not Exist.');
                     }
-                    else if(m['url'] != '') showMessageBox(context, 'This Menu does not Exist.');
                     else print(m['id'] + ' : Folder');
                   },
                 ),

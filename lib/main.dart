@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jahwa_mobile_working_center/util/program_list.dart';
 
 void main() {
-  print("open Main App : " + DateTime.now().toString());
   runApp(MainApp());
+  print("open Main App : " + DateTime.now().toString());
 }
 
 class MainApp extends StatelessWidget {

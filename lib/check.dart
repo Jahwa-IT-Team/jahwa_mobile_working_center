@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:package_info/package_info.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,10 +21,12 @@ class Check extends StatefulWidget {
 }
 
 class _CheckState extends State<Check> {
+
+  // Call When Form Init
   @override
   void initState() {
-    print("open Check Page : " + DateTime.now().toString());
     super.initState();
+    print("open Check Page : " + DateTime.now().toString());
     Timer(Duration(seconds: 1), () {
       preferenceSetting(); // Make Session And Language Data, Check Login
     });  // Need Delete
@@ -93,7 +96,7 @@ class _CheckState extends State<Check> {
   Widget buildCustomButton() {
     var progressTextButton = ProgressButton(
       stateWidgets: {
-        ButtonState.idle: Text("Idle", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+        ButtonState.idle: Text("Update required!!", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
         ButtonState.loading: Text("Checking Update!!", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
         ButtonState.fail: Text("Failed. If you want to Reload, Click Here!!", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
         ButtonState.success: Text("The update was successful!!", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),)
@@ -118,76 +121,119 @@ class _CheckState extends State<Check> {
     return progressTextButton;
   }
 
+  // Version -> Language -> Session -> Menu
+
   // Make Session And Language Data
-  Future<bool> preferenceSetting() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> preferenceSetting() async {
 
-    try{
+    // 0. Version Check
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
 
-      language = prefs.getString('Language') ?? ui.window.locale.languageCode;
-      languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}');
+      String version = packageInfo.version;
 
-      if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
-        if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
-        else languagedata = jsonDecode(prefs.getString('LanguageData'));
-      }
+      try {
 
-      if(await checkLogin())
-      {
-        btnState = ButtonState.success; // Direct Move to Login
-        setState(() {});
-        Timer(Duration(seconds: 1), () {
-          Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+        // Login API Url
+        var url = 'https://jhapi.jahwa.co.kr/Version';
+
+        // Send Parameter
+        var data = {'VersionA': version.split('.')[0], 'VersionB' : version.split('.')[1], 'VersionC' : version.split('.')[2]};
+
+        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
+
+          //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
+          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Check Version Data Error !!!'); }
+          else if(response.statusCode == 200){
+
+            if(jsonDecode(response.body)['Table'][0]['VersionA'].toString() == '0') {
+              //print('Go Next Step!!!');
+
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              try{
+
+                // 1. Language Check
+                language = prefs.getString('Language') ?? ui.window.locale.languageCode;
+                languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}');
+
+                if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
+                  if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
+                  else languagedata = jsonDecode(prefs.getString('LanguageData'));
+                }
+
+                // 2. Session Check
+                if(await checkLogin())
+                {
+                  btnState = ButtonState.success;
+                  setState(() {});
+                  Timer(Duration(seconds: 1), () {
+                    Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  // Direct Move to Login
+                  });
+                }
+                else {
+                  session['EntCode'] = prefs.getString('EntCode') ?? '';
+                  session['EntName'] = prefs.getString('EntName') ?? '';
+                  session['DeptCode'] = prefs.getString('DeptCode') ?? '';
+                  session['DeptName'] = prefs.getString('DeptName') ?? '';
+                  session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+                  session['Name'] = prefs.getString('Name') ?? '';
+                  session['RollPstn'] = prefs.getString('RollPstn') ?? '';
+                  session['Position'] = prefs.getString('Position') ?? '';
+                  session['Role'] = prefs.getString('Role') ?? '';
+                  session['Title'] = prefs.getString('Title') ?? '';
+                  session['PayGrade'] = prefs.getString('PayGrade') ?? '';
+                  session['Level'] = prefs.getString('Level') ?? '';
+                  session['Email'] = prefs.getString('Email') ?? '';
+                  session['Photo'] = prefs.getString('Photo') ?? '';
+                  session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
+                  session['EntGroup'] = prefs.getString('EntGroup') ?? '';
+                  session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
+                  session['Mobile'] = prefs.getString('Mobile') ?? '';
+                  session['DueDate'] = prefs.getString('DueDate') ?? '';
+
+                  // 3. Menu Check
+                  if(session['EmpCode'] != '') {
+                    if(await getMenu()) {
+                      btnState = ButtonState.success;
+                      setState(() {});
+                      // After Success Goto Index
+                      Timer(Duration(seconds: 1), () {
+                        Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
+                      });
+                    }
+                    else {
+                      btnState = ButtonState.fail;
+                      setState(() {});
+                      showMessageBox(context, 'Preference Setting Error : getMenu Fail!!!');
+                    }
+                  }
+                  else {
+                    btnState = ButtonState.fail;
+                    setState(() {});
+                    showMessageBox(context, 'Preference Setting Error : Employee Number Not Exists!!!');
+                  }
+                }
+              }
+              catch (e){
+                btnState = ButtonState.fail;
+                setState(() {});
+                showMessageBox(context, 'Preference Setting Error B : ' + e.toString());
+              }
+            }
+            else {
+              btnState = ButtonState.idle;
+              setState(() {});
+              Timer(Duration(seconds: 1), () {
+                Navigator.pushNamedAndRemoveUntil(context, '/Update', (route) => false);  // Direct Move to Update
+              });
+            }
+          }
         });
       }
-      else {
-        session['EntCode'] = prefs.getString('EntCode') ?? '';
-        session['EntName'] = prefs.getString('EntName') ?? '';
-        session['DeptCode'] = prefs.getString('DeptCode') ?? '';
-        session['DeptName'] = prefs.getString('DeptName') ?? '';
-        session['EmpCode'] = prefs.getString('EmpCode') ?? '';
-        session['Name'] = prefs.getString('Name') ?? '';
-        session['RollPstn'] = prefs.getString('RollPstn') ?? '';
-        session['Position'] = prefs.getString('Position') ?? '';
-        session['Role'] = prefs.getString('Role') ?? '';
-        session['Title'] = prefs.getString('Title') ?? '';
-        session['PayGrade'] = prefs.getString('PayGrade') ?? '';
-        session['Level'] = prefs.getString('Level') ?? '';
-        session['Email'] = prefs.getString('Email') ?? '';
-        session['Photo'] = prefs.getString('Photo') ?? '';
-        session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
-        session['EntGroup'] = prefs.getString('EntGroup') ?? '';
-        session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
-        session['Mobile'] = prefs.getString('Mobile') ?? '';
-        session['DueDate'] = prefs.getString('DueDate') ?? '';
-
-        if(session['EmpCode'] != '') {
-          if(await getMenu()) {
-            btnState = ButtonState.success;
-            setState(() {});
-            // After Success Goto Index
-            Timer(Duration(seconds: 1), () {
-              Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
-            });
-          }
-          else {
-            btnState = ButtonState.fail;
-            setState(() {});
-            print("preferenceSetting Error : getMenu Fail!!!");
-          }
-        }
-        else {
-          btnState = ButtonState.fail;
-          setState(() {});
-          print("preferenceSetting Error : EmpCode Not Exists!!!");
-        }
+      catch (e) {
+        showMessageBox(context, 'Preference Setting Error A : ' + e.toString());
       }
-    }
-    catch (e){
-      btnState = ButtonState.fail;
-      setState(() {});
-      print("preferenceSetting Error : " + e.toString());
-    }
+    });
   }
 
   // Make Menu Data to menudata
