@@ -222,8 +222,8 @@ class _LoginState extends State<Login> {
       progress: 0.0,
       progressWidgetAlignment: Alignment.center,
       maxProgress: 100.0,
-      progressTextStyle: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w400),
-      messageTextStyle: TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w600),
+      progressTextStyle: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w600),
     );
 
     screenWidth = MediaQuery.of(context).size.width; // Screen Width

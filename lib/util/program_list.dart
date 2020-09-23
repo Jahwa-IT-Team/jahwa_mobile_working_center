@@ -8,7 +8,8 @@ import 'package:jahwa_mobile_working_center/mail/email_gw.dart';
 
 import 'package:jahwa_mobile_working_center/test/design_page.dart';
 import 'package:jahwa_mobile_working_center/test/form_widget.dart';
-import 'package:jahwa_mobile_working_center/test/list.dart';
+import 'package:jahwa_mobile_working_center/test/list_page.dart';
+import 'package:jahwa_mobile_working_center/test/list_scroll.dart';
 import 'package:jahwa_mobile_working_center/test/test.dart';
 
 import 'package:jahwa_mobile_working_center/util/update.dart';
@@ -21,8 +22,9 @@ final routes = {
 
   '/EmailGW' : (BuildContext context) => EmailGW(),
 
-  '/DesignPage' : (BuildContext context) => DesignPage(),
+  '/StandardDesign' : (BuildContext context) => StandardDesign(),
   '/FormWidget' : (BuildContext context) => FormWidget(),
-  '/List' : (BuildContext context) => List(),
+  '/ListPage' : (BuildContext context) => ListPage(),
+  '/ListScroll' : (BuildContext context) => ListScroll(),
   '/Test' : (BuildContext context) => Test(),
 };

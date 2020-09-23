@@ -27,7 +27,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
 
-    screenWidth = MediaQuery.of(context).size.width; // Screen Width
+    screenWidth = MediaQuery.of(context).size.width * 0.7; // Screen Width
     screenHeight = MediaQuery.of(context).size.height; // Screen Height
     statusBarHeight = MediaQuery.of(context).padding.top;
 
@@ -58,7 +58,7 @@ class _MenuState extends State<Menu> {
                     ),
                     SizedBox(width: 20,),
                     Container(
-                      width: screenWidth - 190,
+                      width: screenWidth - 200,
                       child: Text(
                         session['Name'] + '\n' + session['DeptName'] + ', ' + session['Position'],
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16,),
@@ -66,13 +66,14 @@ class _MenuState extends State<Menu> {
                     ),
                     Container(
                       alignment: Alignment.centerRight,
-                      width: 25,
+                      width: 35,
                       child: IconButton(
-                        icon: Icon(FontAwesomeIcons.times, color: Colors.white),
+                        icon: Icon(FontAwesomeIcons.signOutAlt, color: Colors.white),
                         iconSize: 25,
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pop(context);
+                          removeUserSharedPreferences();
+                          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                         },
                       ),
                     ),
@@ -91,7 +92,7 @@ class _MenuState extends State<Menu> {
                     parentTextStyle: TextStyle(color: Colors.white, fontSize: 13),
                     parentPaddingEdgeInsets: EdgeInsets.only(left: 20.0, top: 0.0, right: 0.0, bottom: 0.0,),
                     parentVisualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                    childrenTextStyle: TextStyle(color: Colors.blueAccent, fontSize: 13),
+                    childrenTextStyle: TextStyle(color: Colors.greenAccent, fontSize: 13),
                     childrenPaddingEdgeInsets: EdgeInsets.only(left: 20.0, top: 0.0, right: 0.0, bottom: 0.0,),
                     childrenVisualDensity: VisualDensity(horizontal: -4, vertical: -4),
                     rootId: "Root",

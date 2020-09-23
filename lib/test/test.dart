@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:jahwa_mobile_working_center/util/globals.dart';
+
 class Test extends StatefulWidget {
   @override
   _TestState createState() => _TestState();
@@ -21,6 +23,13 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
+        title: Text(
+          'Test Page',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
+        ),
+      ),
       body: SingleChildScrollView (
         child: Container(
           width: MediaQuery.of(context).size.width,

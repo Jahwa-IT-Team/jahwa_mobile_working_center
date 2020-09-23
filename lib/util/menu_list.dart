@@ -128,7 +128,7 @@ class _DynamicTreeViewOriState extends State<DynamicTreeView> {
           contentPadding: widget.config.childrenPaddingEdgeInsets,
           visualDensity: widget.config.childrenVisualDensity,
           leading: IconButton(
-            icon: Icon(changeIcon(k.getIcon()), color: Colors.blueAccent),
+            icon: Icon(changeIcon(k.getIcon()), color: Colors.greenAccent),
             iconSize: widget.config.iconSize,
             color: Colors.white,
             onPressed: () {},
@@ -449,12 +449,14 @@ IconData changeIcon(String icon) {
     case 'caretRight': ico = FontAwesomeIcons.caretRight; break;
     case 'circle': ico = FontAwesomeIcons.circle; break;
     case 'cogs': ico = FontAwesomeIcons.cogs; break;
+    case 'listAlt': ico = FontAwesomeIcons.listAlt; break;
     case 'paste': ico = FontAwesomeIcons.paste; break;
     case 'server': ico = FontAwesomeIcons.server; break;
     case 'solidCalendarAlt': ico = FontAwesomeIcons.solidCalendarAlt; break;
     case 'solidEnvelope': ico = FontAwesomeIcons.solidEnvelope; break;
     case 'solidFile': ico = FontAwesomeIcons.solidFile; break;
     case 'solidFileAlt': ico = FontAwesomeIcons.solidFileAlt; break;
+    case 'solidListAlt': ico = FontAwesomeIcons.solidListAlt; break;
     case 'table': ico = FontAwesomeIcons.table; break;
     case 'tv': ico = FontAwesomeIcons.tv; break;
     case 'users': ico = FontAwesomeIcons.users; break;

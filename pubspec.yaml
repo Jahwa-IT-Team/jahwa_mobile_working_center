@@ -37,6 +37,7 @@ dependencies:
   progress_state_button: ^1.0.1 # Progress In Check Process
   url_launcher: ^5.6.0 # Url, Email, Tel, SMS Use
   package_info: ^0.4.3 # Get Package Info
+  flutter_html: ^1.0.2 # HTML Viewer
 
 dev_dependencies:
   flutter_test:

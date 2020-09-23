@@ -126,7 +126,13 @@ class _CheckState extends State<Check> {
   // Make Session And Language Data
   Future<void> preferenceSetting() async {
 
-    // 0. Version Check
+    // 0. Declare Screent Size
+    screenWidth = MediaQuery.of(context).size.width; // Screen Width
+    screenHeight = MediaQuery.of(context).size.height; // Screen Height
+    statusBarHeight = MediaQuery.of(context).padding.top; // Top Status Bar Height
+    appBarHeigight = AppBar().preferredSize.height; // App Bar Height
+
+    // 1. Version Check
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
 
       String version = packageInfo.version;
@@ -152,7 +158,7 @@ class _CheckState extends State<Check> {
 
               try{
 
-                // 1. Language Check
+                // 2. Language Check
                 language = prefs.getString('Language') ?? ui.window.locale.languageCode;
                 languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}');
 
@@ -161,7 +167,7 @@ class _CheckState extends State<Check> {
                   else languagedata = jsonDecode(prefs.getString('LanguageData'));
                 }
 
-                // 2. Session Check
+                // 3. Session Check
                 if(await checkLogin())
                 {
                   btnState = ButtonState.success;
@@ -191,7 +197,7 @@ class _CheckState extends State<Check> {
                   session['Mobile'] = prefs.getString('Mobile') ?? '';
                   session['DueDate'] = prefs.getString('DueDate') ?? '';
 
-                  // 3. Menu Check
+                  // 4. Menu Check
                   if(session['EmpCode'] != '') {
                     if(await getMenu()) {
                       btnState = ButtonState.success;
