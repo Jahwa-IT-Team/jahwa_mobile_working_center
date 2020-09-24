@@ -39,7 +39,7 @@ class _IndexState extends State<Index> {
           ),
         ),
         drawer: Container(
-          width: screenWidth * 0.7,
+          width: screenWidth * 0.9,
           child: Menu(),
         ),
         body: SingleChildScrollView(
@@ -63,7 +63,7 @@ class _IndexState extends State<Index> {
                         children: [
                           TableCell(
                             child: Container(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(5.0),
                               child: Column(
                                 children: <Widget> [
                                   IconButton(

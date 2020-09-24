@@ -19,11 +19,17 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
 
   List<Card> cardList = new List<Card>();
-  ScrollController _controller;
-
+  List<ButtonTheme> buttonList = new List<ButtonTheme>();
   int page = 1;
 
-  makeScrollBody(String pageString) async {
+  makePageBody(String pageString) async {
+
+    int totalCount = 0;
+    int totalPage = 1;
+    int page = int.parse(pageString);
+
+    cardList.clear();
+    buttonList.clear();
 
     try {
 
@@ -62,7 +68,7 @@ class _ListPageState extends State<ListPage> {
                           },
                         ),
                         SizedBox(height: 10, ),
-                        Text('Sender : ' + element['Name'] + ',   Send Time : ' + element['InsDate'] + ',   ', style: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold, ),),
+                        Text('Sender : ' + element['Name'] + ', Sent : ' + element['InsDate'] + '', style: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold, ),),
                         SizedBox(height: 10, ),
                         Text('Receiver : ' + element['ToAddress'], style: TextStyle(color: Colors.green.shade400, fontSize: 14, fontWeight: FontWeight.bold, ),),
                       ],
@@ -83,37 +89,127 @@ class _ListPageState extends State<ListPage> {
             );
             cardList.add(card);
           });
+
+          totalCount = jsonDecode(response.body)['Table1'][0]['TotalCount'];
+          totalPage = 5;//(totalCount / 10).ceil();
+
+          // Move to First
+          Widget buttonTheme = ButtonTheme(
+            minWidth: 0,
+            height: 30.0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.0),
+              child: RaisedButton(
+                child:FaIcon(FontAwesomeIcons.angleDoubleLeft, color: Colors.white, size: 16,),
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                splashColor: Colors.grey,
+                onPressed: () async {
+                  makePageBody('1');
+                },
+              ),
+            ),
+          );
+          buttonList.add(buttonTheme);
+
+          // Move to Page - 2, If Exists
+          if(page >= 3) {
+            buttonTheme = ButtonTheme(
+              minWidth: 0,
+              height: 30.0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0.0),
+                child: RaisedButton(
+                  child: FaIcon(FontAwesomeIcons.angleLeft, color: Colors.white, size: 16,),
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                  splashColor: Colors.grey,
+                  onPressed: () async {
+                    makePageBody((page - 2).toString());
+                  },
+                ),
+              ),
+            );
+            buttonList.add(buttonTheme);
+          }
+
+          // From To Calculate
+          int frPage = 1;
+          int toPage = totalPage;
+
+          if(page - 1 > 1) frPage = page - 1;
+          if(page + 1 < totalPage) toPage = page + 1;
+          if(toPage < 3 && totalPage > 2) toPage = 3;
+
+          // Page Number
+          for (int i = frPage; i <= toPage; i++) {
+            buttonTheme = ButtonTheme(
+              minWidth: 0,
+              height: 30.0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0.0),
+                child: RaisedButton(
+                  child:Text(translateText(context, i.toString()), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white,)),
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                  splashColor: Colors.grey,
+                  onPressed: () async {
+                    makePageBody(i.toString());
+                  },
+                ),
+              ),
+            );
+            buttonList.add(buttonTheme);
+          }
+
+          // Move to Page + 2, If Exists
+          if(totalPage > toPage) {
+            buttonTheme = ButtonTheme(
+              minWidth: 0,
+              height: 30.0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0.0),
+                child: RaisedButton(
+                  child: FaIcon(FontAwesomeIcons.angleRight, color: Colors.white, size: 16,),
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                  splashColor: Colors.grey,
+                  onPressed: () async {
+                    makePageBody((page + 2).toString());
+                  },
+                ),
+              ),
+            );
+            buttonList.add(buttonTheme);
+          }
+
+          // Move to Last
+          buttonTheme = ButtonTheme(
+            minWidth: 0,
+            height: 30.0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.0),
+              child: RaisedButton(
+                child: FaIcon(FontAwesomeIcons.angleDoubleRight, color: Colors.white, size: 16,),
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                splashColor: Colors.grey,
+                onPressed: () async {
+                  makePageBody(totalPage.toString());
+                },
+              ),
+            ),
+          );
+          buttonList.add(buttonTheme);
+
           setState(() {});
         }
       });
     }
     catch (e) {
-      showMessageBox(context, 'Preference Setting Error A : ' + e.toString());
+      showMessageBox(context, 'makePageBody Error : ' + e.toString());
     }
-  }
-
-  _scrollListener() {
-    if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
-      setState(() {
-        //showMessageBox(context, "reach the bottom");
-        page ++;
-        makeScrollBody(page.toString());
-      });
-    }
-    // Reach The Top : NonUse
-    /*if (_controller.offset <= _controller.position.minScrollExtent && !_controller.position.outOfRange) {
-      setState(() {
-        showMessageBox(context, "reach the top");
-      });
-    }*/
   }
 
   // Call When Form Init
   @override
   void initState() {
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
-    makeScrollBody(page.toString());
+    makePageBody(page.toString());
     super.initState();
     print("open Page List : " + DateTime.now().toString());
   }
@@ -138,25 +234,29 @@ class _ListPageState extends State<ListPage> {
         body: SingleChildScrollView(
           child: Column (
             children: <Widget> [
-              Container (
-                height: 50,
-                width: screenWidth,
-                alignment: Alignment.center,
-                color: Color.fromARGB(0xFF, 0x4B, 0x56, 0x68),
-                child :
-                Text('Page Button? If scroll reached end of List View, Automatically receive 10 data.', style: TextStyle(color: Colors.white,),),
-              ),
               Container( // Main Area
                 color: Color.fromARGB(0xFF, 0xE6, 0xE6, 0xE6),
                 width: screenWidth,
                 height: screenHeight - statusBarHeight - appBarHeigight - 50,
                 alignment: Alignment.center,
                 child: ListView(
-                  controller: _controller,
                   children: ListTile.divideTiles(
                     context: context,
                     tiles: cardList,
                   ).toList(),
+                ),
+              ),
+              Container (
+                height: 50,
+                width: screenWidth,
+                alignment: Alignment.center,
+                color: Color.fromARGB(0xFF, 0x4B, 0x56, 0x68),
+                child : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  //padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                  child: Row(
+                    children: buttonList.toList(),
+                  ),
                 ),
               ),
             ],

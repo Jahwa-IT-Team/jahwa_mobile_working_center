@@ -66,7 +66,7 @@ class _ListScrollState extends State<ListScroll> {
                             },
                           ),
                           SizedBox(height: 10, ),
-                          Text('Sender : ' + element['Name'] + ',   Send Time : ' + element['InsDate'] + ',   ', style: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold, ),),
+                          Text('Sender : ' + element['Name'] + ', Sent : ' + element['InsDate'] + '', style: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold, ),),
                           SizedBox(height: 10, ),
                           Text('Receiver : ' + element['ToAddress'], style: TextStyle(color: Colors.green.shade400, fontSize: 14, fontWeight: FontWeight.bold, ),),
                         ],

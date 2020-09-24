@@ -27,7 +27,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
 
-    screenWidth = MediaQuery.of(context).size.width * 0.7; // Screen Width
+    screenWidth = MediaQuery.of(context).size.width; // Screen Width
     screenHeight = MediaQuery.of(context).size.height; // Screen Height
     statusBarHeight = MediaQuery.of(context).padding.top;
 
@@ -40,7 +40,7 @@ class _MenuState extends State<Menu> {
             children: <Widget>[
               Container(
                 width: screenWidth,
-                padding: EdgeInsets.fromLTRB(40, 20, 30, 20),
+                padding: EdgeInsets.fromLTRB(30, 20, 20, 20),
                 alignment: Alignment.bottomLeft,
                 color: Color.fromARGB(0xFF, 0x42, 0x4E, 0x5E),
                 child: Row(
@@ -58,7 +58,7 @@ class _MenuState extends State<Menu> {
                     ),
                     SizedBox(width: 20,),
                     Container(
-                      width: screenWidth - 200,
+                      width: screenWidth - 215,
                       child: Text(
                         session['Name'] + '\n' + session['DeptName'] + ', ' + session['Position'],
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16,),
@@ -66,7 +66,7 @@ class _MenuState extends State<Menu> {
                     ),
                     Container(
                       alignment: Alignment.centerRight,
-                      width: 35,
+                      width: 30,
                       child: IconButton(
                         icon: Icon(FontAwesomeIcons.signOutAlt, color: Colors.white),
                         iconSize: 25,
@@ -81,12 +81,12 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               Container (
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.symmetric(vertical:20),
                 width: screenWidth,
                 height: screenHeight - statusBarHeight - 110,
                 color: Color.fromARGB(0xFF, 0x4B, 0x56, 0x68),
                 child: DynamicTreeView(
-                  width: screenWidth - 40,
+                  width: screenWidth * 0.85,
                   data: MenuList,
                   config: Config(
                     parentTextStyle: TextStyle(color: Colors.white, fontSize: 13),
