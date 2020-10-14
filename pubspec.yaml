@@ -14,7 +14,7 @@ description: "Jahwa Mobile"
 version: 1.0.0+1 # For Upgrade Number
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependency_overrides:
   crypto: ^2.1.5
@@ -35,9 +35,9 @@ dependencies:
   progress_dialog: ^1.2.4 # Progress Dialog Package
   shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
   progress_state_button: ^1.0.1 # Progress In Check Process
-  url_launcher: ^5.6.0 # Url, Email, Tel, SMS Use
   package_info: ^0.4.3 # Get Package Info
   flutter_html: ^1.0.2 # HTML Viewer
+  url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use
 
 dev_dependencies:
   flutter_test:

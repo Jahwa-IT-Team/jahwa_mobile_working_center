@@ -72,7 +72,7 @@ class _IndexState extends State<Index> {
                                       hoverColor: Colors.amber,
                                       color: Colors.blueAccent,
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/DesignPage');
+                                        Navigator.pushNamed(context, '/StandardDesign');
                                       }
                                   ),
                                   Text('Standard Design'),
