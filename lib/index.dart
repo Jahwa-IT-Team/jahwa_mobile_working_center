@@ -23,6 +23,9 @@ class _IndexState extends State<Index> {
 
   @override
   Widget build(BuildContext context) {
+
+    setStatusMessage(context);
+
     return GestureDetector( // For Keyboard UnFocus
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -202,7 +205,14 @@ class _IndexState extends State<Index> {
                               padding: EdgeInsets.all(10.0),
                               child: Column(
                                 children: <Widget> [
-
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.solidBell),
+                                    iconSize: 50,
+                                    hoverColor: Colors.amber,
+                                    color: Colors.blueAccent,
+                                    onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
+                                  ),
+                                  Text('Notification'),
                                 ],
                               ),
                             ),

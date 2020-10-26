@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -243,3 +245,32 @@ List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, va
   return itemsList;
 }
 
+/// Notification - Start
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<void> showNotification(var title, var content) async {
+  var rng = new Random();
+  const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('Id', 'Name', 'Description', importance: Importance.max, priority: Priority.high, ticker: 'ticker');
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(rng.nextInt(1000), title, content, platformChannelSpecifics, payload: 'Notification'); // Id를 Random으로 생성하여 중복되지 않도록 처리하면 각 메시지가 별도로 나타난다.
+}
+
+setStatusMessage(BuildContext context) {
+  var androidSetting = AndroidInitializationSettings('@mipmap/app_icon');
+  var iosSetting = IOSInitializationSettings();
+  var initializationSettings = InitializationSettings(android: androidSetting, iOS: iosSetting);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String payload) async {
+    if (payload != null) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return new AlertDialog(
+            title: Text("Notification Clicked !!!"),
+            content: Text("Payload : $payload"),
+          );
+        },
+      );
+    }
+  });
+}
+/// Notification - End

@@ -38,6 +38,8 @@ dependencies:
   package_info: ^0.4.3 # Get Package Info
   flutter_html: ^1.0.2 # HTML Viewer
   url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use
+  flutter_local_notifications: ^3.0.0 # Notification
+  cron: ^0.2.3 # Background Execution
 
 dev_dependencies:
   flutter_test:
