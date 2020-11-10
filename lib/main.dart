@@ -11,8 +11,8 @@ void main() {
 
   /// Background Execution - Cron Package
   var cron = new Cron();
-  cron.schedule(new Schedule.parse('*/1 * * * *'), () async {
-    print(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) + ' : Execution every minutes');
+  cron.schedule(new Schedule.parse('*/10 * * * *'), () async {
+    print(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) + ' : Execution every 10 minutes');
     await showNotification('Notification', DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) + ' : Notification Test !!!');
   });
 

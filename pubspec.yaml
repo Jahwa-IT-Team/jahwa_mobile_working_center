@@ -40,6 +40,8 @@ dependencies:
   url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use
   flutter_local_notifications: ^3.0.0 # Notification
   cron: ^0.2.3 # Background Execution
+  flutter_swiper: ^1.1.6 # Swipe Page
+  loading_overlay: ^0.2.1 # Loaging Progress
 
 dev_dependencies:
   flutter_test:

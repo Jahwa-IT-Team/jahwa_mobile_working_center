@@ -4,6 +4,10 @@ import 'package:jahwa_mobile_working_center/check.dart';
 import 'package:jahwa_mobile_working_center/login.dart';
 import 'package:jahwa_mobile_working_center/index.dart';
 
+import 'package:jahwa_mobile_working_center/Jims/JimsGatheringInformation.dart';
+import 'package:jahwa_mobile_working_center/Jims/JimsServerInformation.dart';
+import 'package:jahwa_mobile_working_center/Jims/JimsUsageTop10.dart';
+
 import 'package:jahwa_mobile_working_center/mail/email_gw.dart';
 
 import 'package:jahwa_mobile_working_center/test/design_page.dart';
@@ -21,6 +25,10 @@ final routes = {
   '/Index' : (BuildContext context) => Index(),
 
   '/EmailGW' : (BuildContext context) => EmailGW(),
+
+  '/JimsGatheringInformation' : (BuildContext context) => JimsGatheringInformation(),
+  '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
+  '/JimsUsageTop10' : (BuildContext context) => JimsUsageTop10(),
 
   '/StandardDesign' : (BuildContext context) => StandardDesign(),
   '/FormWidget' : (BuildContext context) => FormWidget(),
