@@ -43,6 +43,7 @@ dependencies:
   flutter_swiper: ^1.1.6 # Swipe Page
   loading_overlay: ^0.2.1 # Loaging Progress
   syncfusion_flutter_charts: ^18.3.48 # Chart
+  syncfusion_flutter_datagrid: ^18.3.48-beta # Table
 
 dev_dependencies:
   flutter_test:

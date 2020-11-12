@@ -138,7 +138,7 @@ class _JimsUsageTopState extends State<JimsUsageTop> {
   void initState() {
     makePageBody();
     super.initState();
-    print("open JimsUsageTop10 Page : " + DateTime.now().toString());
+    print("open JimsUsageTop Page : " + DateTime.now().toString());
   }
 
   @override
@@ -276,7 +276,6 @@ class _JimsUsageTopState extends State<JimsUsageTop> {
                   size: 10.0, activeSize: 15.0, space: 5.0,
                   color: Colors.amberAccent, activeColor: Colors.blueAccent,
                 )),
-            ///control: new SwiperControl(),
             onIndexChanged: (int index) { // Change AppBar Title
               setState(() {
                 if(index == 1) _pageName = "Memory Usage Top 5";
