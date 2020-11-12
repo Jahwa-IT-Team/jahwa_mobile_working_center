@@ -11,7 +11,7 @@ description: "Jahwa Mobile"
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1 # For Upgrade Number
+version: 1.0.1+1 # For Upgrade Number
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
@@ -42,6 +42,7 @@ dependencies:
   cron: ^0.2.3 # Background Execution
   flutter_swiper: ^1.1.6 # Swipe Page
   loading_overlay: ^0.2.1 # Loaging Progress
+  syncfusion_flutter_charts: ^18.3.48 # Chart
 
 dev_dependencies:
   flutter_test:

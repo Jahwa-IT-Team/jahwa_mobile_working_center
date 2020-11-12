@@ -6,7 +6,8 @@ import 'package:jahwa_mobile_working_center/index.dart';
 
 import 'package:jahwa_mobile_working_center/Jims/JimsGatheringInformation.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsServerInformation.dart';
-import 'package:jahwa_mobile_working_center/Jims/JimsUsageTop10.dart';
+import 'package:jahwa_mobile_working_center/Jims/JimsUsageTop.dart';
+import 'package:jahwa_mobile_working_center/Jims/JimsChartSample.dart';
 
 import 'package:jahwa_mobile_working_center/mail/email_gw.dart';
 
@@ -28,7 +29,8 @@ final routes = {
 
   '/JimsGatheringInformation' : (BuildContext context) => JimsGatheringInformation(),
   '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
-  '/JimsUsageTop10' : (BuildContext context) => JimsUsageTop10(),
+  '/JimsUsageTop' : (BuildContext context) => JimsUsageTop(),
+  '/JimsChartSample' : (BuildContext context) => JimsChartSample(),
 
   '/StandardDesign' : (BuildContext context) => StandardDesign(),
   '/FormWidget' : (BuildContext context) => FormWidget(),
