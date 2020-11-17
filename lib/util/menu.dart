@@ -114,7 +114,7 @@ class _MenuState extends State<Menu> {
                           throw 'Could not launch $url';
                         }
                       }
-                      else showMessageBox(context, 'This Menu does not Exist.');
+                      else showMessageBox(context, 'Alert', 'This Menu does not Exist.');
                     }
                     else print(m['id'] + ' : Folder');
                   },

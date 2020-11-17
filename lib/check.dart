@@ -148,7 +148,7 @@ class _CheckState extends State<Check> {
         return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
 
           //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
-          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Check Version Data Error !!!'); }
+          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Check Version Data Error !!!'); }
           else if(response.statusCode == 200){
 
             if(jsonDecode(response.body)['Table'][0]['VersionA'].toString() == '0') {
@@ -210,20 +210,20 @@ class _CheckState extends State<Check> {
                     else {
                       btnState = ButtonState.fail;
                       setState(() {});
-                      showMessageBox(context, 'Preference Setting Error : getMenu Fail!!!');
+                      showMessageBox(context, 'Alert', 'Preference Setting Error : getMenu Fail!!!');
                     }
                   }
                   else {
                     btnState = ButtonState.fail;
                     setState(() {});
-                    showMessageBox(context, 'Preference Setting Error : Employee Number Not Exists!!!');
+                    showMessageBox(context, 'Alert', 'Preference Setting Error : Employee Number Not Exists!!!');
                   }
                 }
               }
               catch (e){
                 btnState = ButtonState.fail;
                 setState(() {});
-                showMessageBox(context, 'Preference Setting Error B : ' + e.toString());
+                showMessageBox(context, 'Alert', 'Preference Setting Error B : ' + e.toString());
               }
             }
             else {
@@ -237,7 +237,7 @@ class _CheckState extends State<Check> {
         });
       }
       catch (e) {
-        showMessageBox(context, 'Preference Setting Error A : ' + e.toString());
+        showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
       }
     });
   }

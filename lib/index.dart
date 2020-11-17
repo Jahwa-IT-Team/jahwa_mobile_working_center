@@ -169,7 +169,7 @@ class _IndexState extends State<Index> {
                                       //showMessageBox(context, 'Action Test Button !!!');
                                       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
                                         String version = packageInfo.version;
-                                        showMessageBox(context, 'Program Version : ' + version);
+                                        showMessageBox(context, 'Alert', 'Program Version : ' + version);
                                         print(version);
                                       });
                                     }
@@ -193,7 +193,7 @@ class _IndexState extends State<Index> {
                                     iconSize: 50,
                                     hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
-                                    onPressed: () { showMessageBox(context, 'Action Test Button !!!'); },
+                                    onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
                                   Text('Action Test'),
                                 ],

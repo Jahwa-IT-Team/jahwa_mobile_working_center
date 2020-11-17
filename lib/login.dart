@@ -88,15 +88,15 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
 
   if(empcodeController.text.isEmpty) { // Employee Number Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, 'Employee Number Not Exists !!!');
+    showMessageBox(context, 'Alert', 'Employee Number Not Exists !!!');
   }
   else if(passwordController.text.isEmpty) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, 'Password Not Exists !!!');
+    showMessageBox(context, 'Alert', 'Password Not Exists !!!');
   }
   else if(!isPasswordCompliant(passwordController.text)) { // Password Check
     pr.hide(); // Progress Dialog Close
-    showMessageBox(context, 'Password invalid !!!');
+    showMessageBox(context, 'Alert', 'Password invalid !!!');
   }
   else {
     // Login Process
@@ -116,7 +116,7 @@ Future<void> loginCheck(BuildContext context, TextEditingController empcodeContr
     else {
       pr.hide(); // Progress Dialog Close
       // When Fail Login Alert
-      showMessageBox(context, 'The login information is incorrect.');
+      showMessageBox(context, 'Alert', 'The login information is incorrect.');
     }
   }
 }
@@ -129,9 +129,16 @@ bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21
   bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); // Upper Case Character Check
   bool hasLowercase = password.contains(new RegExp(r'[a-z]')); // Lower Case Character Check
   bool hasDigits = password.contains(new RegExp(r'[0-9]')); // Number Check
-  bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*()?_~]')); // Special Character Check
+  bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*()?_~.]')); // Special Character Check
   bool hasMinLength = password.length > minLength; // Min Over 6
   bool hasMaxLength = password.length < maxLength; // Max Under 21
+
+  print(hasDigits);
+  print(hasUppercase);
+  print(hasLowercase);
+  print(hasSpecialCharacters);
+  print(hasMinLength);
+  print(hasMaxLength);
 
   return hasDigits & (hasUppercase || hasLowercase) & hasSpecialCharacters & hasMinLength & hasMaxLength;
 }
@@ -342,7 +349,7 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: FlatButton(
                             onPressed: () {
-                              showMessageBox(context, 'Are You Stupid ???'); // To be developed later.
+                              showMessageBox(context, 'Alert', 'Are You Stupid ???'); // To be developed later.
                             },
                             child: Text(
                               translateText(context, 'Forgot Password?'),

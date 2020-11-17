@@ -41,7 +41,7 @@ class _ListPageState extends State<ListPage> {
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
-        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Check Version Data Error !!!'); }
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Check Version Data Error !!!'); }
         else if(response.statusCode == 200){
           jsonDecode(response.body)['Table'].forEach((element) {
             Widget card = Card(
@@ -202,7 +202,7 @@ class _ListPageState extends State<ListPage> {
       });
     }
     catch (e) {
-      showMessageBox(context, 'makePageBody Error : ' + e.toString());
+      showMessageBox(context, 'Alert', 'makePageBody Error : ' + e.toString());
     }
   }
 

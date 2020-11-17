@@ -33,7 +33,7 @@ String encryptText(String methood, var data) {
 }
 
 // Show Message Box Function
-showMessageBox(BuildContext context, String message) {
+showMessageBox(BuildContext context, String title, String message) {
   // set up the button
   Widget okButton = FlatButton(
     child: Text(
@@ -45,7 +45,7 @@ showMessageBox(BuildContext context, String message) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Alert"),
+    title: Text(title),
     content: Text(translateText(context, message)),
     titleTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black, fontWeight: FontWeight.bold,),
     contentTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black,),
@@ -77,7 +77,7 @@ showConfirmMessageBox(BuildContext context, String message, String div, String a
     onPressed:  () {
       Navigator.of(context).pop();
       if(div == "") { // By div call each Function, args has many argument data Join by '♭', Level 2 Join by '♪', Level 3 Join by '♬'
-        showMessageBox(context, "Test Message Box");
+        showMessageBox(context, 'Alert', "Test Message Box");
       }
     },
   );
@@ -106,7 +106,7 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
     onPressed:  () {
       Navigator.of(context).pop();
       if(div == "") { // By div call each Function, args has many argument data Join by '♭', Level 2 Join by '♪', Level 3 Join by '♬'
-        showMessageBox(context, "Test Message Box");
+        showMessageBox(context, 'Alert', "Test Message Box");
       }
     },
   );
@@ -125,7 +125,7 @@ showSelectMessageBox(BuildContext context, String message, String buttonname, St
     onPressed:  () {
       Navigator.of(context).pop();
       if(div == "") { // By div call each Function, args has many argument data Join by '♭', Level 2 Join by '♪', Level 3 Join by '♬'
-        showMessageBox(context, "Test Message Box");
+        showMessageBox(context, 'Alert', "Test Message Box");
       }
     },
   );
@@ -221,7 +221,7 @@ List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var j
       onPressed: () {
         selectedvalue = element['Code'];
         if(div == 'Language') changeLanguage(context, selectedvalue);
-        else showMessageBox(context, selectedvalue);
+        else showMessageBox(context, 'Alert', selectedvalue);
       },
       child: Text(element['Name'], style: textStyle,),
     );

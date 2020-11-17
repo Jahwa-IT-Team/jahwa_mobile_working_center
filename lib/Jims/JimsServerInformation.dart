@@ -10,8 +10,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 
-// Language
-var server = "KRAPPD"; // Server
+// Server
+var server = "KRAPPD";
 var serverdata = {};
 var serverlist = { "Table" : [ { "Code" : "KRAPPD", "Name" : "KRAPPD" }] };
 
@@ -40,10 +40,10 @@ class _JimsServerInformationState extends State<JimsServerInformation> {
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
-        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Server List Data Error !!!'); }
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server List Data Error !!!'); }
         else if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length == 0) {
-            showMessageBox(context, 'Data does not Exists!!!');
+            showMessageBox(context, 'Alert', 'Data does not Exists!!!');
           }
           else {
             jsonDecode(response.body)['Table'].forEach((element) {
@@ -61,7 +61,7 @@ class _JimsServerInformationState extends State<JimsServerInformation> {
       });
     }
     catch (e) {
-      showMessageBox(context, 'Preference Setting Error A : ' + e.toString());
+      showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
     }
   }
 
@@ -77,10 +77,10 @@ class _JimsServerInformationState extends State<JimsServerInformation> {
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
-        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Server Info. Data Error !!!'); }
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
         else if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length == 0) {
-            showMessageBox(context, 'Data does not Exists!!!');
+            showMessageBox(context, 'Alert', 'Data does not Exists!!!');
           }
           else {
             cardList.clear();
@@ -209,7 +209,7 @@ class _JimsServerInformationState extends State<JimsServerInformation> {
       });
     }
     catch (e) {
-      showMessageBox(context, 'Preference Setting Error A : ' + e.toString());
+      showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
     }
   }
 
