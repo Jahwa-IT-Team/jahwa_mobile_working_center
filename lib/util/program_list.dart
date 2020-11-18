@@ -21,19 +21,23 @@ import 'package:jahwa_mobile_working_center/test/test.dart';
 import 'package:jahwa_mobile_working_center/util/update.dart';
 
 final routes = {
-  '/' : (BuildContext context) => Check(),
-  '/Update' : (BuildContext context) => Update(),
+  /// Basic Program
+  '/' : (BuildContext context) => Check(), /// 기본으로 main -> check -> update, login or index page로 이동
+  '/Update' : (BuildContext context) => Update(), /// Android Update Apk Download Page로 이동, IOS 미지원
   '/Login' : (BuildContext context) => Login(),
-  '/Index' : (BuildContext context) => Index(),
+  '/Index' : (BuildContext context) => Index(), /// 기본 Page -> 설계 필요
 
+  /// Email
   '/EmailGW' : (BuildContext context) => EmailGW(),
 
+  /// JIMS
   '/JimsGatheringInformation' : (BuildContext context) => JimsGatheringInformation(),
   '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
   '/JimsUsageTop' : (BuildContext context) => JimsUsageTop(),
   '/JimsAppPoolRecycle' : (BuildContext context) => JimsAppPoolRecycle(),
   '/JimsChartSample' : (BuildContext context) => JimsChartSample(),
 
+  /// Sample
   '/StandardDesign' : (BuildContext context) => StandardDesign(),
   '/FormWidget' : (BuildContext context) => FormWidget(),
   '/ListPage' : (BuildContext context) => ListPage(),

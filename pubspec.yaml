@@ -1,17 +1,7 @@
 name: jahwa_mobile_working_center
 description: "Jahwa Mobile"
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+1 # For Upgrade Number
+version: 1.0.3+1 # For Upgrade Number - JHGWMAIN.MobileVersion보다 작은 경우 경우 /Update로 이동됨, App은 수정하고 Table의 정보는 수정하지 않으면 무의미
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
@@ -26,22 +16,21 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.2 # Cupertino Icons font
-  dynamic_treeview: ^1.0.0+2 # Dynamic Treeview for Menu List
-  encrypt: ^4.0.2 # Encrypt Package
+  encrypt: ^4.0.2 # Encrypt Package - 암호화 처리용 패키지, /util/common.dart에서 사용
   flutter_launcher_name: ^0.0.1 # App Name Setting Package
   font_awesome_flutter: ^8.8.1 # FontAwesome Icon Package
   http: ^0.12.2 # Api Connection Package
   intl: ^0.16.1 # By Locale Number, Date Format Package
-  progress_dialog: ^1.2.4 # Progress Dialog Package
-  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package
-  progress_state_button: ^1.0.1 # Progress In Check Process
-  package_info: ^0.4.3 # Get Package Info
-  flutter_html: ^1.0.2 # HTML Viewer
-  url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use
-  flutter_local_notifications: ^3.0.0 # Notification
-  cron: ^0.2.3 # Background Execution
-  flutter_swiper: ^1.1.6 # Swipe Page
-  loading_overlay: ^0.2.1 # Loaging Progress
+  progress_dialog: ^1.2.4 # Progress Dialog Package - login.dart에서 사용하는 실행중 Dialog표시 기능, Loading_overlay를 통해 간단히 Progress를 표시하는 방법도 있음
+  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package - 쿠키를 대신하여 사용하는 패키지, login.dart, common.dart등에서 사용
+  progress_state_button: ^1.0.1 # Progress In Check Process - check.dart에서 사용하는 버튼형 Progress
+  package_info: ^0.4.3 # Get Package Info - App Version을 알아내는데 사용하는 패키지, check.dart등에서 사용함
+  flutter_html: ^1.0.2 # HTML Viewer - HTML로 이루어진 내용을 보기위해 사용되는 패키지
+  url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use - URL관련 처리를 지원하는 패키지, update.dart등에서 http url을 사용할 수 있음
+  flutter_local_notifications: ^3.0.0 # Notification - 상단 Status Bar에 알람참을 만드는 패키지, 휴대폰에 따라 최대 24~48개 가량 메세지가 만들어짐
+  cron: ^0.2.3 # Background Execution - 별도로 실행되는 Thread를 생성하는 패키지, 차후 주기적으로 Check하여 메세지는 보내주는 기능을 개발할때 사용예정
+  flutter_swiper: ^1.1.6 # Swipe Page - 한페이지내에서 여러화면을 Swipe할때 사용, JimsGatheringInformation.dart등에서 사용
+  loading_overlay: ^0.2.1 # Loaging Progress - 프로그램의 정보가 모두 나타낼때까지 실행중임을 표시하는 패키지, JimsGatheringInformation.dart등에서 사용
   syncfusion_flutter_charts: ^18.3.48 # Chart
   syncfusion_flutter_datagrid: ^18.3.48-beta # Table
 

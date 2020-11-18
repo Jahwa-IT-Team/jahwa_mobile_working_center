@@ -9,7 +9,7 @@ import 'package:jahwa_mobile_working_center/util/program_list.dart';
 void main() {
   runApp(MainApp());
 
-  /// Background Execution - Cron Package
+  /// Background Execution - Cron Package, 정기적으로 필요한 메세지를 생성하여 알림을 처리할 예정
   ///var cron = new Cron();
   ///cron.schedule(new Schedule.parse('*/10 * * * *'), () async {
     ///print(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) + ' : Execution every 10 minutes');
@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Malgun',
       ),
-      routes: routes,
+      routes: routes, /// program_list.dart에 정의된 주소를 기반으로 이동을 진행함
     );
   }
 }
