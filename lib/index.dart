@@ -14,7 +14,7 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
 
-  // Call When Form Init
+  /// Call When Form Init
   @override
   void initState() {
     super.initState();
@@ -24,26 +24,19 @@ class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
 
-    setStatusMessage(context);
-
-    return GestureDetector( // For Keyboard UnFocus
+    return GestureDetector( /// Keyboard UnFocus시를 위해 onTap에 GestureDetector를 위치시킴
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        if (!currentFocus.hasPrimaryFocus) { currentFocus.unfocus(); }
       },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
-          title: Text(
-            'Jahwa Mobile',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
-          ),
+          title: Text('Jahwa Mobile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),),
         ),
         drawer: Container(
           width: screenWidth * 0.9,
-          child: Menu(),
+          child: Menu(), /// Menu.dart 화면 호출
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -54,13 +47,11 @@ class _IndexState extends State<Index> {
                 height: screenHeight - statusBarHeight - appBarHeigight,
                 alignment: Alignment.center,
                 child: Container( // Content Area
-                  //color: Colors.white,
                   width: screenWidth - 20,
                   height: screenHeight - statusBarHeight - appBarHeigight - 20,
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.all(10.0) ,
                   child: Table(
-                    //border: TableBorder.all(color: Colors.blueAccent, width: 1, style: BorderStyle.solid,),
                     children: [
                       TableRow(
                         children: [
@@ -70,13 +61,10 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                      icon: FaIcon(FontAwesomeIcons.solidFile),
-                                      iconSize: 50,
-                                      hoverColor: Colors.amber,
-                                      color: Colors.blueAccent,
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/StandardDesign');
-                                      }
+                                    icon: FaIcon(FontAwesomeIcons.solidFile),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { Navigator.pushNamed(context, '/StandardDesign'); }
                                   ),
                                   Text('Standard Design'),
                                 ],
@@ -89,11 +77,10 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                      icon: FaIcon(FontAwesomeIcons.solidFileAlt),
-                                      iconSize: 50,
-                                      hoverColor: Colors.amber,
-                                      color: Colors.blueAccent,
-                                      onPressed: () { Navigator.pushNamed(context, '/FormWidget'); }
+                                    icon: FaIcon(FontAwesomeIcons.solidFileAlt),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { Navigator.pushNamed(context, '/FormWidget'); }
                                   ),
                                   Text('Form Widget'),
                                 ],
@@ -108,7 +95,6 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.mailBulk),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () { Navigator.pushNamed(context, '/EmailGW'); },
                                   ),
@@ -129,7 +115,6 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.solidListAlt),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () { Navigator.pushNamed(context, '/ListPage'); },
                                   ),
@@ -146,7 +131,6 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.listAlt),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () { Navigator.pushNamed(context, '/ListScroll'); },
                                   ),
@@ -163,10 +147,8 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.codeBranch),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () {
-                                      //showMessageBox(context, 'Action Test Button !!!');
                                       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
                                         String version = packageInfo.version;
                                         showMessageBox(context, 'Alert', 'Program Version : ' + version);
@@ -191,7 +173,6 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.bolt),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
@@ -208,7 +189,6 @@ class _IndexState extends State<Index> {
                                   IconButton(
                                     icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
-                                    hoverColor: Colors.amber,
                                     color: Colors.blueAccent,
                                     onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
                                   ),
@@ -222,7 +202,13 @@ class _IndexState extends State<Index> {
                               padding: EdgeInsets.all(10.0),
                               child: Column(
                                 children: <Widget> [
-
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.times),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () {;},
+                                  ),
+                                  Text('Not Exists'),
                                 ],
                               ),
                             ),

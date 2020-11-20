@@ -13,9 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
-import 'package:jahwa_mobile_working_center/util/structures.dart';
 
-ProgressDialog pr; /// Progress Dialog Declaration
+ProgressDialog pr; /// 0. Progress Dialog Declaration
 
 class Login extends StatefulWidget {
   @override
@@ -29,7 +28,6 @@ class _LoginState extends State<Login> {
 
   FocusNode empcodeFocusNode = FocusNode(); /// Employee Input Number Focus
   FocusNode passwordFocusNode = FocusNode(); /// Password Input Focus
-  FocusNode loginFocusNode = FocusNode(); /// Login Button Focus
 
   void initState() {
     super.initState();
@@ -40,13 +38,13 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
 
-    pr = ProgressDialog( /// Progress Dialog Setting
+    pr = ProgressDialog( /// 1. Progress Dialog Setting
       context,
       type: ProgressDialogType.Normal,
       isDismissible: true,
     );
 
-    pr.style( /// Progress Dialog Style
+    pr.style( /// 2. Progress Dialog Style
       message: translateText(context, 'Wait a Moment...'),
       borderRadius: 10.0,
       backgroundColor: Colors.white,
@@ -69,9 +67,7 @@ class _LoginState extends State<Login> {
     return GestureDetector( /// Keyboard UnFocus시를 위해 onTap에 GestureDetector를 위치시킴
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        if (!currentFocus.hasPrimaryFocus) { currentFocus.unfocus(); }
       },
       child: Scaffold(
         body: SingleChildScrollView ( /// Scroll이 생기도록 하는 Object
@@ -105,19 +101,19 @@ class _LoginState extends State<Login> {
                       }
                   ),
                 ),
-                Container( // Main Mark
+                Container( /// Jahwa Mark
                     width: screenWidth,
                     height: (screenHeight - statusBarHeight) * 0.35,
                     alignment: Alignment.center,
                     child: SizedBox(
                       width: baseWidth,
-                      child: Image.asset("assets/image/jahwa.png"),
+                      child: Image.asset("assets/image/jahwa.png"), /// pubspec.yaml의 flutter -> assets 하위에 정의된 파일
                     )
                 ),
-                Container( /// Jahwa Mark
+                Container( /// Input Area
                   width: screenWidth,
                   alignment: Alignment.center,
-                  child: Container( /// Input Area
+                  child: Container( 
                     width: baseWidth,
                     height: (screenHeight - statusBarHeight) * 0.35,
                     alignment: Alignment.center,
@@ -129,13 +125,11 @@ class _LoginState extends State<Login> {
                           focusNode: empcodeFocusNode,
                           keyboardType: TextInputType.text,
                           onSubmitted: (String inputText) {
-                            FocusScope.of(context).requestFocus(passwordFocusNode);
+                            FocusScope.of(context).requestFocus(passwordFocusNode);  /// Input Box에서 Enter 적용시 Password 입력 Box로 이동됨
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(10.0),
-                              ),
+                              borderRadius: const BorderRadius.all(const Radius.circular(10.0),),
                               borderSide: new BorderSide(
                                 color: Colors.black,
                                 width: 1.0,
@@ -154,13 +148,11 @@ class _LoginState extends State<Login> {
                           focusNode: passwordFocusNode,
                           onSubmitted: (String inputText) async {
                             await pr.show(); /// Progress Dialog Show - Need Declaration, Setting, Style
-                            loginCheck(context, empcodeController, passwordController, pr);
+                            loginCheck(context, empcodeController, passwordController, pr); /// Input Box에서 Enter 적용시 바로 로그인 프로세스가 진행됨
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(10.0),
-                              ),
+                              borderRadius: const BorderRadius.all(const Radius.circular(10.0),),
                               borderSide: new BorderSide(
                                 color: Colors.black,
                                 width: 1.0,
@@ -175,7 +167,7 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: FlatButton(
                             onPressed: () {
-                              showMessageBox(context, 'Alert', 'Are You Stupid ???'); /// To be developed later.
+                              showMessageBox(context, 'Alert', 'Are You Really???, But It is not make yet.'); /// If Forgot Password Process. To be developed later.
                             },
                             child: Text(
                               translateText(context, 'Forgot Password?'),
@@ -187,7 +179,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                Container( // Login Button
+                Container( /// Login Button
                   width: screenWidth,
                   height: (screenHeight - statusBarHeight) * 0.2,
                   alignment: Alignment.topCenter,
@@ -195,13 +187,12 @@ class _LoginState extends State<Login> {
                     minWidth: baseWidth,
                     height: 50.0,
                     child: RaisedButton(
-                      focusNode: loginFocusNode,
                       child:Text(translateText(context, 'Login'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white,)),
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
                       splashColor: Colors.grey,
                       onPressed: () async {
-                        await pr.show();
-                        loginCheck(context, empcodeController, passwordController, pr);
+                        await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
+                        loginCheck(context, empcodeController, passwordController, pr); /// 수동으로 로그인 프로세스를 실행시킴
                       },
                     ),
                   ),
@@ -224,7 +215,7 @@ class _LoginState extends State<Login> {
 
   /// Add User SharedPreferences
   Future<void> addUserSharedPreferences(var user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance(); /// Cookie 대용
 
     try {
       prefs.setString('EntCode', user.EntCode);
@@ -248,6 +239,7 @@ class _LoginState extends State<Login> {
       prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
       prefs.setString('Language', language);
 
+      /// common.dart에 정의된 session 정보
       session['EntCode'] =  user.EntCode;
       session['EntName'] = user.EntName;
       session['DeptCode'] = user.DeptCode;
@@ -268,18 +260,17 @@ class _LoginState extends State<Login> {
       session['Mobile'] = user.Mobile;
       session['DueDate'] = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
-    catch (e) {
-      print(e.toString());
-    }
+    catch (e) { print(e.toString()); }
   }
 
   /// Password Validation Check
   bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21]) {
     if (password == null || password.isEmpty) { return false; } /// Password Null Check
+
     bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); /// Upper Case Character Check
     bool hasLowercase = password.contains(new RegExp(r'[a-z]')); /// Lower Case Character Check
     bool hasDigits = password.contains(new RegExp(r'[0-9]')); /// Number Check
-    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*()?_~.,]')); /// Special Character Check
+    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*()?_~.,]')); /// Special Character Check, 특수문자 제한관련 확인 필요
     bool hasMinLength = password.length > minLength; /// Min Over 6
     bool hasMaxLength = password.length < maxLength; /// Max Under 21
 
@@ -289,7 +280,7 @@ class _LoginState extends State<Login> {
   /// Login Process
   Future<void> loginCheck(BuildContext context, TextEditingController empcodeController, TextEditingController passwordController, ProgressDialog pr) async {
 
-    pr.hide(); /// Progress Dialog Close
+    pr.hide(); /// 4. Progress Dialog Close
 
     if(empcodeController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number Not Exists !!!'); } /// Employee Number Empty Check
     else if(passwordController.text.isEmpty) { showMessageBox(context, 'Alert', 'Password Not Exists !!!'); } /// Password Empty Check
@@ -322,7 +313,7 @@ class _LoginState extends State<Login> {
         if(response.statusCode == 200){
           Map<String, dynamic> table = jsonDecode(response.body);
           Map userMap = table['Table'][0];
-          var user = User.fromJson(userMap);
+          var user = User.fromJson(userMap); /// globals.dart에 정의된 User를 이용해 정보를 Mapping하는 것
           addUserSharedPreferences(user); /// 사용자 정보 세션 생성
           addPasswordSharedPreferences(password); /// 비밀번호 관련 세션 생성
           return true;

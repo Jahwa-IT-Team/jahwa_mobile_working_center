@@ -49,9 +49,7 @@ class _CheckState extends State<Check> {
     return GestureDetector( /// Keyboard UnFocus시를 위해 onTap에 GestureDetector를 위치시킴
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        if (!currentFocus.hasPrimaryFocus) { currentFocus.unfocus(); }
       },
       child: Scaffold(
         body: SingleChildScrollView( /// Scroll이 생기도록 하는 Object
@@ -131,9 +129,7 @@ class _CheckState extends State<Check> {
       removeUserSharedPreferences();
       return true;
     }
-    else {
-      return false;
-    }
+    else { return false; }
   }
 
   /// Get And Make Menu Data
@@ -170,7 +166,7 @@ class _CheckState extends State<Check> {
     /// 1. Version Check
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
 
-      String version = packageInfo.version;
+      String version = packageInfo.version; /// pubspec.yaml의 version의 +X를 제외한 정보
 
       try {
 
@@ -205,7 +201,7 @@ class _CheckState extends State<Check> {
                   btnState = ButtonState.success;
                   setState(() {});
                   Timer(Duration(seconds: 1), () {
-                    Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  // Direct Move to Login
+                    Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  /// Direct Move to Login
                   });
                 }
                 else {
@@ -235,9 +231,8 @@ class _CheckState extends State<Check> {
                     if(await getMenu()) {
                       btnState = ButtonState.success;
                       setState(() {});
-                      /// 모든 Check가 성공하면 초기페이지로 이동
                       Timer(Duration(seconds: 1), () {
-                        Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false); /// 모든 Check가 성공하면 초기페이지로 이동
                       });
                     }
                     else {
@@ -272,7 +267,24 @@ class _CheckState extends State<Check> {
         });
       }
       catch (e) {
-        showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
+        //showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Text(translateText(context, 'Preference Setting Error A : ' + e.toString())),
+              titleTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black, fontWeight: FontWeight.bold,),
+              contentTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black,),
+              actions: [
+                FlatButton(
+                  child: Text("Okay", style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent,),),
+                  onPressed: () { Navigator.of(context).pop(); },
+                ),
+              ],
+            );
+          },
+        );
       }
     });
   }
