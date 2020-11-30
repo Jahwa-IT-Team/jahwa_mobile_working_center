@@ -112,7 +112,8 @@ Future<void> showNotification(var title, var content) async {
   var rng = new Random();
 
   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
 
   const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('Id', 'Name', 'Description', importance: Importance.max, priority: Priority.high, ticker: 'ticker');
@@ -122,6 +123,10 @@ Future<void> showNotification(var title, var content) async {
 }
 
 Future selectNotification(String payload) async {
+  print('notification payload: $payload');
+}
+
+Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
   print('notification payload: $payload');
 }
 
