@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -109,10 +110,44 @@ List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, va
 Future<void> showNotification(var title, var content) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   var rng = new Random();
+
+  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
+
   const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('Id', 'Name', 'Description', importance: Importance.max, priority: Priority.high, ticker: 'ticker');
   const IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
   const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.show(rng.nextInt(1000000), title, content, platformChannelSpecifics, payload: 'Notification'); // Id를 Random으로 생성하여 중복되지 않도록 처리하면 각 메시지가 별도로 나타난다.
+}
+
+Future selectNotification(String payload) async {
+  print('notification payload: $payload');
+}
+
+/// Awesome Notification
+Future<void> showAwesomeNotification(var title, var content) async {
+  var rng = new Random();
+  AwesomeNotifications().initialize(
+      'resource://drawable/app_icon',
+      [
+        NotificationChannel(
+            channelKey: 'basic_channel',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            defaultColor: Color(0xFF9D50DD),
+            ledColor: Colors.white
+        )
+      ]
+  );
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: rng.nextInt(1000),
+          channelKey: 'basic_channel',
+          title: title,
+          body: content
+      )
+  );
 }
 
 /// Remove User SharedPreferences

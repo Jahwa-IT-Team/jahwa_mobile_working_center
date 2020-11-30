@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info/package_info.dart';
 
@@ -18,18 +17,6 @@ class _IndexState extends State<Index> {
   /// Call When Form Init
   @override
   void initState() {
-    AwesomeNotifications().initialize(
-        'resource://drawable/app_icon',
-        [
-          NotificationChannel(
-              channelKey: 'basic_channel',
-              channelName: 'Basic notifications',
-              channelDescription: 'Notification channel for basic tests',
-              defaultColor: Color(0xFF9D50DD),
-              ledColor: Colors.white
-          )
-        ]
-    );
     super.initState();
     print("open Index Page : " + DateTime.now().toString());
   }
@@ -219,16 +206,7 @@ class _IndexState extends State<Index> {
                                     icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async {
-                                      AwesomeNotifications().createNotification(
-                                          content: NotificationContent(
-                                              id: 10,
-                                              channelKey: 'basic_channel',
-                                              title: 'Simple Notification',
-                                              body: 'Simple body'
-                                          )
-                                      );
-                                    },
+                                    onPressed: () async { await showNotification('Notification', 'Awesome Notification Test !!!'); },
                                   ),
                                   Text('Notification II'),
                                 ],
@@ -316,4 +294,7 @@ class _IndexState extends State<Index> {
       ),
     );
   }
+
+
+
 }

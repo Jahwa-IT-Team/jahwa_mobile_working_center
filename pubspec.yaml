@@ -15,7 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  awesome_notifications: any # Local Notification
+  awesome_notifications: any # Local Notification, IOS의 경우 별도의 설정 필요
   cron: ^0.2.3 # Background Execution - 별도로 실행되는 Thread를 생성하는 패키지, 차후 주기적으로 Check하여 메세지는 보내주는 기능을 개발할때 사용예정
   cupertino_icons: ^0.1.2 # Cupertino Icons font
   encrypt: ^4.0.2 # Encrypt Package - 암호화 처리용 패키지, /util/common.dart에서 사용
