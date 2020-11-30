@@ -15,12 +15,13 @@ dependencies:
   flutter:
     sdk: flutter
 
+  awesome_notifications: any # Local Notification
   cron: ^0.2.3 # Background Execution - 별도로 실행되는 Thread를 생성하는 패키지, 차후 주기적으로 Check하여 메세지는 보내주는 기능을 개발할때 사용예정
   cupertino_icons: ^0.1.2 # Cupertino Icons font
   encrypt: ^4.0.2 # Encrypt Package - 암호화 처리용 패키지, /util/common.dart에서 사용
   flutter_html: ^1.0.2 # HTML Viewer - HTML로 이루어진 내용을 보기위해 사용되는 패키지
   flutter_launcher_name: ^0.0.1 # App Name Setting Package
-  flutter_local_notifications: ^3.0.0 # Notification - 상단 Status Bar에 알람참을 만드는 패키지, 휴대폰에 따라 최대 24~48개 가량 메세지가 만들어짐
+  flutter_local_notifications: ^3.0.1+6 # Notification - 상단 Status Bar에 알람참을 만드는 패키지, 휴대폰에 따라 최대 24~48개 가량 메세지가 만들어짐
   flutter_swiper: ^1.1.6 # Swipe Page - 한페이지내에서 여러화면을 Swipe할때 사용, JimsGatheringInformation.dart등에서 사용
   font_awesome_flutter: ^8.8.1 # FontAwesome Icon Package
   http: ^0.12.2 # Api Connection Package
