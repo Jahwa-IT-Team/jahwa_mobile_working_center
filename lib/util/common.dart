@@ -106,7 +106,7 @@ List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, va
   return itemsList;
 }
 
-/// Notification
+/// Notification, iOS는 아직 세팅되지 않음
 Future<void> showNotification(var title, var content) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   var rng = new Random();
@@ -130,7 +130,7 @@ Future onDidReceiveLocalNotification(int id, String title, String body, String p
   print('notification payload: $payload');
 }
 
-/// Awesome Notification
+/// Awesome Notification, iOS는 아직 세팅되지 않음
 Future<void> showAwesomeNotification(var title, var content) async {
   var rng = new Random();
   AwesomeNotifications().initialize(

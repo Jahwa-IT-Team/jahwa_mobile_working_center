@@ -57,16 +57,22 @@ class _IndexState extends State<Index> {
                         children: [
                           TableCell(
                             child: Container(
-                              padding: EdgeInsets.all(5.0),
+                              padding: EdgeInsets.all(10.0),
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidFile),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () { Navigator.pushNamed(context, '/StandardDesign'); }
+                                      icon: FaIcon(FontAwesomeIcons.codeBranch),
+                                      iconSize: 50,
+                                      color: Colors.blueAccent,
+                                      onPressed: () {
+                                        PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+                                          String version = packageInfo.version;
+                                          showMessageBox(context, 'Alert', 'Program Version : ' + version);
+                                          print(version);
+                                        });
+                                      }
                                   ),
-                                  Text('Standard Design'),
+                                  Text('Version', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -82,7 +88,7 @@ class _IndexState extends State<Index> {
                                     color: Colors.blueAccent,
                                     onPressed: () { Navigator.pushNamed(context, '/FormWidget'); }
                                   ),
-                                  Text('Form Widget'),
+                                  Text('Form Widget', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -93,12 +99,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.mailBulk),
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () { Navigator.pushNamed(context, '/EmailGW'); },
+                                    onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
-                                  Text('GW Mail'),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -113,12 +119,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidListAlt),
+                                    icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () { Navigator.pushNamed(context, '/ListPage'); },
+                                    onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
                                   ),
-                                  Text('List Page'),
+                                  Text('Flutter Notify', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -129,42 +135,16 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.listAlt),
+                                    icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () { Navigator.pushNamed(context, '/ListScroll'); },
+                                    color: Color(0xFF9D50DD),
+                                    onPressed: () async { await showNotification('Notification', 'Awesome Notification Test !!!'); },
                                   ),
-                                  Text('List Scroll'),
+                                  Text('Awesome Notify', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
                           ),
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.codeBranch),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () {
-                                      PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-                                        String version = packageInfo.version;
-                                        showMessageBox(context, 'Alert', 'Program Version : ' + version);
-                                        print(version);
-                                      });
-                                    }
-                                  ),
-                                  Text('Version'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
                           TableCell(
                             child: Container(
                               padding: EdgeInsets.all(10.0),
@@ -176,91 +156,7 @@ class _IndexState extends State<Index> {
                                     color: Colors.blueAccent,
                                     onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
-                                  Text('Action Test'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidBell),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
-                                  ),
-                                  Text('Notification'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidBell),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () async { await showNotification('Notification', 'Awesome Notification Test !!!'); },
-                                  ),
-                                  Text('Notification II'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.times),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () {;},
-                                  ),
-                                  Text('Not Exists'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.times),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () {;},
-                                  ),
-                                  Text('Not Exists'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                children: <Widget> [
-                                  IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.times),
-                                    iconSize: 50,
-                                    color: Colors.blueAccent,
-                                    onPressed: () {;},
-                                  ),
-                                  Text('Not Exists'),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -294,7 +190,4 @@ class _IndexState extends State<Index> {
       ),
     );
   }
-
-
-
 }
