@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info/package_info.dart';
 
@@ -14,10 +15,22 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   /// Call When Form Init
   @override
   void initState() {
     super.initState();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async { await showNotification(message['notification']['title'], message['notification']['body']); },
+      onLaunch: (Map<String, dynamic> message) async { await showNotification('onLaunch', message['notification']['body']); },
+      onResume: (Map<String, dynamic> message) async { await showNotification('onResume', message['notification']['body']); },
+    );
+    _firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true));
+    ///_firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) { print("Settings registered: $settings"); });
+    ///_firebaseMessaging.getToken().then((String token) { assert(token != null); setState(() { _homeScreenText = "Push Messaging token: $token"; }); print(_homeScreenText); });
+
     print("open Index Page : " + DateTime.now().toString());
   }
 
@@ -138,7 +151,7 @@ class _IndexState extends State<Index> {
                                     icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
                                     color: Color(0xFF9D50DD),
-                                    onPressed: () async { await showNotification('Notification', 'Awesome Notification Test !!!'); },
+                                    onPressed: () async { await showAwesomeNotification('Notification', 'Awesome Notification Test !!!'); },
                                   ),
                                   Text('Awesome Notify', style: TextStyle(fontSize: 13)),
                                 ],

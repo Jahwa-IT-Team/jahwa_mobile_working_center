@@ -65,7 +65,7 @@ class _JimsUsageTopState extends State<JimsUsageTop> {
             jsonDecode(response.body)['Table3'].forEach((element) {
               String mchaineName = element['MachineName'].length > 7 ? element['MachineName'].substring(0, 5) + '..' : element['MachineName'];
               String dbName = element['DBName'].length > 7 ? element['DBName'].substring(0, 5) + '..' : element['DBName'];
-              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['LogRate']);
+              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['LogRate'], yValue: 100);
               chartList3.add(chartSampleData);
               ;
             });
@@ -73,7 +73,7 @@ class _JimsUsageTopState extends State<JimsUsageTop> {
             jsonDecode(response.body)['Table4'].forEach((element) {
               String mchaineName = element['MachineName'].length > 7 ? element['MachineName'].substring(0, 5) + '..' : element['MachineName'];
               String dbName = element['DBName'].length > 7 ? element['DBName'].substring(0, 5) + '..' : element['DBName'];
-              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['DataSize']);
+              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['DataSize'], yValue: 100);
               chartList4.add(chartSampleData);
               ;
             });
@@ -81,7 +81,7 @@ class _JimsUsageTopState extends State<JimsUsageTop> {
             jsonDecode(response.body)['Table5'].forEach((element) {
               String mchaineName = element['MachineName'].length > 7 ? element['MachineName'].substring(0, 5) + '..' : element['MachineName'];
               String dbName = element['DBName'].length > 7 ? element['DBName'].substring(0, 5) + '..' : element['DBName'];
-              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['LogSize']);
+              ChartSampleData chartSampleData = ChartSampleData(x: mchaineName + '\n' + dbName, y: element['LogSize'], yValue: 5);
               chartList5.add(chartSampleData);
               ;
             });
