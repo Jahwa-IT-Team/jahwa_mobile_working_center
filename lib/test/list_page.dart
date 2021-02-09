@@ -7,6 +7,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
@@ -24,6 +25,9 @@ class _ListPageState extends State<ListPage> {
 
   makePageBody(String pageString) async {
 
+    SharedPreferences prefs = await SharedPreferences.getInstance(); /// SharedPreferences를 사용하기 위한 변수선언
+    session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+
     int totalCount = 0;
     int totalPage = 1;
     int page = int.parse(pageString);
@@ -37,7 +41,7 @@ class _ListPageState extends State<ListPage> {
       var url = 'https://jhapi.jahwa.co.kr/GWMail';
 
       // Send Parameter
-      var data = {'page': pageString, 'pagerowcount' : '10', 'empcode' : 'K20604007'};
+      var data = {'page': pageString, 'pagerowcount' : '10', 'empcode' : session['EmpCode']};
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());

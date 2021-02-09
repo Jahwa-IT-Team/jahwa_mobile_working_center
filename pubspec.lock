@@ -29,13 +29,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.1"
-  awesome_notifications:
-    dependency: "direct main"
-    description:
-      name: awesome_notifications
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -127,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  device_apps:
+    dependency: "direct main"
+    description:
+      name: device_apps
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   encrypt:
     dependency: "direct main"
     description:
@@ -148,27 +148,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.0"
+  firebase:
+    dependency: transitive
+    description:
+      name: firebase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.3.0"
   firebase_core:
     dependency: transitive
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3"
+    version: "0.5.0+1"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.0.0"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1+1"
+    version: "0.2.0"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -181,6 +188,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_background_service:
+    dependency: "direct main"
+    description:
+      name: flutter_background_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+21"
   flutter_html:
     dependency: "direct main"
     description:
@@ -295,7 +309,7 @@ packages:
       name: js
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2"
+    version: "0.6.1+1"
   loading_overlay:
     dependency: "direct main"
     description:
@@ -456,7 +470,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "2.0.0+1"
   screen:
     dependency: transitive
     description:
@@ -695,4 +709,4 @@ packages:
     version: "2.1.16"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
-  flutter: ">=1.18.0-6.0.pre <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"

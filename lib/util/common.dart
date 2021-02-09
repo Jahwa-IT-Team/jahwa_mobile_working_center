@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ui';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:device_apps/device_apps.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,6 +109,67 @@ List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, va
   return itemsList;
 }
 
+/// Background Process
+void onStart() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final service = FlutterBackgroundService();
+  service.onDataReceived.listen((event) {
+    if (event["action"] == "setAsForeground") { service.setForegroundMode(true); return; }
+    if (event["action"] == "setAsBackground") { service.setForegroundMode(false); }
+    if (event["action"] == "stopService") { service.stopBackgroundService(); }
+  });
+
+  // bring to foreground
+  service.setForegroundMode(true);
+
+  Timer.periodic(Duration(seconds: 10), (timer) async {
+    if (!(await service.isServiceRunning())) timer.cancel();
+    service.setNotificationInfo(
+      title: "Jahwa Mobile Notify Center",
+      content: "Do not Turn off this Notification Process!!!",
+    );
+
+    await systemNotification();
+  });
+}
+
+/// Get System Notification !!!
+Future<bool> systemNotification() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance(); /// SharedPreferences를 사용하기 위한 변수선언
+  session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+
+  if(session['EmpCode'] != "") {
+    try {
+
+      // Login API Url
+      var url = 'https://jhapi.jahwa.co.kr/Notice';
+
+      // Send Parameter
+      var data = {'page': '1', 'pagerowcount' : '9999999999', 'div' : 'Notify', 'empcode' : session['EmpCode']};
+
+      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
+        if(response.statusCode == 200){
+          if(jsonDecode(response.body)['Table'].length == 0) {
+            print('Data does not Exists!!!');
+          }
+          else {
+            jsonDecode(response.body)['Table'].forEach((element) {
+              showNotification(element['Title'].toString(), element['Contents'].toString());
+            });
+          }
+          return true;
+        }
+        else{ return false; }
+      });
+    }
+    catch (e) {
+      print("get Notiofy Error : " + e.toString());
+      return false;
+    }
+  }
+}
+
 /// Notification, iOS는 아직 세팅되지 않음
 Future<void> showNotification(var title, var content) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -122,37 +186,17 @@ Future<void> showNotification(var title, var content) async {
   await flutterLocalNotificationsPlugin.show(rng.nextInt(1000000), title, content, platformChannelSpecifics, payload: 'Notification'); // Id를 Random으로 생성하여 중복되지 않도록 처리하면 각 메시지가 별도로 나타난다.
 }
 
+/// Notification 클릭시 해당 프로그램의 실행여부 판단하여 실행시킴
 Future selectNotification(String payload) async {
-  print('notification payload: $payload');
+  bool isInstalled = await DeviceApps.isAppInstalled('kr.co.jahwa.jahwa_mobile_working_center');
+  if (isInstalled != false) DeviceApps.openApp('kr.co.jahwa.jahwa_mobile_working_center');
+  else await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
 }
 
 Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
-  print('notification payload: $payload');
-}
-
-/// Awesome Notification, iOS는 아직 세팅되지 않음
-Future<void> showAwesomeNotification(var title, var content) async {
-  var rng = new Random();
-  AwesomeNotifications().initialize(
-      'resource://drawable/app_icon',
-      [
-        NotificationChannel(
-            channelKey: 'basic_channel',
-            channelName: 'Basic notifications',
-            channelDescription: 'Notification channel for basic',
-            defaultColor: Color(0x00FF00),
-            ledColor: Colors.white
-        )
-      ]
-  );
-  AwesomeNotifications().createNotification(
-      content: NotificationContent(
-          id: rng.nextInt(1000),
-          channelKey: 'basic_channel',
-          title: title,
-          body: content
-      )
-  );
+  bool isInstalled = await DeviceApps.isAppInstalled('kr.co.jahwa.jahwa_mobile_working_center');
+  if (isInstalled != false) DeviceApps.openApp('kr.co.jahwa.jahwa_mobile_working_center');
+  else await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
 }
 
 /// Remove User SharedPreferences

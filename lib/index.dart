@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info/package_info.dart';
 
@@ -113,17 +112,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.playCircle),
+                                    icon: FaIcon(FontAwesomeIcons.comments),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async {
-                                      var isRunning = await FlutterBackgroundService().isServiceRunning();
-                                      if (!isRunning) {
-                                        FlutterBackgroundService.initialize(onStart);
-                                      }
-                                    },
+                                      onPressed: () { Navigator.pushNamed(context, '/Notice'); }
                                   ),
-                                  Text('Start Notify', style: TextStyle(fontSize: 13)),
+                                  Text('View Notify', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -138,12 +132,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidBell),
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
+                                    onPressed: () async { showMessageBox(context, 'Alert', 'Action Test Button !!!');},
                                   ),
-                                  Text('Flutter Notify', style: TextStyle(fontSize: 13)),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -154,12 +148,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.solidBell),
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
                                     iconSize: 50,
-                                    color: Color(0xFF9D50DD),
-                                    onPressed: () async { await showAwesomeNotification('Notification', 'Awesome Notification Test !!!'); },
+                                    color: Colors.blueAccent,
+                                    onPressed: () async { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
-                                  Text('Awesome Notify', style: TextStyle(fontSize: 13)),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),
@@ -170,19 +164,12 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.stopCircle),
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async {
-                                      var isRunning = await FlutterBackgroundService().isServiceRunning();
-                                      if (isRunning) {
-                                        FlutterBackgroundService().sendData(
-                                          {"action": "stopService"},
-                                        );
-                                      }
-                                    },
+                                    onPressed: () async { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
                                   ),
-                                  Text('Stop Notify', style: TextStyle(fontSize: 13)),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),

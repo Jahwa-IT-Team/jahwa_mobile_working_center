@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:cron/cron.dart';
-import 'package:intl/intl.dart';
+/// import 'package:cron/cron.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/program_list.dart';
 
-import 'dart:async';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterBackgroundService.initialize(onStart);
+
   runApp(MainApp());
 
   /// Background Execution - Cron Package, 정기적으로 필요한 메세지를 생성하여 알림을 처리할 예정

@@ -12,12 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 
-class ListScroll extends StatefulWidget {
+class Notice extends StatefulWidget {
   @override
-  _ListScrollState createState() => _ListScrollState();
+  _NoticeState createState() => _NoticeState();
 }
 
-class _ListScrollState extends State<ListScroll> {
+class _NoticeState extends State<Notice> {
 
   List<Card> cardList = new List<Card>();
   ScrollController _controller;
@@ -32,10 +32,10 @@ class _ListScrollState extends State<ListScroll> {
     try {
 
       // Login API Url
-      var url = 'https://jhapi.jahwa.co.kr/GWMail';
+      var url = 'https://jhapi.jahwa.co.kr/Notice';
 
       // Send Parameter
-      var data = {'page': pageString, 'pagerowcount' : '10', 'empcode' : session['EmpCode']};
+      var data = {'page': pageString, 'pagerowcount' : '10', 'div' : 'List', 'empcode' : session['EmpCode']};
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
@@ -50,18 +50,13 @@ class _ListScrollState extends State<ListScroll> {
                 child: Row(
                   children: <Widget> [
                     Container(
-                      width: screenWidth * 0.1,
-                      alignment: Alignment.center,
-                      child: Text(element['Num'].toString(), style: TextStyle(fontSize: 25,),),
-                    ),
-                    Container(
                       width: screenWidth * 0.75,
                       padding: EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget> [
-                          Text(element['Subject'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
+                          Text(element['Title'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
                           SizedBox(height: 10, ),
                           Html(
                             data : element['Contents'],
@@ -69,20 +64,6 @@ class _ListScrollState extends State<ListScroll> {
                               "body" : Style(padding: EdgeInsets.all(0), margin: EdgeInsets.all(0),),
                             },
                           ),
-                          SizedBox(height: 10, ),
-                          Text('Sender : ' + element['Name'] + ', Sent : ' + element['InsDate'] + '', style: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold, ),),
-                          SizedBox(height: 10, ),
-                          Text('Receiver : ' + element['ToAddress'], style: TextStyle(color: Colors.green.shade400, fontSize: 14, fontWeight: FontWeight.bold, ),),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: screenWidth * 0.1,
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget> [
-                          FaIcon(FontAwesomeIcons.paperclip, color: Colors.blueAccent, size: 25,),
-                          Text(element['Cnt'].toString(), style: TextStyle(color: Colors.blueAccent, fontSize: 25, fontWeight: FontWeight.bold, ),),
                         ],
                       ),
                     ),
@@ -143,26 +124,19 @@ class _ListScrollState extends State<ListScroll> {
         appBar: AppBar(
           backgroundColor: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
           title: Text(
-            'Scroll List Design',
+            'Notification',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
           ),
         ),
         body: SingleChildScrollView(
           child: Column (
             children: <Widget> [
-              Container (
-                height: 50,
-                width: screenWidth,
-                alignment: Alignment.center,
-                color: Color.fromARGB(0xFF, 0x4B, 0x56, 0x68),
-                child :
-                  Text('If scroll reached end of List View, Automatically receive 10 data.', style: TextStyle(color: Colors.white,),),
-              ),
               Container( // Main Area
                 color: Color.fromARGB(0xFF, 0xE6, 0xE6, 0xE6),
                 width: screenWidth,
                 height: screenHeight - statusBarHeight - appBarHeigight - 50,
                 alignment: Alignment.center,
+                padding: EdgeInsets.all(10),
                 child: ListView(
                   controller: _controller,
                   children: ListTile.divideTiles(
