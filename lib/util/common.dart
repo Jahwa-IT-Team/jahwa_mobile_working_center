@@ -150,13 +150,43 @@ Future<bool> systemNotification() async {
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
         if(response.statusCode == 200){
-          if(jsonDecode(response.body)['Table'].length == 0) {
-            print('Data does not Exists!!!');
-          }
-          else {
+          if(jsonDecode(response.body)['Table'].length != 0) {
             jsonDecode(response.body)['Table'].forEach((element) {
               showNotification(element['Title'].toString(), element['Contents'].toString());
             });
+          }
+          return true;
+        }
+        else{ return false; }
+      });
+    }
+    catch (e) {
+      print("get Notiofy Error : " + e.toString());
+      return false;
+    }
+  }
+}
+
+/// Check Notice And Move Notice Page !!!
+Future<bool> checkNotice(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance(); /// SharedPreferences를 사용하기 위한 변수선언
+  session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+
+  if(session['EmpCode'] != "") {
+    try {
+
+      // Login API Url
+      var url = 'https://jhapi.jahwa.co.kr/Notice';
+
+      // Send Parameter
+      var data = {'page': '1', 'pagerowcount' : '9999999999', 'div' : 'New', 'empcode' : session['EmpCode']};
+
+      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
+        if(response.statusCode == 200){
+          if(jsonDecode(response.body)['Table'].length != 0) {
+            Navigator.pushNamed(context, '/Notice');
+            ///print('Move Notice Page!!!');
           }
           return true;
         }

@@ -35,7 +35,7 @@ class _NoticeState extends State<Notice> {
       var url = 'https://jhapi.jahwa.co.kr/Notice';
 
       // Send Parameter
-      var data = {'page': pageString, 'pagerowcount' : '10', 'div' : 'List', 'empcode' : session['EmpCode']};
+      var data = {'page': pageString, 'pagerowcount' : '10', 'div' : 'All', 'empcode' : session['EmpCode']};
 
       return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
@@ -50,7 +50,7 @@ class _NoticeState extends State<Notice> {
                 child: Row(
                   children: <Widget> [
                     Container(
-                      width: screenWidth * 0.75,
+                      width: screenWidth - 30,
                       padding: EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +63,10 @@ class _NoticeState extends State<Notice> {
                             style: {
                               "body" : Style(padding: EdgeInsets.all(0), margin: EdgeInsets.all(0),),
                             },
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(element['DeptName'] + ' ' + element['Name'] + ' [ ' + element['InsDate'] + ' ]', style: TextStyle(color: Colors.blueAccent)),
                           ),
                         ],
                       ),
@@ -108,7 +112,7 @@ class _NoticeState extends State<Notice> {
     _controller.addListener(_scrollListener);
     makeScrollBody(page.toString());
     super.initState();
-    print("open Scroll List : " + DateTime.now().toString());
+    print("open Notice Page : " + DateTime.now().toString());
   }
 
   @override

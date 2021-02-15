@@ -37,6 +37,9 @@ class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
 
+    /// Notice가 있는 경우 /Notice로 이동
+    checkNotice(context);
+
     return GestureDetector( /// Keyboard UnFocus시를 위해 onTap에 GestureDetector를 위치시킴
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);

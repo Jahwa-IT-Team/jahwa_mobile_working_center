@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:new_version/new_version.dart';
 import 'package:package_info/package_info.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,13 @@ class _CheckState extends State<Check> {
   void initState() {
     super.initState();
     print("open Check Page : " + DateTime.now().toString());
+
+    NewVersion(
+      context: context,
+      ///iOSId: 'kr.co.jahwa.jahwa_mobile_working_center',
+      androidId: 'kr.co.jahwa.jahwa_mobile_working_center',
+    ).showAlertIfNecessary();
+    
     Timer(Duration(seconds: 1), () {
       preferenceSetting(); /// Make Session And Language Data, Check Login
     });
