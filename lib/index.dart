@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:new_version/new_version.dart';
 import 'package:package_info/package_info.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
@@ -21,6 +23,12 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
+
+    NewVersion(
+      context: context,
+      ///iOSId: 'kr.co.jahwa.jahwa_mobile_working_center',
+      androidId: 'kr.co.jahwa.jahwa_mobile_working_center',
+    ).showAlertIfNecessary();
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async { await showNotification(message['notification']['title'], message['notification']['body']); },
@@ -167,12 +175,17 @@ class _IndexState extends State<Index> {
                               child: Column(
                                 children: <Widget> [
                                   IconButton(
-                                    icon: FaIcon(FontAwesomeIcons.bolt),
+                                    icon: FaIcon(FontAwesomeIcons.googlePlay),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
+                                    onPressed: () async {
+                                      StoreRedirect.redirect(
+                                          androidAppId: "kr.co.jahwa.jahwa_mobile_working_center"
+                                      );
+                                      ///showMessageBox(context, 'Alert', 'Action Test Button !!!');
+                                    },
                                   ),
-                                  Text('Action Test', style: TextStyle(fontSize: 13)),
+                                  Text('Google Store', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),

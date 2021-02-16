@@ -8,7 +8,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:new_version/new_version.dart';
 import 'package:package_info/package_info.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,12 +30,6 @@ class _CheckState extends State<Check> {
   void initState() {
     super.initState();
     print("open Check Page : " + DateTime.now().toString());
-
-    NewVersion(
-      context: context,
-      ///iOSId: 'kr.co.jahwa.jahwa_mobile_working_center',
-      androidId: 'kr.co.jahwa.jahwa_mobile_working_center',
-    ).showAlertIfNecessary();
     
     Timer(Duration(seconds: 1), () {
       preferenceSetting(); /// Make Session And Language Data, Check Login
@@ -171,129 +164,78 @@ class _CheckState extends State<Check> {
     statusBarHeight = MediaQuery.of(context).padding.top; /// Top Status Bar Height
     appBarHeigight = AppBar().preferredSize.height; /// App Bar Height
 
-    /// 1. Version Check
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance(); /// SharedPreferences를 사용하기 위한 변수선언
 
-      String version = packageInfo.version; /// pubspec.yaml의 version의 +X를 제외한 정보
+    try {
 
-      try {
+      /// 1. Language Check
+      language = prefs.getString('Language') ?? ui.window.locale.languageCode; /// 기본적으로 System의 언어정보 설정
+      languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}'); /// DD Data를 가져오기전에 변수 초기화
 
-        var url = 'https://jhapi.jahwa.co.kr/Version'; /// API Url
-        var data = {'VersionA': version.split('.')[0], 'VersionB' : version.split('.')[1], 'VersionC' : version.split('.')[2]}; /// Send Parameter
+      /// DD Data 가져오기 - 현재는 언어별 json 파일로 되어 있으나 장기적으로 DB화 하여 가져오도록 처리 예정
+      if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
+        if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
+        else languagedata = jsonDecode(prefs.getString('LanguageData'));
+      }
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
-
-          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Check Version Data Error !!!'); }
-          else if(response.statusCode == 200){
-
-            if(jsonDecode(response.body)['Table'][0]['VersionA'].toString() == '0') { /// DB상의 버젼보다 App의 버젼이 낮으면 0 0 0을 반환함
-
-              SharedPreferences prefs = await SharedPreferences.getInstance(); /// SharedPreferences를 사용하기 위한 변수선언
-
-              try {
-
-                /// 2. Language Check
-                language = prefs.getString('Language') ?? ui.window.locale.languageCode; /// 기본적으로 System의 언어정보 설정
-                languagedata = jsonDecode(prefs.getString('LanguageData') ?? '{}'); /// DD Data를 가져오기전에 변수 초기화
-
-                /// DD Data 가져오기 - 현재는 언어별 json 파일로 되어 있으나 장기적으로 DB화 하여 가져오도록 처리 예정
-                if(await prefs.setString('LanguageData', await rootBundle.loadString("assets/lang/" + language + ".json"))){
-                  if((prefs.getString('LanguageData') ?? '') == '') languagedata = jsonDecode(await rootBundle.loadString("assets/lang/" + language + ".json"));
-                  else languagedata = jsonDecode(prefs.getString('LanguageData'));
-                }
-
-                /// 3. Session Check
-                if(await checkLogin())
-                {
-                  /// 로그인이 필요한 경우 처리되는 프로세스
-                  btnState = ButtonState.success;
-                  setState(() {});
-                  Timer(Duration(seconds: 1), () {
-                    Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  /// Direct Move to Login
-                  });
-                }
-                else {
-                  session['EntCode'] = prefs.getString('EntCode') ?? '';
-                  session['EntName'] = prefs.getString('EntName') ?? '';
-                  session['DeptCode'] = prefs.getString('DeptCode') ?? '';
-                  session['DeptName'] = prefs.getString('DeptName') ?? '';
-                  session['EmpCode'] = prefs.getString('EmpCode') ?? '';
-                  session['Name'] = prefs.getString('Name') ?? '';
-                  session['RollPstn'] = prefs.getString('RollPstn') ?? '';
-                  session['Position'] = prefs.getString('Position') ?? '';
-                  session['Role'] = prefs.getString('Role') ?? '';
-                  session['Title'] = prefs.getString('Title') ?? '';
-                  session['PayGrade'] = prefs.getString('PayGrade') ?? '';
-                  session['Level'] = prefs.getString('Level') ?? '';
-                  session['Email'] = prefs.getString('Email') ?? '';
-                  session['Photo'] = prefs.getString('Photo') ?? '';
-                  session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
-                  session['EntGroup'] = prefs.getString('EntGroup') ?? '';
-                  session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
-                  session['Mobile'] = prefs.getString('Mobile') ?? '';
-                  session['DueDate'] = prefs.getString('DueDate') ?? '';
-
-                  /// 4. Menu Check
-                  if(session['EmpCode'] != '') {
-
-                    if(await getMenu()) {
-                      btnState = ButtonState.success;
-                      setState(() {});
-                      Timer(Duration(seconds: 1), () {
-                        Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false); /// 모든 Check가 성공하면 초기페이지로 이동
-                      });
-                    }
-                    else {
-                      btnState = ButtonState.fail;
-                      setState(() {});
-                      showMessageBox(context, 'Alert', 'Preference Setting Error : getMenu Fail!!!');
-                    }
-
-                  }
-                  else {
-                    btnState = ButtonState.fail;
-                    setState(() {});
-                    showMessageBox(context, 'Alert', 'Preference Setting Error : Employee Number Not Exists!!!');
-                  }
-                }
-
-              }
-              catch (e){
-                btnState = ButtonState.fail;
-                setState(() {});
-                showMessageBox(context, 'Alert', 'Preference Setting Error B : ' + e.toString());
-              }
-            }
-            else {
-              btnState = ButtonState.idle;
-              setState(() {});
-              Timer(Duration(seconds: 1), () {
-                Navigator.pushNamedAndRemoveUntil(context, '/Update', (route) => false);  /// App Version이 낮아 Dounload가 가능한 페이지로 이동
-              });
-            }
-          }
+      /// 2. Session Check
+      if(await checkLogin())
+      {
+        /// 로그인이 필요한 경우 처리되는 프로세스
+        btnState = ButtonState.success;
+        setState(() {});
+        Timer(Duration(seconds: 1), () {
+          Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  /// Direct Move to Login
         });
       }
-      catch (e) {
-        //showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Alert'),
-              content: Text(translateText(context, 'Preference Setting Error A : ' + e.toString())),
-              titleTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black, fontWeight: FontWeight.bold,),
-              contentTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black,),
-              actions: [
-                FlatButton(
-                  child: Text("Okay", style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent,),),
-                  onPressed: () { Navigator.of(context).pop(); },
-                ),
-              ],
-            );
-          },
-        );
+      else {
+        session['EntCode'] = prefs.getString('EntCode') ?? '';
+        session['EntName'] = prefs.getString('EntName') ?? '';
+        session['DeptCode'] = prefs.getString('DeptCode') ?? '';
+        session['DeptName'] = prefs.getString('DeptName') ?? '';
+        session['EmpCode'] = prefs.getString('EmpCode') ?? '';
+        session['Name'] = prefs.getString('Name') ?? '';
+        session['RollPstn'] = prefs.getString('RollPstn') ?? '';
+        session['Position'] = prefs.getString('Position') ?? '';
+        session['Role'] = prefs.getString('Role') ?? '';
+        session['Title'] = prefs.getString('Title') ?? '';
+        session['PayGrade'] = prefs.getString('PayGrade') ?? '';
+        session['Level'] = prefs.getString('Level') ?? '';
+        session['Email'] = prefs.getString('Email') ?? '';
+        session['Photo'] = prefs.getString('Photo') ?? '';
+        session['Auth'] = prefs.getInt('Auth').toString() ?? '0';
+        session['EntGroup'] = prefs.getString('EntGroup') ?? '';
+        session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
+        session['Mobile'] = prefs.getString('Mobile') ?? '';
+        session['DueDate'] = prefs.getString('DueDate') ?? '';
+
+        /// 3. Menu Check
+        if(session['EmpCode'] != '') {
+
+          if(await getMenu()) {
+            btnState = ButtonState.success;
+            setState(() {});
+            Timer(Duration(seconds: 1), () {
+              Navigator.pushNamedAndRemoveUntil(context, '/Index', (route) => false); /// 모든 Check가 성공하면 초기페이지로 이동
+            });
+          }
+          else {
+            btnState = ButtonState.fail;
+            setState(() {});
+            showMessageBox(context, 'Alert', 'Preference Setting Error : getMenu Fail!!!');
+          }
+        }
+        else {
+          btnState = ButtonState.fail;
+          setState(() {});
+          showMessageBox(context, 'Alert', 'Preference Setting Error : Employee Number Not Exists!!!');
+        }
       }
-    });
+    }
+    catch (e){
+      btnState = ButtonState.fail;
+      setState(() {});
+      showMessageBox(context, 'Alert', 'Preference Setting Error B : ' + e.toString());
+    }
   }
 }

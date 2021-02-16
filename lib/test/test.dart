@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info/package_info.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/globals.dart';
@@ -268,6 +269,62 @@ class _TestState extends State<Test> {
                                     },
                                   ),
                                   Text('Stop Notify', style: TextStyle(fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.googlePlay),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () async {
+                                      StoreRedirect.redirect(
+                                          androidAppId: "kr.co.jahwa.jahwa_mobile_working_center"
+                                      );
+                                    },
+                                  ),
+                                  Text('Google Store', style: TextStyle(fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
+                                  ),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                children: <Widget> [
+                                  IconButton(
+                                    icon: FaIcon(FontAwesomeIcons.bolt),
+                                    iconSize: 50,
+                                    color: Colors.blueAccent,
+                                    onPressed: () { showMessageBox(context, 'Alert', 'Action Test Button !!!'); },
+                                  ),
+                                  Text('Action Test', style: TextStyle(fontSize: 13)),
                                 ],
                               ),
                             ),

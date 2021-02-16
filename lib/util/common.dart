@@ -15,6 +15,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import 'package:jahwa_mobile_working_center/util/globals.dart';
 
@@ -220,13 +221,25 @@ Future<void> showNotification(var title, var content) async {
 Future selectNotification(String payload) async {
   bool isInstalled = await DeviceApps.isAppInstalled('kr.co.jahwa.jahwa_mobile_working_center');
   if (isInstalled != false) DeviceApps.openApp('kr.co.jahwa.jahwa_mobile_working_center');
-  else await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
+  else {
+    StoreRedirect.redirect(
+        androidAppId: "kr.co.jahwa.jahwa_mobile_working_center"
+    );
+    ///await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
+  }
 }
 
 Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
-  bool isInstalled = await DeviceApps.isAppInstalled('kr.co.jahwa.jahwa_mobile_working_center');
-  if (isInstalled != false) DeviceApps.openApp('kr.co.jahwa.jahwa_mobile_working_center');
-  else await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
+  bool isInstalled = await DeviceApps.isAppInstalled(
+      'kr.co.jahwa.jahwa_mobile_working_center');
+  if (isInstalled != false)
+    DeviceApps.openApp('kr.co.jahwa.jahwa_mobile_working_center');
+  else {
+    StoreRedirect.redirect(
+        androidAppId: "kr.co.jahwa.jahwa_mobile_working_center"
+    );
+    ///await showNotification('Alert', 'ERROR : Can not Open JH Mobile !!!');
+  }
 }
 
 /// Remove User SharedPreferences
