@@ -270,7 +270,7 @@ class _LoginState extends State<Login> {
     bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); /// Upper Case Character Check
     bool hasLowercase = password.contains(new RegExp(r'[a-z]')); /// Lower Case Character Check
     bool hasDigits = password.contains(new RegExp(r'[0-9]')); /// Number Check
-    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*()?_~.,]')); /// Special Character Check, 특수문자 제한관련 확인 필요
+    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#<>/?":_`~;[\]{}\\|=+)(*&^%\s-]')); /// Special Character Check, 특수문자 제한관련 확인 필요
     bool hasMinLength = password.length > minLength; /// Min Over 6
     bool hasMaxLength = password.length < maxLength; /// Max Under 21
 
