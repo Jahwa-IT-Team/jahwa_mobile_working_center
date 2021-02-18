@@ -1,7 +1,7 @@
 name: jahwa_mobile_working_center
 description: "Jahwa Mobile"
 
-version: 1.0.1+2 # For Upgrade Number - JHGWMAIN.MobileVersion보다 작은 경우 경우 /Update로 이동됨, App은 수정하고 Table의 정보는 수정하지 않으면 무의미
+version: 1.0.3+4 # For Upgrade Number - JHGWMAIN.MobileVersion보다 작은 경우 경우 /Update로 이동됨, App은 수정하고 Table의 정보는 수정하지 않으면 무의미
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
@@ -29,6 +29,7 @@ dependencies:
   http: ^0.12.2 # Api Connection Package
   intl: ^0.16.1 # By Locale Number, Date Format Package
   loading_overlay: ^0.2.1 # Loaging Progress - 프로그램의 정보가 모두 나타낼때까지 실행중임을 표시하는 패키지, JimsGatheringInformation.dart등에서 사용
+  mobile_number: ^1.0.3 # My Phone Number
   new_version: ^0.0.6 # Google Store Verwion Check
   package_info: ^0.4.3 # Get Package Info - App Version을 알아내는데 사용하는 패키지, check.dart등에서 사용함
   progress_dialog: ^1.2.4 # Progress Dialog Package - login.dart에서 사용하는 실행중 Dialog표시 기능, Loading_overlay를 통해 간단히 Progress를 표시하는 방법도 있음
