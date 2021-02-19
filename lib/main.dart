@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:cron/cron.dart';
@@ -7,11 +8,22 @@ import 'package:intl/intl.dart';
 import 'package:jahwa_mobile_working_center/util/common.dart';
 import 'package:jahwa_mobile_working_center/util/program_list.dart';
 
+/// http Error 방지용 사전 세팅
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+
 void main() {
 
   /// Flutter Background Service
   WidgetsFlutterBinding.ensureInitialized();
   FlutterBackgroundService.initialize(onStart); /// onStart Fuinction은 common.dart에 설정됨
+
+  HttpOverrides.global = new MyHttpOverrides();
 
   runApp(MainApp());
 
