@@ -5,6 +5,7 @@ import 'package:jahwa_mobile_working_center/login.dart';
 import 'package:jahwa_mobile_working_center/notice.dart';
 import 'package:jahwa_mobile_working_center/index.dart';
 
+import 'package:jahwa_mobile_working_center/Jims/JimsPasswordReset.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsGatheringInformation.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsServerInformation.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsUsageTop.dart';
@@ -33,6 +34,7 @@ final routes = {
   '/EmailGW' : (BuildContext context) => EmailGW(),
 
   /// JIMS
+  '/JimsPasswordReset' : (BuildContext context) => JimsPasswordReset(),
   '/JimsGatheringInformation' : (BuildContext context) => JimsGatheringInformation(),
   '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
   '/JimsUsageTop' : (BuildContext context) => JimsUsageTop(),

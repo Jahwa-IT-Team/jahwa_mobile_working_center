@@ -75,7 +75,7 @@ String encryptText(String methood, var data) {
 }
 
 /// Select Dialog용 아이템 생성 Function
-List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var jsondata, String selectedvalue) {
+List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var jsondata, String selectedvalue, TextEditingController codeController, TextEditingController nameController) {
   List<SimpleDialogOption> itemsList = [];
   var textStyle = const TextStyle(color: Colors.blueAccent);
   jsondata['Table'].forEach((element) {
@@ -85,6 +85,11 @@ List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var j
       onPressed: () {
         selectedvalue = element['Code'];
         if(div == 'Language') changeLanguage(context, selectedvalue);
+        else if(div == 'FindEmployee') {
+          codeController.text = element['Code'];
+          nameController.text = element['Name'];
+          Navigator.of(context).pop();
+        }
         else showMessageBox(context, 'Alert', selectedvalue);
       },
       child: Text(element['Name'], style: textStyle,),

@@ -235,7 +235,11 @@ class _CheckState extends State<Check> {
     catch (e){
       btnState = ButtonState.fail;
       setState(() {});
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('Language');
+      prefs.remove('DueDate');
       showMessageBox(context, 'Alert', 'Preference Setting Error B : ' + e.toString());
+      Navigator.pushNamedAndRemoveUntil(context, '/Check', (route) => false); /// 모든 Check가 성공하면 초기페이지로 이동
     }
   }
 }

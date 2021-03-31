@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
                           builder: (BuildContext context) {
                             return SimpleDialog(
                               title: const Text('Select Language ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
-                              children: makeDialogItems(context, 'Language', languagelist, language),
+                              children: makeDialogItems(context, 'Language', languagelist, language, null, null),
                             );
                           },
                         );
