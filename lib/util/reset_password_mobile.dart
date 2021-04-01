@@ -16,12 +16,12 @@ import 'package:jahwa_mobile_working_center/util/globals.dart';
 
 ProgressDialog pr; /// 0. Progress Dialog Declaration
 
-class JimsPasswordReset extends StatefulWidget {
+class ResetPasswordMobile extends StatefulWidget {
   @override
-  _JimsPasswordResetState createState() => _JimsPasswordResetState();
+  _ResetPasswordMobileState createState() => _ResetPasswordMobileState();
 }
 
-class _JimsPasswordResetState extends State<JimsPasswordReset> {
+class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
 
   TextEditingController empcodeController = new TextEditingController(); /// Employee Number Data Controller
   TextEditingController nameController = new TextEditingController(); /// Name Data Controller
@@ -33,7 +33,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
 
   void initState() {
     super.initState();
-    print("open Admin Password Reset Page : " + DateTime.now().toString());
+    print("open Reset Password with Mobile Page : " + DateTime.now().toString());
   }
 
   @override
@@ -73,7 +73,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
-          title: Text("Reset Password",
+          title: Text("Reset with Mobile",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
           ),
         ),
@@ -88,7 +88,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                     width: screenWidth,
                     height: (screenHeight - statusBarHeight) * 0.15,
                     alignment: Alignment.center,
-                    child: Text(translateText(context, 'Reset Password'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black,)),
+                    child: Text(translateText(context, 'Reset with Mobile'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black,)),
                   ),
                   Container( /// Input Area
                     width: screenWidth,

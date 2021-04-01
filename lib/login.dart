@@ -166,8 +166,8 @@ class _LoginState extends State<Login> {
                         Container(
                           alignment: Alignment.centerRight,
                           child: FlatButton(
-                            onPressed: () {
-                              showMessageBox(context, 'Alert', 'Are You Really???, But It is not make yet.'); /// If Forgot Password Process. To be developed later.
+                            onPressed: () async {
+                              if(await getSelectList('Company')) Navigator.pushNamed(context, '/CheckEmployee'); /// 사원확인 페이지로 이동
                             },
                             child: Text(
                               translateText(context, 'Forgot Password?'),

@@ -103,15 +103,31 @@ List<SimpleDialogOption> makeDialogItems(BuildContext context, String div, var j
 List<DropdownMenuItem> makeDropdownMenuItem(BuildContext context, String div, var jsondata, String selectedvalue) {
   List<DropdownMenuItem> itemsList = [];
   var textStyle = const TextStyle(color: Colors.blueAccent);
-  jsondata['Table'].forEach((element) {
-    if(selectedvalue == element['Code'])textStyle = const TextStyle(color: Colors.blueAccent);
-    else textStyle = const TextStyle(color: Colors.black);
-    Widget dropdownMenuItem = DropdownMenuItem(
-      child: Text(element['Name'], style:textStyle,),
-      value: element['Code'],
-    );
-    itemsList.add(dropdownMenuItem);
-  });
+  if(div.substring(0, 6) == "Select") {
+    if(div == "Select_Company") jsondata = selectCompanyList;
+    else jsondata = selectList;
+    jsondata['Table'].forEach((element) {
+      if(selectedvalue == element['Code'])textStyle = const TextStyle(color: Colors.blueAccent);
+      else textStyle = const TextStyle(color: Colors.black);
+      Widget dropdownMenuItem = DropdownMenuItem(
+        child: Text(element['Name'], style:textStyle,),
+        value: element['Code'],
+      );
+      itemsList.add(dropdownMenuItem);
+    });
+  }
+  else {
+    jsondata['Table'].forEach((element) {
+      if(selectedvalue == element['Code'])textStyle = const TextStyle(color: Colors.blueAccent);
+      else textStyle = const TextStyle(color: Colors.black);
+      Widget dropdownMenuItem = DropdownMenuItem(
+        child: Text(element['Name'], style:textStyle,),
+        value: element['Code'],
+      );
+      itemsList.add(dropdownMenuItem);
+    });
+  }
+
   return itemsList;
 }
 
@@ -368,4 +384,32 @@ String translateText(BuildContext context, String key) {
     print("translateText Error : " + e.toString());
   }
   return text;
+}
+
+/// Get System Notification !!!
+Future<bool> getSelectList(String div) async {
+  try {
+
+    // Login API Url
+    var url = 'https://jhapi.jahwa.co.kr/SelectList';
+
+    // Send Parameter
+    var data = {'database': '', 'div' : div, 'data' : '', 'empcode' : session['EmpCode']};
+
+    return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+      if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
+      if(response.statusCode == 200){
+        if(jsonDecode(response.body)['Table'].length != 0) {
+          if(div == "Company") selectCompanyList = jsonDecode(response.body);
+          else selectList = jsonDecode(response.body);
+        }
+        return true;
+      }
+      else{ return false; }
+    });
+  }
+  catch (e) {
+    print("get Select List Error : " + e.toString());
+    return false;
+  }
 }

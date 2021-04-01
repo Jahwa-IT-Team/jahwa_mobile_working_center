@@ -16,12 +16,12 @@ import 'package:jahwa_mobile_working_center/util/globals.dart';
 
 ProgressDialog pr; /// 0. Progress Dialog Declaration
 
-class JimsPasswordReset extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _JimsPasswordResetState createState() => _JimsPasswordResetState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _JimsPasswordResetState extends State<JimsPasswordReset> {
+class _ResetPasswordState extends State<ResetPassword> {
 
   TextEditingController empcodeController = new TextEditingController(); /// Employee Number Data Controller
   TextEditingController nameController = new TextEditingController(); /// Name Data Controller
@@ -33,7 +33,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
 
   void initState() {
     super.initState();
-    print("open Admin Password Reset Page : " + DateTime.now().toString());
+    print("open Reset Password Page : " + DateTime.now().toString());
   }
 
   @override
@@ -279,7 +279,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
         var url = 'https://jhapi.jahwa.co.kr/ResetPassword';
 
         // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text};
+        var data = {'Page' : "AdminPage", 'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text, 'Company' : '', 'Answer1' : '', 'Answer2' : ''};
 
         return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }

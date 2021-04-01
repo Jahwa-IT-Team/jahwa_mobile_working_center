@@ -21,6 +21,10 @@ import 'package:jahwa_mobile_working_center/test/list_scroll.dart';
 import 'package:jahwa_mobile_working_center/test/test.dart';
 
 import 'package:jahwa_mobile_working_center/util/update.dart';
+import 'package:jahwa_mobile_working_center/util/check_employee.dart';
+import 'package:jahwa_mobile_working_center/util/reset_password.dart';
+import 'package:jahwa_mobile_working_center/util/reset_password_question.dart';
+import 'package:jahwa_mobile_working_center/util/reset_password_mobile.dart';
 
 final routes = {
   /// Basic Program
@@ -29,6 +33,11 @@ final routes = {
   '/Login' : (BuildContext context) => Login(),
   '/Notice' : (BuildContext context) => Notice(),
   '/Index' : (BuildContext context) => Index(), /// 기본 Page -> 설계 필요
+
+  '/CheckEmployee' : (BuildContext context) => CheckEmployee(), /// 사원확인
+  '/ResetPassword' : (BuildContext context) => ResetPassword(), /// 비밀번호 초기화 관리자용
+  '/ResetPasswordQuestion' : (BuildContext context) => ResetPasswordQuestion(), /// 비밀번호 초기화 질문답변 인증용
+  '/ResetPasswordMobile' : (BuildContext context) => ResetPasswordMobile(), /// 비밀번호 초기화 휴대폰 인증용
 
   /// Email
   '/EmailGW' : (BuildContext context) => EmailGW(),

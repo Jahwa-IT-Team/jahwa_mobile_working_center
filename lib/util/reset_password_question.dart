@@ -16,24 +16,24 @@ import 'package:jahwa_mobile_working_center/util/globals.dart';
 
 ProgressDialog pr; /// 0. Progress Dialog Declaration
 
-class JimsPasswordReset extends StatefulWidget {
+class ResetPasswordQuestion extends StatefulWidget {
   @override
-  _JimsPasswordResetState createState() => _JimsPasswordResetState();
+  _ResetPasswordQuestionState createState() => _ResetPasswordQuestionState();
 }
 
-class _JimsPasswordResetState extends State<JimsPasswordReset> {
+class _ResetPasswordQuestionState extends State<ResetPasswordQuestion> {
 
-  TextEditingController empcodeController = new TextEditingController(); /// Employee Number Data Controller
-  TextEditingController nameController = new TextEditingController(); /// Name Data Controller
+  TextEditingController answer1Controller = new TextEditingController(); /// Employee Number Data Controller
+  TextEditingController answer2Controller = new TextEditingController(); /// Name Data Controller
   TextEditingController passwordController = new TextEditingController(); /// Password Data Controller
 
-  FocusNode empcodeFocusNode = FocusNode(); /// Employee Number Input Focus
-  FocusNode nameFocusNode = FocusNode(); /// Name Input Focus
+  FocusNode answer1FocusNode = FocusNode(); /// Employee Number Input Focus
+  FocusNode answer2FocusNode = FocusNode(); /// Name Input Focus
   FocusNode passwordFocusNode = FocusNode(); /// Password Input Focus
 
   void initState() {
     super.initState();
-    print("open Admin Password Reset Page : " + DateTime.now().toString());
+    print("open Reset Password with Question Page : " + DateTime.now().toString());
   }
 
   @override
@@ -73,7 +73,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(0xFF, 0x34, 0x40, 0x4E),
-          title: Text("Reset Password",
+          title: Text("Reset with Question",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15,),
           ),
         ),
@@ -99,13 +99,19 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                       alignment: Alignment.center,
                       child: Column(
                         children: <Widget> [
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("1. " + resetpass['Table'][0]['question1'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,)),
+                          ),
+                          SizedBox(height: 10,),
                           TextField(
                             autofocus: false,
-                            controller: empcodeController,
-                            focusNode: empcodeFocusNode,
+                            controller: answer1Controller,
+                            focusNode: answer1FocusNode,
                             keyboardType: TextInputType.text,
                             onSubmitted: (String inputText) {
-                              FocusScope.of(context).requestFocus(nameFocusNode);  /// Input Box에서 Enter 적용시 Password 입력 Box로 이동됨
+                              FocusScope.of(context).requestFocus(answer2FocusNode);  /// Input Box에서 Enter 적용시 Password 입력 Box로 이동됨
                             },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -115,20 +121,26 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                                   width: 1.0,
                                 ),
                               ),
-                              labelText: translateText(context, 'Employee Number'),
+                              labelText: translateText(context, '답변 1'),
                               contentPadding: EdgeInsets.all(10),
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           SizedBox(height: 16,),
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("2. " + resetpass['Table'][0]['question2'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,)),
+                          ),
+                          SizedBox(height: 10,),
                           TextField(
                             autofocus: false,
-                            controller: nameController,
-                            focusNode: nameFocusNode,
+                            controller: answer2Controller,
+                            focusNode: answer2FocusNode,
                             keyboardType: TextInputType.text,
                             onSubmitted: (String inputText) async {
                               await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                              checkEmployee(context, empcodeController, nameController, pr); /// 수동으로 로그인 프로세스를 실행시킴
+                              resetPassword(context, answer1Controller, answer2Controller, passwordController, pr);
                             },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -138,34 +150,27 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                                   width: 1.0,
                                 ),
                               ),
-                              labelText: translateText(context, 'Name'),
+                              labelText: translateText(context, '답변 2'),
                               contentPadding: EdgeInsets.all(10),
                             ),
                             textInputAction: TextInputAction.next,
                           ),
-                          SizedBox(height: 16,),
-                          ButtonTheme(
-                            minWidth: baseWidth,
-                            height: 50.0,
-                            child: RaisedButton(
-                              child:Text(translateText(context, 'Check Employee'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white,)),
-                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
-                              splashColor: Colors.grey,
-                              onPressed: () async {
-                                await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                                checkEmployee(context, empcodeController, nameController, pr);
-                              },
-                            ),
+                          SizedBox(height: 30,),
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("변경 비밀번호", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,)),
                           ),
-                          SizedBox(height: 40,),
+                          SizedBox(height: 10,),
                           TextField(
                             autofocus: false,
                             controller: passwordController,
                             keyboardType: TextInputType.text,
                             focusNode: passwordFocusNode,
                             onSubmitted: (String inputText) async {
+                              FocusScope.of(context).unfocus();
                               await pr.show(); /// Progress Dialog Show - Need Declaration, Setting, Style
-                              resetPassword(context, empcodeController, nameController, passwordController, pr); /// Input Box에서 Enter 적용시 바로 로그인 프로세스가 진행됨
+                              resetPassword(context, answer1Controller, answer2Controller, passwordController, pr);
                             },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -175,7 +180,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                                   width: 1.0,
                                 ),
                               ),
-                              labelText: translateText(context, 'New Password'),
+                              labelText: translateText(context, 'Password'),
                               contentPadding: EdgeInsets.all(10),
                             ),
                             textInputAction: TextInputAction.done,
@@ -189,8 +194,9 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
                               shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
                               splashColor: Colors.grey,
                               onPressed: () async {
+                                FocusScope.of(context).unfocus();
                                 await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                                resetPassword(context, empcodeController, nameController, passwordController, pr); /// Input Box에서 Enter 적용시 바로 로그인 프로세스가 진행됨
+                                resetPassword(context, answer1Controller, answer2Controller, passwordController, pr);
                               },
                             ),
                           ),
@@ -206,63 +212,22 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
     );
   }
 
-  /// Check Employee
-  Future<void> checkEmployee(BuildContext context, TextEditingController empcodeController, TextEditingController nameController, ProgressDialog pr) async {
+  /// Password Validation Check
+  bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21]) {
+    if (password == null || password.isEmpty) { return false; } /// Password Null Check
 
-    pr.hide(); /// 4. Progress Dialog Close
+    bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); /// Upper Case Character Check
+    bool hasLowercase = password.contains(new RegExp(r'[a-z]')); /// Lower Case Character Check
+    bool hasDigits = password.contains(new RegExp(r'[0-9]')); /// Number Check
+    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#<>/?":_`~;[\]{}\\|=+)(*&^%\s-]')); /// Special Character Check, 특수문자 제한관련 확인 필요
+    bool hasMinLength = password.length > minLength; /// Min Over 6
+    bool hasMaxLength = password.length < maxLength; /// Max Under 21
 
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus.unfocus();
-    }
-
-    var list;
-
-    if(empcodeController.text.isEmpty && nameController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number and Name Not Exists !!!'); } /// Employee Number and Name Empty Check
-    else {
-      try {
-
-        // Login API Url
-        var url = 'https://jhapi.jahwa.co.kr/FindEmployee';
-
-        // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text};
-
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
-          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
-          if(response.statusCode == 200){
-            if(jsonDecode(response.body)['Table'].length != 0) {
-              list = jsonDecode(response.body);
-
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return SimpleDialog(
-                    title: const Text('Select Employee ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
-                    children: makeDialogItems(context, 'FindEmployee', list, "", empcodeController, nameController),
-                  );
-                },
-              );
-
-              FocusScope.of(context).requestFocus(passwordFocusNode);
-            }
-            else {
-              showMessageBox(context, "Alert", "검색결과가 존재하지 않습니다.");
-            }
-          }
-          else{ return false; }
-        });
-      }
-      catch (e) {
-        print("get Notiofy Error : " + e.toString());
-        return false;
-      }
-    }
+    return hasDigits & (hasUppercase || hasLowercase) & hasSpecialCharacters & hasMinLength & hasMaxLength;
   }
 
   /// Reset Password Process
-  Future<void> resetPassword(BuildContext context, TextEditingController empcodeController, TextEditingController nameController, TextEditingController passwordController, ProgressDialog pr) async {
+  Future<void> resetPassword(BuildContext context, TextEditingController answer1Controller, TextEditingController answer2Controller, TextEditingController passwordController, ProgressDialog pr) async {
 
     pr.hide(); /// 4. Progress Dialog Close
 
@@ -271,7 +236,10 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
       FocusManager.instance.primaryFocus.unfocus();
     }
 
-    if(empcodeController.text.isEmpty || nameController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number or Name Not Exists !!!'); } /// Employee Number and Name Empty Check
+    if(answer1Controller.text.isEmpty) { showMessageBox(context, 'Alert', 'Answer 1 Not Exists !!!'); }
+    else if(answer2Controller.text.isEmpty) { showMessageBox(context, 'Alert', 'Answer 2 Not Exists !!!'); }
+    else if(passwordController.text.isEmpty) { showMessageBox(context, 'Alert', 'Password Not Exists !!!'); } /// Password Empty Check
+    else if(!isPasswordCompliant(passwordController.text)) { showMessageBox(context, 'Alert', 'Password invalid !!!'); } /// Password Validation Check
     else {
       try {
 
@@ -279,11 +247,12 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
         var url = 'https://jhapi.jahwa.co.kr/ResetPassword';
 
         // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text};
+        var data = {'Page': "ResetPassword", 'EmpCode': resetpass['Table'][0]['empcode'].toString(), 'Name' : '', 'Password' : passwordController.text, 'Company' : resetpass['Table'][0]['company'].toString(), 'Answer1' : answer1Controller.text, 'Answer2' : answer2Controller.text};
 
         return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
+            showMessageBox(context, "", data.toString());
             showMessageBox(context, "", response.body.toString());
           }
           else{ return false; }
