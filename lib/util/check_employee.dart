@@ -205,11 +205,13 @@ class _CheckEmployeeState extends State<CheckEmployee> {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200){
             if (response.body == "User does not exist." || response.body == "User Name is incorrect." || response.body == "Error") showMessageBox(context, "Alert", response.body);
-            else if (response.body == "A/D Not Use.") { ; } /// 주민등록번호를 이용한 비밀번호 초기화로 이동 -> 다만 이 프로그램에서는 필요없음
+            else if (response.body == "A/D Not Use.") {
+              ///Navigator.pushNamed(context, '/ResetPasswordQuestion'); ///주민등록번호를 이용한 비밀번호 초기화로 이동
+              showMessageBox(context, "Alert", "본 앱에서는 A/D사용자만 사용이 가능합니다.");
+            }
             else {
               if(jsonDecode(response.body)['DATA'].length != 0) {
                 jsonDecode(response.body)['DATA'].forEach((element) {
-                  ///showNotification(element['Title'].toString(), element['Contents'].toString());
                   if (element['Question1'].toString() == "" || element['Question2'].toString() == "") { showMessageBox(context, "Alert", "Not Exists Reset Question Data"); }
                   else {
                     if (element['Dispatch'].toString() == "1" && (Company == 'KO532' || Company == 'KO536')) {
@@ -229,8 +231,8 @@ class _CheckEmployeeState extends State<CheckEmployee> {
                             title: Text(translateText(context, 'Select Reset Method !!!'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
                             children: [
                               SimpleDialogOption(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/ResetPasswordMobile'); /// 휴대폰 인증 페이지로 이동
+                                onPressed: () async {
+                                  await checkPhone(context, empcodeController, nameController);
                                 },
                                 child: Text(translateText(context, 'Mobile Authentication'),),
                               ),
@@ -262,6 +264,45 @@ class _CheckEmployeeState extends State<CheckEmployee> {
       }
       catch (e) {
         print("check Employee Error : " + e.toString());
+        return false;
+      }
+    }
+  }
+
+  /// Reset Password Process
+  Future<bool> checkPhone(BuildContext context, TextEditingController empcodeController, TextEditingController nameController) async {
+    if(empcodeController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number Not Exists !!!'); }
+    else if(nameController.text.isEmpty) { showMessageBox(context, 'Alert', 'Name Not Exists !!!'); }
+    else {
+      try {
+
+        // Login API Url
+        var url = 'https://jhapi.jahwa.co.kr/CheckPhone';
+
+        // Send Parameter
+        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text};
+
+        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
+          if(response.statusCode == 200) {
+            if (response.body.toString() == "하루 5회 전송 제한횟수를 초과했습니다.") {
+              showMessageBox(context, "Alert", response.body.toString());
+            }
+            else {
+              var strArray = response.body.toString().split('/');
+              showMessageBox(context, "Alert", "[" + strArray[1] + "]로 인증번호가 성공적으로 전송되었습니다.");
+              messagenum = strArray[0];
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.pushNamed(context, '/ResetPasswordMobile'); /// 휴대폰 인증 페이지로 이동
+              });
+            }
+            return true;
+          }
+          else{ return false; }
+        });
+      }
+      catch (e) {
+        print("reset Password Error : " + e.toString());
         return false;
       }
     }

@@ -252,8 +252,30 @@ class _ResetPasswordQuestionState extends State<ResetPasswordQuestion> {
         return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
-            showMessageBox(context, "", data.toString());
-            showMessageBox(context, "", response.body.toString());
+            if(response.body.toString().substring(0, 7) == "NOCOUNT") {
+              var strArray = response.body.toString().split("_");
+              if (strArray.length > 0) {
+                if (strArray[1] == "1") showMessageBox(context, "Alert", "답변 오류  : 1차");
+                else if (strArray[1] == "2") showMessageBox(context, "Alert", "답변 오류  : 2차");
+                else if (strArray[1] == "3") showMessageBox(context, "Alert", "답변 오류  : 3차");
+                else showMessageBox(context, "Alert", response.body.toString());
+              }
+              else showMessageBox(context, "Alert", response.body.toString());
+            }
+            else if (response.body.toString().substring(0, 4) == "LOCK") {
+              var strArray = response.body.toString().split("_");
+              if (strArray.length > 0) {
+                showMessageBox(context, "Locking", "3회이상의 답변 오류 발생으로 인해 계정이 잠겨있습니다. 10분뒤 다시 진행해 주시기 바랍니다.");
+              }
+              else showMessageBox(context, "Alert", response.body.toString());
+            }
+            else if (response.body.toString() == "Work Completed") {
+              showMessageBox(context, "Alert", response.body.toString());
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  /// Direct Move to Login
+              });
+            }
+            else { showMessageBox(context, "Alert", "Password Not Available, Check Password Rule!!! Can Not Use id and More than 2 Letter of Name in Password!!!"); }
           }
           else{ return false; }
         });

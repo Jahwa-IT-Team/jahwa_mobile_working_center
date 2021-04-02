@@ -23,16 +23,23 @@ class ResetPasswordMobile extends StatefulWidget {
 
 class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
 
-  TextEditingController empcodeController = new TextEditingController(); /// Employee Number Data Controller
-  TextEditingController nameController = new TextEditingController(); /// Name Data Controller
+  TextEditingController answer1Controller = new TextEditingController(); /// Employee Number Data Controller
   TextEditingController passwordController = new TextEditingController(); /// Password Data Controller
 
-  FocusNode empcodeFocusNode = FocusNode(); /// Employee Number Input Focus
-  FocusNode nameFocusNode = FocusNode(); /// Name Input Focus
+  FocusNode answer1FocusNode = FocusNode(); /// Employee Number Input Focus
   FocusNode passwordFocusNode = FocusNode(); /// Password Input Focus
+
+  var remain = 300;
 
   void initState() {
     super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if(remain > 0) {
+        setState(() {
+          remain --;
+        });
+      }
+    });
     print("open Reset Password with Mobile Page : " + DateTime.now().toString());
   }
 
@@ -88,7 +95,7 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
                     width: screenWidth,
                     height: (screenHeight - statusBarHeight) * 0.15,
                     alignment: Alignment.center,
-                    child: Text(translateText(context, 'Reset with Mobile'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black,)),
+                    child: Text(translateText(context, 'Reset Password'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black,)),
                   ),
                   Container( /// Input Area
                     width: screenWidth,
@@ -101,11 +108,11 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
                         children: <Widget> [
                           TextField(
                             autofocus: false,
-                            controller: empcodeController,
-                            focusNode: empcodeFocusNode,
+                            controller: answer1Controller,
+                            focusNode: answer1FocusNode,
                             keyboardType: TextInputType.text,
                             onSubmitted: (String inputText) {
-                              FocusScope.of(context).requestFocus(nameFocusNode);  /// Input Box에서 Enter 적용시 Password 입력 Box로 이동됨
+                              FocusScope.of(context).requestFocus(passwordFocusNode);  /// Input Box에서 Enter 적용시 Password 입력 Box로 이동됨
                             },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -115,57 +122,39 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
                                   width: 1.0,
                                 ),
                               ),
-                              labelText: translateText(context, 'Employee Number'),
+                              labelText: translateText(context, '인증번호 입력'),
                               contentPadding: EdgeInsets.all(10),
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           SizedBox(height: 16,),
-                          TextField(
-                            autofocus: false,
-                            controller: nameController,
-                            focusNode: nameFocusNode,
-                            keyboardType: TextInputType.text,
-                            onSubmitted: (String inputText) async {
-                              await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                              checkEmployee(context, empcodeController, nameController, pr); /// 수동으로 로그인 프로세스를 실행시킴
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(const Radius.circular(10.0),),
-                                borderSide: new BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                              ),
-                              labelText: translateText(context, 'Name'),
-                              contentPadding: EdgeInsets.all(10),
-                            ),
-                            textInputAction: TextInputAction.next,
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("남은시간 : " + remain.toString() + "초", style: TextStyle(fontWeight: FontWeight.normal, color: Colors.redAccent,)),
                           ),
                           SizedBox(height: 16,),
-                          ButtonTheme(
-                            minWidth: baseWidth,
-                            height: 50.0,
-                            child: RaisedButton(
-                              child:Text(translateText(context, 'Check Employee'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white,)),
-                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
-                              splashColor: Colors.grey,
-                              onPressed: () async {
-                                await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                                checkEmployee(context, empcodeController, nameController, pr);
-                              },
-                            ),
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("5분 이내로 인증번호를 입력해 주세요.\n인증번호 전송은 하루 최대 5회이며 문자전송은 최대 1분까지 소요될수 있습니다.", style: TextStyle(fontWeight: FontWeight.normal, color: Colors.blueAccent,)),
                           ),
-                          SizedBox(height: 40,),
+                          SizedBox(height: 30,),
+                          Container( /// Input Area
+                            width: screenWidth,
+                            alignment: Alignment.centerLeft,
+                            child: Text("변경 비밀번호", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,)),
+                          ),
+                          SizedBox(height: 10,),
                           TextField(
                             autofocus: false,
                             controller: passwordController,
                             keyboardType: TextInputType.text,
                             focusNode: passwordFocusNode,
                             onSubmitted: (String inputText) async {
+                              FocusScope.of(context).unfocus();
                               await pr.show(); /// Progress Dialog Show - Need Declaration, Setting, Style
-                              resetPassword(context, empcodeController, nameController, passwordController, pr); /// Input Box에서 Enter 적용시 바로 로그인 프로세스가 진행됨
+                              resetPassword(context, answer1Controller, passwordController, pr);
                             },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -175,7 +164,7 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
                                   width: 1.0,
                                 ),
                               ),
-                              labelText: translateText(context, 'New Password'),
+                              labelText: translateText(context, 'Password'),
                               contentPadding: EdgeInsets.all(10),
                             ),
                             textInputAction: TextInputAction.done,
@@ -189,8 +178,9 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
                               shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
                               splashColor: Colors.grey,
                               onPressed: () async {
+                                FocusScope.of(context).unfocus();
                                 await pr.show(); /// 3. Progress Dialog Show - Need Declaration, Setting, Style
-                                resetPassword(context, empcodeController, nameController, passwordController, pr); /// Input Box에서 Enter 적용시 바로 로그인 프로세스가 진행됨
+                                resetPassword(context, answer1Controller, passwordController, pr);
                               },
                             ),
                           ),
@@ -206,63 +196,22 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
     );
   }
 
-  /// Check Employee
-  Future<void> checkEmployee(BuildContext context, TextEditingController empcodeController, TextEditingController nameController, ProgressDialog pr) async {
+  /// Password Validation Check
+  bool isPasswordCompliant(String password, [int minLength = 6, int maxLength = 21]) {
+    if (password == null || password.isEmpty) { return false; } /// Password Null Check
 
-    pr.hide(); /// 4. Progress Dialog Close
+    bool hasUppercase = password.contains(new RegExp(r'[A-Z]')); /// Upper Case Character Check
+    bool hasLowercase = password.contains(new RegExp(r'[a-z]')); /// Lower Case Character Check
+    bool hasDigits = password.contains(new RegExp(r'[0-9]')); /// Number Check
+    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#<>/?":_`~;[\]{}\\|=+)(*&^%\s-]')); /// Special Character Check, 특수문자 제한관련 확인 필요
+    bool hasMinLength = password.length > minLength; /// Min Over 6
+    bool hasMaxLength = password.length < maxLength; /// Max Under 21
 
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus.unfocus();
-    }
-
-    var list;
-
-    if(empcodeController.text.isEmpty && nameController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number and Name Not Exists !!!'); } /// Employee Number and Name Empty Check
-    else {
-      try {
-
-        // Login API Url
-        var url = 'https://jhapi.jahwa.co.kr/FindEmployee';
-
-        // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text};
-
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
-          if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
-          if(response.statusCode == 200){
-            if(jsonDecode(response.body)['Table'].length != 0) {
-              list = jsonDecode(response.body);
-
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return SimpleDialog(
-                    title: const Text('Select Employee ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black, )),
-                    children: makeDialogItems(context, 'FindEmployee', list, "", empcodeController, nameController),
-                  );
-                },
-              );
-
-              FocusScope.of(context).requestFocus(passwordFocusNode);
-            }
-            else {
-              showMessageBox(context, "Alert", "검색결과가 존재하지 않습니다.");
-            }
-          }
-          else{ return false; }
-        });
-      }
-      catch (e) {
-        print("get Notiofy Error : " + e.toString());
-        return false;
-      }
-    }
+    return hasDigits & (hasUppercase || hasLowercase) & hasSpecialCharacters & hasMinLength & hasMaxLength;
   }
 
   /// Reset Password Process
-  Future<void> resetPassword(BuildContext context, TextEditingController empcodeController, TextEditingController nameController, TextEditingController passwordController, ProgressDialog pr) async {
+  Future<void> resetPassword(BuildContext context, TextEditingController answer1Controller, TextEditingController passwordController, ProgressDialog pr) async {
 
     pr.hide(); /// 4. Progress Dialog Close
 
@@ -271,7 +220,11 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
       FocusManager.instance.primaryFocus.unfocus();
     }
 
-    if(empcodeController.text.isEmpty || nameController.text.isEmpty) { showMessageBox(context, 'Alert', 'Employee Number or Name Not Exists !!!'); } /// Employee Number and Name Empty Check
+    if(remain == 0)  { showMessageBox(context, 'Alert', 'The authentication time has expired.'); }
+    else if(answer1Controller.text.isEmpty) { showMessageBox(context, 'Alert', 'Answer Not Exists !!!'); }
+    else if(messagenum != answer1Controller.text) { showMessageBox(context, 'Alert', 'The authentication number does not match.'); }
+    else if(passwordController.text.isEmpty) { showMessageBox(context, 'Alert', 'Password Not Exists !!!'); } /// Password Empty Check
+    else if(!isPasswordCompliant(passwordController.text)) { showMessageBox(context, 'Alert', 'Password invalid !!!'); } /// Password Validation Check
     else {
       try {
 
@@ -279,12 +232,28 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
         var url = 'https://jhapi.jahwa.co.kr/ResetPassword';
 
         // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text};
+        var data = {'Page': "ResetPassword3", 'EmpCode': resetpass['Table'][0]['empcode'].toString(), 'Name' : '', 'Password' : passwordController.text, 'Company' : resetpass['Table'][0]['company'].toString(), 'Answer1' : '', 'Answer2' : ''};
 
         return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
-            showMessageBox(context, "", response.body.toString());
+            if (response.body.toString().substring(0, 4) == "LOCK") {
+              var strArray = response.body.toString().split("_");
+              if (strArray.length > 0) {
+                showMessageBox(context, "Locking", "3회이상의 답변 오류 발생으로 인해 계정이 잠겨있습니다. 10분뒤 다시 진행해 주시기 바랍니다.");
+              }
+              else showMessageBox(context, "Alert", response.body.toString());
+            }
+            else if (response.body.toString() == "Work Completed") {
+              showMessageBox(context, "Alert", response.body.toString());
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);  /// Direct Move to Login
+              });
+            }
+            else if (response.body.toString() == "Use Wrong Text") {
+              showMessageBox(context, "Alert", "문제를 발생시킬 문자를 사용하였습니다. 확인후 올바른 문자를 사용하시기 바랍니다.");
+            }
+            else { showMessageBox(context, "Alert", "Password Not Available, Check Password Rule!!! Can Not Use id and More than 2 Letter of Name in Password!!!"); }
           }
           else{ return false; }
         });

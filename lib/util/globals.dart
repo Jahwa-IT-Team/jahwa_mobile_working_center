@@ -78,3 +78,4 @@ class User {
 
 /// 비밀번호 초기화용 변수
 var resetpass = {"Table": [{ "company" : "", "empcode" : "", "name" : "", "question1" : "", "question2" : "" }]};
+var messagenum = "";
