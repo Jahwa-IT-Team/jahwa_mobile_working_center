@@ -140,7 +140,7 @@ class _CheckState extends State<Check> {
       var url = 'https://jhapi.jahwa.co.kr/Menu'; /// API Url
       var data = {'lang': session['Language'], 'category' : 'JHMobile', 'entgroup' : session['EntGroup'], 'entcode' : session['EntCode'], 'empcode' : session['EmpCode'], 'auth' : session['Auth']}; /// Send Parameter
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
         if(response.statusCode == 200){
           menudata = jsonDecode(response.body);

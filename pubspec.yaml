@@ -7,43 +7,46 @@ environment:
   sdk: ">=2.8.0 <3.0.0"
 
 dependency_overrides:
-  crypto: ^2.1.5
+  crypto: ^3.0.1
   collection: ^1.14.13
-  args: ^1.6.0
+  args: ^2.1.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cron: ^0.2.3 # Background Execution - 별도로 실행되는 Thread를 생성하는 패키지, 프로그램 실행시만 사용가능
-  cupertino_icons: ^0.1.2 # Cupertino Icons font
-  device_apps: ^1.2.0 # 프로그램 실행여부 체크용 Package
-  encrypt: ^4.0.2 # Encrypt Package - 암호화 처리용 패키지, /util/common.dart에서 사용
-  firebase_messaging: ^7.0.3 # Firebase Cloud Messaging
-  flutter_background_service: ^0.0.1+21 # 프로그램이 종료되더라도 실행되는 프로세스
-  flutter_html: ^1.0.2 # HTML Viewer - HTML로 이루어진 내용을 보기위해 사용되는 패키지
-  flutter_launcher_name: ^0.0.1 # App Name Setting Package
-  flutter_local_notifications: ^3.0.1+6 # Notification - 상단 Status Bar에 알람참을 만드는 패키지, 휴대폰에 따라 최대 24~48개 가량 메세지가 만들어짐
+  cron: ^0.3.0 # Background Execution - 별도로 실행되는 Thread를 생성하는 패키지, 프로그램 실행시만 사용가능
+  cupertino_icons: ^1.0.3 # Cupertino Icons font
+  device_apps: ^2.1.1 # 프로그램 실행여부 체크용 Package
+  encrypt: ^5.0.0 # Encrypt Package - 암호화 처리용 패키지, /util/common.dart에서 사용
+  firebase_messaging: ^9.1.4 # Firebase Cloud Messaging
+  flutter_background_service: ^0.1.3 # 프로그램이 종료되더라도 실행되는 프로세스
+  flutter_html: ^2.0.0 # HTML Viewer - HTML로 이루어진 내용을 보기위해 사용되는 패키지
+  #flutter_launcher_name: ^0.0.1 # App Name Setting Package
+  flutter_local_notifications: ^5.0.0+4 # Notification - 상단 Status Bar에 알람참을 만드는 패키지, 휴대폰에 따라 최대 24~48개 가량 메세지가 만들어짐
   flutter_swiper: ^1.1.6 # Swipe Page - 한페이지내에서 여러화면을 Swipe할때 사용, JimsGatheringInformation.dart등에서 사용
-  font_awesome_flutter: ^8.8.1 # FontAwesome Icon Package
-  http: ^0.12.2 # Api Connection Package
-  intl: ^0.16.1 # By Locale Number, Date Format Package
-  loading_overlay: ^0.2.1 # Loaging Progress - 프로그램의 정보가 모두 나타낼때까지 실행중임을 표시하는 패키지, JimsGatheringInformation.dart등에서 사용
+  font_awesome_flutter: ^9.0.0 # FontAwesome Icon Package
+  http: ^0.13.3 # Api Connection Package
+  image: ^3.0.2
+  intl: ^0.17.0 # By Locale Number, Date Format Package
+  loading_overlay: ^0.3.0 # Loaging Progress - 프로그램의 정보가 모두 나타낼때까지 실행중임을 표시하는 패키지, JimsGatheringInformation.dart등에서 사용
   mobile_number: ^1.0.3 # My Phone Number
-  new_version: ^0.0.6 # Google Store Verwion Check
-  package_info: ^0.4.3 # Get Package Info - App Version을 알아내는데 사용하는 패키지, check.dart등에서 사용함
+  new_version: ^0.2.0 # Google Store Verwion Check
+  package_info: ^2.0.0 # Get Package Info - App Version을 알아내는데 사용하는 패키지, check.dart등에서 사용함
   progress_dialog: ^1.2.4 # Progress Dialog Package - login.dart에서 사용하는 실행중 Dialog표시 기능, Loading_overlay를 통해 간단히 Progress를 표시하는 방법도 있음
   progress_state_button: ^1.0.1 # Progress In Check Process - check.dart에서 사용하는 버튼형 Progress
-  shared_preferences: ^0.5.10 # Global Variable of App (Same Cookie) Package - 쿠키를 대신하여 사용하는 패키지, login.dart, common.dart등에서 사용
+  shared_preferences: ^2.0.5 # Global Variable of App (Same Cookie) Package - 쿠키를 대신하여 사용하는 패키지, login.dart, common.dart등에서 사용
   store_redirect: ^1.0.2 # Redirect to Google Store - 구글스토어로 이동
-  syncfusion_flutter_charts: ^18.3.48 # Chart
-  syncfusion_flutter_datagrid: ^18.3.48-beta # Table
-  url_launcher: ^5.7.2 # Url, Email, Tel, SMS Use - URL관련 처리를 지원하는 패키지, update.dart등에서 http url을 사용할 수 있음
+  syncfusion_flutter_charts: ^19.1.59 # Chart
+  syncfusion_flutter_datagrid: ^19.1.59-beta # Table
+  url_launcher: ^6.0.3 # Url, Email, Tel, SMS Use - URL관련 처리를 지원하는 패키지, update.dart등에서 http url을 사용할 수 있음
+  xml: ^5.0.0
+  yaml: ^3.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.5 # App Icon Setting Package -> Ref. flutter_icons
+  flutter_launcher_icons: ^0.9.0 # App Icon Setting Package -> Ref. flutter_icons
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -100,8 +103,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 # App Name Setting
-flutter_launcher_name:
-  name: "JH Mobile"
+#flutter_launcher_name:
+#  name: "JH Mobile"
 
 # App Icon Setting
 flutter_icons:

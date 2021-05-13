@@ -201,7 +201,7 @@ class _CheckEmployeeState extends State<CheckEmployee> {
         // Send Parameter
         var data = {'Company': Company, 'EmpCode': empcodeController.text, 'Name' : nameController.text};
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200){
             if (response.body == "User does not exist." || response.body == "User Name is incorrect." || response.body == "Error") showMessageBox(context, "Alert", response.body);
@@ -282,7 +282,7 @@ class _CheckEmployeeState extends State<CheckEmployee> {
         // Send Parameter
         var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text};
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
             if (response.body.toString() == "하루 5회 전송 제한횟수를 초과했습니다.") {

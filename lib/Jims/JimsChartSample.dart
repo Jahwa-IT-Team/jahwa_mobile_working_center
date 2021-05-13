@@ -12,7 +12,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
-
+/*
 class JimsChartSample extends StatefulWidget {
   @override
   _JimsChartSampleState createState() => _JimsChartSampleState();
@@ -33,7 +33,7 @@ class _JimsChartSampleState extends State<JimsChartSample> {
       // Send Parameter
       var data = {};
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Check Version Data Error !!!'); }
         else if(response.statusCode == 200){
@@ -429,10 +429,10 @@ class _JimsChartSampleState extends State<JimsChartSample> {
                     columnWidthMode: ColumnWidthMode.fill, /// Grid의 크기를 최대로
                     rowHeight: 50,
                     columns: [
-                      GridTextColumn(mappingName: 'MachineName', headerText: 'Server'), /// width, padding, textAlignment, headerTextAlignment 설정 가능
-                      GridNumericColumn(mappingName: 'CPUUsage', headerText: 'CPU'),
-                      GridNumericColumn(mappingName: 'MemoryUsage', headerText: 'Memory'),
-                      GridNumericColumn(mappingName: 'DiskUsage', headerText: 'C Drive'),
+                      GridTextColumn(columnName: 'MachineName', label: Text('Server')), /// width, padding, textAlignment, headerTextAlignment 설정 가능
+                      GridTextColumn(columnName: 'CPUUsage', label: Text('CPU')),
+                      GridTextColumn(columnName: 'MemoryUsage', label: Text('Memory')),
+                      GridTextColumn(columnName: 'DiskUsage', label: Text('C Drive')),
                     ],
                   ),
                 );
@@ -556,3 +556,4 @@ class ServerDataSource extends DataGridSource<Server> {
     }
   }
 }
+*/

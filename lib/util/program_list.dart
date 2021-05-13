@@ -50,7 +50,7 @@ final routes = {
   '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
   '/JimsUsageTop' : (BuildContext context) => JimsUsageTop(),
   '/JimsAppPoolRecycle' : (BuildContext context) => JimsAppPoolRecycle(),
-  '/JimsChartSample' : (BuildContext context) => JimsChartSample(),
+  ///'/JimsChartSample' : (BuildContext context) => JimsChartSample(),
 
   /// Sample
   '/StandardDesign' : (BuildContext context) => StandardDesign(),

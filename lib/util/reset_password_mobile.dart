@@ -234,7 +234,7 @@ class _ResetPasswordMobileState extends State<ResetPasswordMobile> {
         // Send Parameter
         var data = {'Page': "ResetPassword3", 'EmpCode': resetpass['Table'][0]['empcode'].toString(), 'Name' : '', 'Password' : passwordController.text, 'Company' : resetpass['Table'][0]['company'].toString(), 'Answer1' : '', 'Answer2' : ''};
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
             if (response.body.toString().substring(0, 4) == "LOCK") {

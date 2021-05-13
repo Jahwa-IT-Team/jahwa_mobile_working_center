@@ -54,7 +54,7 @@ class _JimsAppPoolRecycleState extends State<JimsAppPoolRecycle> {
         );
         appPoolList.add(dropdownMenuItem);
       }
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server List Data Error !!!'); }
         else if(response.statusCode == 200){
@@ -92,7 +92,7 @@ class _JimsAppPoolRecycleState extends State<JimsAppPoolRecycle> {
       // Send Parameter
       var data = {'Server': strServer, 'AppPool' : strAppPool, 'EmpCode' : session["EmpCode"]};
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
         else if(response.statusCode == 200){

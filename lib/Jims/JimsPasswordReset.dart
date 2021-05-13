@@ -228,7 +228,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
         // Send Parameter
         var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text};
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200){
             if(jsonDecode(response.body)['Table'].length != 0) {
@@ -281,7 +281,7 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
         // Send Parameter
         var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text};
 
-        return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+        return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
           if(response.statusCode == 200) {
             showMessageBox(context, "", response.body.toString());

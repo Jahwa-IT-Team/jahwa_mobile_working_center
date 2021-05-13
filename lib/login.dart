@@ -308,7 +308,7 @@ class _LoginState extends State<Login> {
       var url = 'https://jhapi.jahwa.co.kr/Login';  /// API Url
       var data = {'id': email, 'password' : password}; /// Send Parameter
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ) { return false; }
         if(response.statusCode == 200){
           Map<String, dynamic> table = jsonDecode(response.body);

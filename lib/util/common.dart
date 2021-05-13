@@ -169,7 +169,7 @@ Future<bool> systemNotification() async {
       // Send Parameter
       var data = {'page': '1', 'pagerowcount' : '9999999999', 'div' : 'Notify', 'empcode' : session['EmpCode']};
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
         if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length != 0) {
@@ -203,7 +203,7 @@ Future<bool> checkNotice(BuildContext context) async {
       // Send Parameter
       var data = {'page': '1', 'pagerowcount' : '9999999999', 'div' : 'New', 'empcode' : session['EmpCode']};
 
-      return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
         if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length != 0) {
@@ -396,7 +396,7 @@ Future<bool> getSelectList(String div) async {
     // Send Parameter
     var data = {'database': '', 'div' : div, 'data' : '', 'empcode' : session['EmpCode']};
 
-    return await http.post(Uri.encodeFull(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
+    return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
       if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
       if(response.statusCode == 200){
         if(jsonDecode(response.body)['Table'].length != 0) {
