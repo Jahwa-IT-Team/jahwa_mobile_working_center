@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:cron/cron.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
 
@@ -17,13 +18,15 @@ class MyHttpOverrides extends HttpOverrides{
   }
 }
 
-void main() {
+void main() async {
 
   /// Flutter Background Service
   WidgetsFlutterBinding.ensureInitialized();
   FlutterBackgroundService.initialize(onStart); /// onStart Fuinction은 common.dart에 설정됨
 
   HttpOverrides.global = new MyHttpOverrides();
+
+  await Firebase.initializeApp();
 
   runApp(MainApp());
 

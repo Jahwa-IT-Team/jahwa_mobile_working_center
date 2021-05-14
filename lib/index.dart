@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_version/new_version.dart';
 import 'package:package_info/package_info.dart';
@@ -17,28 +17,28 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
 
-  /// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   /// Call When Form Init
   @override
   void initState() {
     super.initState();
-/*
+
     NewVersion(
-      context: context,
       ///iOSId: 'kr.co.jahwa.jahwa_mobile_working_center',
       androidId: 'kr.co.jahwa.jahwa_mobile_working_center',
-    ).showAlertIfNecessary();
+    ).showAlertIfNecessary(context: context);
 
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async { await showNotification(message['notification']['title'], message['notification']['body']); },
-      onLaunch: (Map<String, dynamic> message) async { await showNotification('onLaunch', message['notification']['body']); },
-      onResume: (Map<String, dynamic> message) async { await showNotification('onResume', message['notification']['body']); },
-    );
-    _firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true));
-    ///_firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) { print("Settings registered: $settings"); });
-    ///_firebaseMessaging.getToken().then((String token) { assert(token != null); setState(() { _homeScreenText = "Push Messaging token: $token"; }); print(_homeScreenText); });
-*/
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage message) {
+      if (message != null) {
+        print('Notification data: ${message.notification}');
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      if (message.notification != null) {
+        await showNotification(message.notification.title, message.notification.body);
+      }
+    });
+
     print("open Index Page : " + DateTime.now().toString());
   }
 

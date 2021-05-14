@@ -12,7 +12,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
-/*
+
 class JimsChartSample extends StatefulWidget {
   @override
   _JimsChartSampleState createState() => _JimsChartSampleState();
@@ -42,11 +42,11 @@ class _JimsChartSampleState extends State<JimsChartSample> {
           }
           else {
             chartData.clear();
-            _server.clear();
+            servers.clear();
             jsonDecode(response.body)['Table'].forEach((element) {
               ChartSampleData chartSampleData = ChartSampleData(x: element['MachineName'].length > 7 ? element['MachineName'].substring(0, 5) + '..' : element['MachineName'], y: element['CPUUsage'], secondSeriesYValue: element['MemoryUsage'], thirdSeriesYValue: element['DiskUsage']);
               chartData.add(chartSampleData);
-              _server.add(Server(element['MachineName'], element['CPUUsage'], element['MemoryUsage'], element['DiskUsage']));
+              servers.add(Server(element['MachineName'], element['CPUUsage'], element['MemoryUsage'], element['DiskUsage']));
             });
             setState(() {
               _isLoading = false;
@@ -206,6 +206,9 @@ class _JimsChartSampleState extends State<JimsChartSample> {
 
   @override
   Widget build(BuildContext context) {
+
+    serverDataSource = ServerDataSource(servers : servers);
+
     return GestureDetector( // For Keyboard UnFocus
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -425,14 +428,14 @@ class _JimsChartSampleState extends State<JimsChartSample> {
                   padding: EdgeInsets.only(top: 20.0, left:10.0, bottom: 30.0, right:10.0,),
                   alignment: Alignment.topCenter,
                   child: SfDataGrid(
-                    source: _serverDataSource,
+                    source: serverDataSource,
                     columnWidthMode: ColumnWidthMode.fill, /// Grid의 크기를 최대로
                     rowHeight: 50,
                     columns: [
-                      GridTextColumn(columnName: 'MachineName', label: Text('Server')), /// width, padding, textAlignment, headerTextAlignment 설정 가능
-                      GridTextColumn(columnName: 'CPUUsage', label: Text('CPU')),
-                      GridTextColumn(columnName: 'MemoryUsage', label: Text('Memory')),
-                      GridTextColumn(columnName: 'DiskUsage', label: Text('C Drive')),
+                      GridTextColumn(columnName: 'MachineName', label: Container(padding: EdgeInsets.all(16.0), alignment: Alignment.centerRight, child: Text('Server',))), /// width, padding, textAlignment, headerTextAlignment 설정 가능
+                      GridTextColumn(columnName: 'CPUUsage', label: Container(padding: EdgeInsets.all(16.0), alignment: Alignment.centerRight, child: Text('CPU'))),
+                      GridTextColumn(columnName: 'MemoryUsage', label: Container(padding: EdgeInsets.all(16.0), alignment: Alignment.centerRight, child: Text('Memory'))),
+                      GridTextColumn(columnName: 'DiskUsage', label: Container(padding: EdgeInsets.all(16.0), alignment: Alignment.centerRight, child: Text('C Drive'))),
                     ],
                   ),
                 );
@@ -527,33 +530,40 @@ class Server {
   final num DiskUsage;
 }
 
-final List<Server> _server = <Server>[];
+final List<Server> servers = <Server>[];
 
-final ServerDataSource _serverDataSource = ServerDataSource();
+ServerDataSource serverDataSource;
+///final ServerDataSource serverDataSource = ServerDataSource();
 
-class ServerDataSource extends DataGridSource<Server> {
+class ServerDataSource extends DataGridSource {
   @override
-  List<Server> get dataSource => _server;
+  ServerDataSource({List<Server> servers}) {
+    _servers = servers
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'MachineName', value: e.MachineName),
+      DataGridCell<double>(columnName: 'CPUUsage', value: e.CPUUsage),
+      DataGridCell<double>(columnName: 'MemoryUsage', value: e.MemoryUsage),
+      DataGridCell<double>(columnName: 'DiskUsage', value: e.DiskUsage),
+    ]))
+        .toList();
+  }
+
+  List<DataGridRow>  _servers = [];
 
   @override
-  getValue(Server server, String columnName) {
-    switch (columnName) {
-      case 'MachineName':
-        return server.MachineName;
-        break;
-      case 'CPUUsage':
-        return server.CPUUsage;
-        break;
-      case 'MemoryUsage':
-        return server.MemoryUsage;
-        break;
-      case 'DiskUsage':
-        return server.DiskUsage;
-        break;
-      default:
-        return ' ';
-        break;
-    }
+  List<DataGridRow> get rows =>  _servers;
+
+  @override
+  buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((dataGridCell) {
+          return Container(
+            alignment: (dataGridCell.columnName == 'CPUUsage' || dataGridCell.columnName == 'MemoryUsage' || dataGridCell.columnName == 'DiskUsage')
+                ? Alignment.centerRight
+                : Alignment.center,
+            padding: EdgeInsets.all(16.0),
+            child: Text(dataGridCell.value.toString()),
+          );
+        }).toList());
   }
 }
-*/
