@@ -232,7 +232,7 @@ class _TestState extends State<Test> {
                                     icon: FaIcon(FontAwesomeIcons.solidBell),
                                     iconSize: 50,
                                     color: Colors.blueAccent,
-                                    onPressed: () async { await showNotification('Notification', 'Notification Test !!!'); },
+                                    onPressed: () async { await showNotification('제목부문은 길게 안됨...', '내용부문도 길게 처리될까... 얼마나 길게 처리될까.. 여러분 테스트입니다. 그냥 살짝 무시하세요.. 더길게 써야 하나... 이것도 힘드네...'); },
                                   ),
                                   Text('Flutter Notify', style: TextStyle(fontSize: 13)),
                                 ],

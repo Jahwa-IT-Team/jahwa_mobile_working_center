@@ -232,9 +232,9 @@ Future<void> showNotification(var title, var content) async {
   final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
 
-  const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('Id', 'Name', 'Description', importance: Importance.max, priority: Priority.high, ticker: 'ticker', enableLights: true, color: const Color.fromARGB(255, 0, 255, 0), ledColor: const Color.fromARGB(255, 255, 255, 255), ledOnMs: 1000, ledOffMs: 500);
-  const IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+  AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('Id', 'Name', 'Description', importance: Importance.max, priority: Priority.high, ticker: 'ticker', enableLights: true, color: const Color.fromARGB(255, 0, 255, 0), ledColor: const Color.fromARGB(255, 255, 255, 255), ledOnMs: 1000, ledOffMs: 500, styleInformation: BigTextStyleInformation(''));
+  IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.show(rng.nextInt(1000000), title, content, platformChannelSpecifics, payload: 'Notification'); // Id를 Random으로 생성하여 중복되지 않도록 처리하면 각 메시지가 별도로 나타난다.
 }
 
