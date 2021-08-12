@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+///import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_version/new_version.dart';
 import 'package:package_info/package_info.dart';
@@ -27,6 +27,8 @@ class _IndexState extends State<Index> {
       androidId: 'kr.co.jahwa.jahwa_mobile_working_center',
     ).showAlertIfNecessary(context: context);
 
+    /// Firebase 삭제 예정
+    /*
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage message) {
       if (message != null) {
         print('Notification data: ${message.notification}');
@@ -38,6 +40,7 @@ class _IndexState extends State<Index> {
         await showNotification(message.notification.title, message.notification.body);
       }
     });
+    */
 
     print("open Index Page : " + DateTime.now().toString());
   }

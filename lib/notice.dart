@@ -59,7 +59,7 @@ class _NoticeState extends State<Notice> {
                           Text(element['Title'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
                           SizedBox(height: 10, ),
                           Html(
-                            data : element['Contents'],
+                            data : element['Contents'].replaceAll('\n', '<br>'),
                             style: {
                               "body" : Style(padding: EdgeInsets.all(0), margin: EdgeInsets.all(0),),
                             },
