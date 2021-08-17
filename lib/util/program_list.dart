@@ -11,6 +11,7 @@ import 'package:jahwa_mobile_working_center/Jims/JimsGatheringInformation.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsServerInformation.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsUsageTop.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsAppPoolRecycle.dart';
+import 'package:jahwa_mobile_working_center/Jims/JimsIISRecycle.dart';
 import 'package:jahwa_mobile_working_center/Jims/JimsChartSample.dart';
 
 import 'package:jahwa_mobile_working_center/mail/email_gw.dart';
@@ -50,6 +51,7 @@ final routes = {
   '/JimsServerInformation' : (BuildContext context) => JimsServerInformation(),
   '/JimsUsageTop' : (BuildContext context) => JimsUsageTop(),
   '/JimsAppPoolRecycle' : (BuildContext context) => JimsAppPoolRecycle(),
+  '/JimsIISRecycle' : (BuildContext context) => JimsIISRecycle(),
   '/JimsChartSample' : (BuildContext context) => JimsChartSample(),
 
   /// Sample
