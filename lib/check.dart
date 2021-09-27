@@ -125,7 +125,8 @@ class _CheckState extends State<Check> {
   Future<bool> checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     /// Due Date가 지난 경우 모든 세션정보를 삭제하고 Login Page로 이동
-    if((prefs.getString('DueDate') ?? '') != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+    if(prefs.getString('DueDate') == "" ||
+        DateTime.parse((prefs.getString('DueDate') ?? '1900-01-01')).isBefore(DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now())))) {
       clearSession();
       removeUserSharedPreferences();
       return true;
