@@ -31,6 +31,11 @@ class _MenuState extends State<Menu> {
     screenHeight = MediaQuery.of(context).size.height; // Screen Height
     statusBarHeight = MediaQuery.of(context).padding.top;
 
+    var photo = "";
+
+    if(session['Photo'] == "") photo = 'https://gw.jahwa.co.kr/Common/Image/pics.gif';
+    else photo = 'https://gw.jahwa.co.kr/Photo/' + session['Photo'];
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView (
@@ -52,7 +57,7 @@ class _MenuState extends State<Menu> {
                         border: Border.all(color:Colors.white, width: 2, style: BorderStyle.solid,),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('https://gw.jahwa.co.kr/Photo/' + session['Photo'],)),
+                          image: NetworkImage(photo,)),
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                       ),
                     ),

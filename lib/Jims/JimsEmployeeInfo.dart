@@ -180,6 +180,8 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
 
     try {
 
+      var photo = "";
+
       // Login API Url
       var url = 'https://jhapi.jahwa.co.kr/EmpInformation';
 
@@ -200,6 +202,9 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
                 onPressed: () {Navigator.of(context).pop();},
               );
 
+              if(element['Photo'] == "") photo = 'https://gw.jahwa.co.kr/Common/Image/pics.gif';
+              else photo = 'https://gw.jahwa.co.kr/Photo/' + element['Photo'];
+
               /// set up the AlertDialog
               AlertDialog alert = AlertDialog(
                 title: Text(element['DeptName'] + ' ' + element['Name'] + ' ' + element['Position'] + ' (' + element['Title'] + ')', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,)),
@@ -214,7 +219,7 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
                         decoration: BoxDecoration(
                           border: Border.all(color:Colors.white, width: 2, style: BorderStyle.solid,),
                           image: DecorationImage(
-                            image: NetworkImage('https://gw.jahwa.co.kr/Photo/' + element['Photo'],)),
+                            image: NetworkImage(photo,)),
                         ),
                       ),
                       SizedBox(height: 16,),

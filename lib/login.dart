@@ -217,6 +217,9 @@ class _LoginState extends State<Login> {
   Future<void> addUserSharedPreferences(var user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance(); /// Cookie 대용
 
+    var today = DateTime.now();
+    var oneMonthFromNow = today.add(const Duration(days: 30));
+
     try {
       prefs.setString('EntCode', user.EntCode);
       prefs.setString('EntName', user.EntName);
@@ -236,7 +239,7 @@ class _LoginState extends State<Login> {
       prefs.setString('EntGroup', user.EntGroup);
       prefs.setString('OfficeTel', user.OfficeTel);
       prefs.setString('Mobile', user.Mobile);
-      prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(oneMonthFromNow));
       prefs.setString('Language', language);
 
       /// common.dart에 정의된 session 정보
@@ -258,7 +261,7 @@ class _LoginState extends State<Login> {
       session['EntGroup'] = user.EntGroup;
       session['OfficeTel'] = user.OfficeTel;
       session['Mobile'] = user.Mobile;
-      session['DueDate'] = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      session['DueDate'] = DateFormat('yyyy-MM-dd').format(oneMonthFromNow);
     }
     catch (e) { print(e.toString()); }
   }
