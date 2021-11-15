@@ -10,7 +10,7 @@
   "Name" : "이름",
   "New Password" : "신규 비밀번호",
   "Password" : "비밀번호",
-  "Password invalid !!!": "비밀번호가 옳바르지 않습니다 !!!",
+  "Password invalid !!!": "비밀번호가 올바르지 않습니다 !!!",
   "Password Not Exists !!!" : "비밀번호가 존재하지 않습니다 !!!",
   "Question & Answer Authentication" : "질문 답변 인증",
   "Raised Button" : "Raised Button (KO)",
@@ -20,6 +20,6 @@
   "Select Employee" : "사원선택",
   "Select Language" : "언어선택",
   "Select Reset Method !!!" : "초기화 방법 선택 !!!",
-  "The login information is incorrect." : "로그인 정보가 옳바르지 않습니다.",
+  "The login information is incorrect." : "로그인 정보가 올바르지 않습니다.",
   "Wait a Moment..." : "잠시만 기다려주세요..."
 }
