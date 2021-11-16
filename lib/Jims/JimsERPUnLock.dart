@@ -242,7 +242,8 @@ class _JimsERPUnLockState extends State<JimsERPUnLock> {
                 actions: <Widget>[
                   FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        unlockERP(context, element['EmpCode']);
+                        /// Navigator.of(context).pop();
                       },
                       child: Text('UnLock', style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent, fontWeight: FontWeight.bold,)),
                   ),
@@ -267,6 +268,75 @@ class _JimsERPUnLockState extends State<JimsERPUnLock> {
     }
     catch (e) {
       showMessageBox(context, 'Alert', 'Preference Setting Error A : ' + e.toString());
+    }
+  }
+
+  /// Show Message Box Function
+  unlockERP(BuildContext context, String code) async {
+
+    try {
+
+      var photo = "";
+
+      // Login API Url
+      var url = 'https://jhapi.jahwa.co.kr/JimsERPUnLock';
+
+      // Send Parameter
+      var data = {'EmpCode': code};
+
+      return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
+        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'ERP UnLock Error !!!'); }
+        else if(response.statusCode == 200){
+          if(jsonDecode(response.body)['Table'].length == 0) {
+            showMessageBox(context, 'Alert', 'Data does not Exists!!!');
+          }
+          else {
+            jsonDecode(response.body)['Table'].forEach((element) {
+              /// set up the button
+              Widget okButton = FlatButton(
+                child: Text("Okay", style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent,), ),
+                onPressed: () {Navigator.of(context).pop();},
+              );
+
+              var Message = 'OKAY';
+              if(element['Code'] == 'OKAY') Message = 'UnLock Completed';
+              else Message = element['Code'];
+
+              /// set up the AlertDialog
+              AlertDialog alert = AlertDialog(
+                content: new SingleChildScrollView(
+                  padding: EdgeInsets.all(30),
+                  child: new ListBody(
+                    children: <Widget>[
+                      Text(Message, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,)),
+                    ],
+                  ),
+                ),
+                contentPadding: EdgeInsets.all(0),
+                titleTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black, fontWeight: FontWeight.bold,),
+                contentTextStyle: TextStyle(fontFamily: "Malgun", color: Colors.black,),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close', style: TextStyle(fontFamily: "Malgun", color: Colors.blueAccent,)),
+                  ),
+                ],
+              );
+
+              /// show the dialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) { return alert; },
+              );
+            });
+          }
+        }
+      });
+    }
+    catch (e) {
+      showMessageBox(context, 'Alert', 'ERP UnLock Error : ' + e.toString());
     }
   }
 }
