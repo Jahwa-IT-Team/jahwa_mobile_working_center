@@ -241,6 +241,7 @@ class _LoginState extends State<Login> {
       prefs.setString('Mobile', user.Mobile);
       prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(oneMonthFromNow));
       prefs.setString('Language', language);
+      prefs.setString('Token', user.Token);
 
       /// common.dart에 정의된 session 정보
       session['EntCode'] =  user.EntCode;
