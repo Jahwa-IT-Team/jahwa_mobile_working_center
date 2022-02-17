@@ -263,6 +263,7 @@ class _LoginState extends State<Login> {
       session['OfficeTel'] = user.OfficeTel;
       session['Mobile'] = user.Mobile;
       session['DueDate'] = DateFormat('yyyy-MM-dd').format(oneMonthFromNow);
+      session['Token'] = user.Token;
     }
     catch (e) { print(e.toString()); }
   }

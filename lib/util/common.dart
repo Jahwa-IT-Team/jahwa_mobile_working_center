@@ -53,6 +53,7 @@ clearSession() {
     session['OfficeTel'] = '';
     session['Mobile'] = '';
     session['DueDate'] = '';
+    session['Token'] = '';
   }
   catch (e) { print(e.toString()); }
 }
