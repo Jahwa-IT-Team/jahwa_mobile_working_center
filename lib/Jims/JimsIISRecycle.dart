@@ -36,7 +36,7 @@ class _JimsIISRecycleState extends State<JimsIISRecycle> {
       var url = 'https://jhapi.jahwa.co.kr/SelectList';
 
       // Send Parameter
-      var data = {'Div': strDiv, 'Data' : strServer, 'EmpCode' : ''};
+      var data = {'Div': strDiv, 'Data' : strServer, 'EmpCode' : session["EmpCode"], 'Token' : session['Token']};
 
       if(strDiv == "AppPoolServer") {
         iisServerList.clear();

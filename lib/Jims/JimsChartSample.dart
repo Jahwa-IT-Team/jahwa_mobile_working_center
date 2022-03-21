@@ -31,7 +31,7 @@ class _JimsChartSampleState extends State<JimsChartSample> {
       var url = 'https://jhapi.jahwa.co.kr/JimsChartSample';
 
       // Send Parameter
-      var data = {};
+      var data = {'EmpCode': session['EmpCode'], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());

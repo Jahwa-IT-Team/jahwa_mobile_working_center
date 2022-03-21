@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:jahwa_mobile_working_center/util/common.dart';
-
+import 'package:jahwa_mobile_working_center/util/globals.dart';
 
 class JimsGatheringInformation extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _JimsGatheringInformationState extends State<JimsGatheringInformation> {
       var url = 'https://jhapi.jahwa.co.kr/JimsGatheringInformation';
 
       // Send Parameter
-      var data = {};
+      var data = {'EmpCode': session['EmpCode'], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());

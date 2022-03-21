@@ -90,7 +90,7 @@ class _JimsAppPoolRecycleState extends State<JimsAppPoolRecycle> {
       var url = 'https://jhapi.jahwa.co.kr/JimsAppPoolRecycle';
 
       // Send Parameter
-      var data = {'Server': strServer, 'AppPool' : strAppPool, 'EmpCode' : session["EmpCode"]};
+      var data = {'Server': strServer, 'AppPool' : strAppPool, 'EmpCode' : session["EmpCode"], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());

@@ -131,7 +131,7 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
       var url = 'https://jhapi.jahwa.co.kr/FindEmployee';
 
       // Send Parameter
-      var data = {'EmpCode': searchController.text, 'Name' : searchController.text};
+      var data = {'EmpCode': searchController.text, 'Name' : searchController.text, 'EmpCode2': session['EmpCode'], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
@@ -186,7 +186,7 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
       var url = 'https://jhapi.jahwa.co.kr/EmpInformation';
 
       // Send Parameter
-      var data = {'EmpCode': code};
+      var data = {'EmpCode': code, 'EmpCode2': session['EmpCode'], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }

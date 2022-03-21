@@ -139,7 +139,7 @@ class _CheckState extends State<Check> {
     try {
 
       var url = 'https://jhapi.jahwa.co.kr/Menu'; /// API Url
-      var data = {'lang': session['Language'], 'category' : 'JHMobile', 'entgroup' : session['EntGroup'], 'entcode' : session['EntCode'], 'empcode' : session['EmpCode'], 'auth' : session['Auth']}; /// Send Parameter
+      var data = {'lang': session['Language'], 'category' : 'JHMobile', 'entgroup' : session['EntGroup'], 'entcode' : session['EntCode'], 'empcode' : session['EmpCode'], 'auth' : session['Auth'], 'token' : session['Token']}; /// Send Parameter
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
         if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
@@ -209,6 +209,7 @@ class _CheckState extends State<Check> {
         session['OfficeTel'] = prefs.getString('OfficeTel') ?? '';
         session['Mobile'] = prefs.getString('Mobile') ?? '';
         session['DueDate'] = prefs.getString('DueDate') ?? '';
+        session['Token'] = prefs.getString('Token') ?? '';
 
         /// 3. Menu Check
         if(session['EmpCode'] != '') {

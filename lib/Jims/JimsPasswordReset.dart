@@ -276,10 +276,10 @@ class _JimsPasswordResetState extends State<JimsPasswordReset> {
       try {
 
         // Login API Url
-        var url = 'https://jhapi.jahwa.co.kr/ResetPassword';
+        var url = 'https://jhapi.jahwa.co.kr/ResetPassword2';
 
         // Send Parameter
-        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text};
+        var data = {'EmpCode': empcodeController.text, 'Name' : nameController.text, 'Password' : passwordController.text, 'EmpCode2': session['EmpCode'], 'Token' : session['Token']};
 
         return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) {
           if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ return false; }
