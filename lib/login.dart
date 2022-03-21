@@ -218,7 +218,7 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance(); /// Cookie 대용
 
     var today = DateTime.now();
-    var oneMonthFromNow = today.add(const Duration(days: 30));
+    var oneWeekFromNow = today.add(const Duration(days: 7));
 
     try {
       prefs.setString('EntCode', user.EntCode);
@@ -239,7 +239,7 @@ class _LoginState extends State<Login> {
       prefs.setString('EntGroup', user.EntGroup);
       prefs.setString('OfficeTel', user.OfficeTel);
       prefs.setString('Mobile', user.Mobile);
-      prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(oneMonthFromNow));
+      prefs.setString('DueDate', DateFormat('yyyy-MM-dd').format(oneWeekFromNow));
       prefs.setString('Language', language);
       prefs.setString('Token', user.Token);
 
@@ -262,7 +262,7 @@ class _LoginState extends State<Login> {
       session['EntGroup'] = user.EntGroup;
       session['OfficeTel'] = user.OfficeTel;
       session['Mobile'] = user.Mobile;
-      session['DueDate'] = DateFormat('yyyy-MM-dd').format(oneMonthFromNow);
+      session['DueDate'] = DateFormat('yyyy-MM-dd').format(oneWeekFromNow);
       session['Token'] = user.Token;
     }
     catch (e) { print(e.toString()); }
