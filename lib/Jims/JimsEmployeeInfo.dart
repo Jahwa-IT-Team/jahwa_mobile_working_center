@@ -135,7 +135,8 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
         //print("Result Version : ${response.body}, (${response.statusCode}) - " + DateTime.now().toString());
-        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
+        if(response.statusCode == 400) { showMessageBox(context, 'Alert', response.body); }
+        else if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
         else if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length == 0) {
             showMessageBox(context, 'Alert', 'Data does not Exists!!!');
@@ -189,7 +190,8 @@ class _JimsEmployeeInfoState extends State<JimsEmployeeInfo> {
       var data = {'EmpCode': code, 'EmpCode2': session['EmpCode'], 'Token' : session['Token']};
 
       return await http.post(Uri.parse(url), body: json.encode(data), headers: {"Content-Type": "application/json"}).timeout(const Duration(seconds: 15)).then<bool>((http.Response response) async {
-        if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
+        if(response.statusCode == 400) { showMessageBox(context, 'Alert', response.body); }
+        else if(response.statusCode != 200 || response.body == null || response.body == "{}" ){ showMessageBox(context, 'Alert', 'Server Info. Data Error !!!'); }
         else if(response.statusCode == 200){
           if(jsonDecode(response.body)['Table'].length == 0) {
             showMessageBox(context, 'Alert', 'Data does not Exists!!!');
