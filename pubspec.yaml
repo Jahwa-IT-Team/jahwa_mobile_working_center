@@ -1,7 +1,7 @@
 name: jahwa_mobile_working_center
 description: "Jahwa Mobile"
 
-version: 1.0.11+17 # For Upgrade Number - JHGWMAIN.MobileVersion보다 작은 경우 경우 /Update로 이동됨, App은 수정하고 Table의 정보는 수정하지 않으면 무의미
+version: 1.0.11+18 # For Upgrade Number - JHGWMAIN.MobileVersion보다 작은 경우 경우 /Update로 이동됨, App은 수정하고 Table의 정보는 수정하지 않으면 무의미
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
